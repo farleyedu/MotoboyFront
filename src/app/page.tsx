@@ -19,7 +19,8 @@ export default function Home() {
       items: "Pizza, Refrigerante" as string | string[],
       value: "R$50,00",
       region: "Centro",
-     // assigned_driver: null
+      assigned_driver: null,
+      coordinates: [-48.214971, -18.905784]
     },
     {
       id: 2,
@@ -27,7 +28,8 @@ export default function Home() {
       items: "Pizza Grande" as string | string[],
       value: "R$70,00",
       region: "Zona Sul",
-      //assigned_driver: null
+      assigned_driver: null,
+      coordinates: [-48.256362, -18.916437]
     }
   ];
 

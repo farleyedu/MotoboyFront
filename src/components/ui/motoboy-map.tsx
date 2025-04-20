@@ -32,6 +32,7 @@ interface Order {
   value?: string;
   region?: string;
   assigned_driver?: number;
+  coordinates: Coordinates; // importante para marcar no mapa
 }
 
 interface MarkerRef {
@@ -47,13 +48,35 @@ interface MapComponentProps {
   orders: Order[];
 }
 
+const orders = [
+  {
+    id: 1,
+    address: 'Av. João Naves de Ávila, 2121',
+    items: ['Pizza Calabresa', 'Refrigerante'],
+    value: 'R$ 45,00',
+    region: 'Uberlândia',
+    assigned_driver: null,
+    coordinates: [-48.2772, -18.9146], // Uberlândia - UFU Santa Mônica
+  },
+  {
+    id: 2,
+    address: 'R. Tiradentes, 50',
+    items: 'Pizza Portuguesa',
+    value: 'R$ 38,00',
+    region: 'Uberlândia',
+    assigned_driver: null,
+    coordinates: [-48.283, -18.911], // Outro ponto em Uberlândia
+  }
+];
+
+
 const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys, orders }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const expandedMapContainer = useRef<HTMLDivElement | null>(null);
   const expandedMap = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<MarkerRef[]>([]);
-  const routes = useRef<string[]>([]);
+  const orderMarkers = useRef<mapboxgl.Marker[]>([]);
 
   const [activeMotoboyId, setActiveMotoboyId] = useState<number | null>(null);
   const [showDetailsPanel, setShowDetailsPanel] = useState<boolean>(false);
@@ -63,7 +86,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
-    map.current = new mapboxgl.Map({
+    const m = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: pizzeriaLocation,
@@ -71,25 +94,27 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
       attributionControl: false,
     });
 
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    map.current = m;
 
-    map.current.on('load', () => {
-      if (map.current) {
-        addPizzeriaMarker(map.current);
-        addMotoboyMarkers(map.current);
-      }
+    m.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+    m.on('load', () => {
+      addPizzeriaMarker(m);
+      addMotoboyMarkers(m);
+      addOrderMarkers(m);
     });
 
-    map.current.on('move', () => updateMarkerPositions());
+    m.on('move', () => updateMarkerPositions());
 
     return () => {
       markers.current.forEach(marker => marker.marker.remove());
       markers.current = [];
 
-      if (map.current) {
-        map.current.remove();
-        map.current = null;
-      }
+      orderMarkers.current.forEach(marker => marker.remove());
+      orderMarkers.current = [];
+
+      map.current?.remove();
+      map.current = null;
     };
   }, [pizzeriaLocation]);
 
@@ -98,9 +123,12 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
 
     markers.current.forEach(marker => marker.marker.remove());
     markers.current = [];
-
     addMotoboyMarkers(map.current);
-  }, [motoboys]);
+
+    orderMarkers.current.forEach(marker => marker.remove());
+    orderMarkers.current = [];
+    addOrderMarkers(map.current);
+  }, [motoboys, orders]);
 
   const addPizzeriaMarker = (targetMap: mapboxgl.Map) => {
     new mapboxgl.Marker({ color: '#e74c3c', scale: 1.2 })
@@ -134,6 +162,43 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
       markers.current.push({ id: motoboy.id, marker, element: el, isExpandedMap });
     });
   };
+
+  const addOrderMarkers = (targetMap: mapboxgl.Map) => {
+    console.log('Pedidos recebidos ##################:', orders); // 👈 Adicione isso
+
+    orders.forEach(order => {
+      const coords = order.coordinates;
+  
+      if (
+        !Array.isArray(coords) ||
+        coords.length !== 2 ||
+        typeof coords[0] !== 'number' ||
+        typeof coords[1] !== 'number' ||
+        coords[0] === 0 && coords[1] === 0
+      ) {
+        console.warn(`Pedido ${order.id} ignorado por coordenadas inválidas:`, coords);
+        return;
+      }
+  
+      const el = document.createElement('div');
+      el.className = styles.orderMarker;
+      el.title = `Pedido #${order.id}`;
+  
+      const marker = new mapboxgl.Marker(el)
+        .setLngLat(coords)
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 }).setHTML(`
+            <strong>Pedido #${order.id}</strong><br />
+            ${order.address || 'Sem endereço'}<br />
+            ${Array.isArray(order.items) ? order.items.join(', ') : order.items}
+          `)
+        )
+        .addTo(targetMap);
+  
+      orderMarkers.current.push(marker);
+    });
+  };
+  
 
   const updateMarkerPositions = (isExpandedMap = false) => {
     markers.current
@@ -180,9 +245,10 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
   };
 
   function drawRouteUntil(pedido: Delivery, index: number, all: Delivery[]) {
-    throw new Error('Function not implemented.');
+    console.log('Highlight rota até pedido', pedido.id);
   }
 
+  
   return (
     <div className={styles.mapComponentContainer}>
       <div className={styles.map}>
@@ -200,9 +266,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
             activeMotoboy={activeMotoboyId}
             onLocateMotoboy={locateMotoboy}
             onShowDetails={showMotoboyDetails}
-            onHoverPedido={(pedido, index, all) => {
-              drawRouteUntil(pedido, index, all); // Essa função será criada depois
-            }}
+            onHoverPedido={(pedido, index, all) => drawRouteUntil(pedido, index, all)}
           />
         </div>
       </div>
