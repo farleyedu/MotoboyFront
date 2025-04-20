@@ -1,22 +1,28 @@
 .card {
     background: #fff;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 8px 12px;
+    border-radius: 16px;
+    padding: 6px 8px;
     margin: 8px 0;
     display: flex;
-    align-items: flex-start;
-    width: 150px;
+    flex-direction: column;
+    width: 160px;
+    height: 60px;
     overflow: hidden;
     flex-shrink: 0;
-    transition: all 0.3s ease;
+    transition:
+      width 1.4s ease,
+      height 0.3s ease 1.4s,
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
     position: relative;
+    min-height: 60px;
   }
-  
   .card:hover {
     transform: translateX(5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
-    width: 280px;
+    width: 320px;
+    height: auto;
     z-index: 3;
   }
   
@@ -30,55 +36,63 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 6px;
   }
   
   .left {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    overflow: hidden;
+    flex: 1;
+    min-width: 0;
   }
   
   .avatarWrapper {
-    flex-shrink: 0; /* 👈 impede de encolher */
-    width: 40px;     /* 👈 tamanho fixo */
+    width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
   }
   
   .avatar {
-    width: 36px !important;
-    height: 36px !important;
-    border-radius: 50% !important;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     object-fit: cover;
-    background: #ccc; /* fallback visual */
-    display: block;
+    background-color: #ccc;
   }
   
   .titleBlock {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     overflow: hidden;
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
   }
   
   .name {
     font-weight: bold;
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     color: #333;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 100%;
   }
   
   .status {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     padding: 2px 6px;
-    border-radius: 4px;
+    border-radius: 12px;
     margin-top: 2px;
     text-transform: capitalize;
     display: inline-block;
+    background-color: #e0f7e0;
+    color: #2e7d32;
   }
   
   .status-online {
@@ -97,8 +111,11 @@
   }
   
   .actions {
+    position: absolute; /* NOVO: tira do fluxo do layout */
+    top: 8px;            /* Ajuste conforme o seu padding */
+    right: 8px;
     display: flex;
-    gap: 6px;
+    gap: 4px;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease-in-out;
@@ -110,13 +127,13 @@
   }
   
   .actions button {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     border: none;
-    background-color: #e1e5eb;
-    color: #2c3e50;
-    font-size: 11px;
+    background-color: #f5f5f5;
+    color: #333;
+    font-size: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -124,29 +141,33 @@
   }
   
   .actions button:hover {
-    background-color: #d0d5db;
+    background-color: #ddd;
   }
   
-  /* Expansão (detalhes) */
   .detalhes {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
     margin-top: 10px;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
+    flex-direction: column;
   }
   
-  .secao {
-    flex: 1;
+  .card:hover .detalhes {
+    display: flex;
+    opacity: 1;
+  }
+  
+  .secaoFull {
     display: flex;
     flex-direction: column;
   }
   
   .secaoTitulo {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 0.75rem;
-    color: #555;
+    color: #333;
     margin-bottom: 4px;
   }
   
@@ -159,23 +180,27 @@
   .badge {
     display: inline-flex;
     align-items: center;
-    background: #f5f5f5;
-    color: #333;
-    font-size: 0.70rem;
-    border-radius: 12px;
     padding: 4px 6px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #333;
+    background-color: #f0f0f0;
   }
   
   .badgeRetirado {
-    background: #e7f3ff;
+    background-color: #e7f3ff;
+    color: #1e88e5;
   }
   
   .badgeConcluida {
-    background: #e8f5e9;
+    background-color: #e8f5e9;
+    color: #2e7d32;
   }
   
   .badgeProxima {
-    background: #f3e5f5;
+    background-color: #fff3e0;
+    color: #aa530d;
   }
   
   .icon {
@@ -184,7 +209,25 @@
   }
   
   .eta {
+    margin-left: 4px;
     font-style: italic;
-    color: #555;
+    font-size: 0.7rem;
+  }
+  
+  .secaoRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  
+  .secaoColumn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .checkIcon {
+    font-size: 1rem;
+    color: #2e7d32;
   }
   
