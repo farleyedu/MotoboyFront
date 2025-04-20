@@ -1,0 +1,243 @@
+.modalOverlay {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e1e5eb;
+}
+
+.modalHeader h2 {
+  font-size: 20px;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.btnCloseModal {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #7f8c8d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.btnCloseModal:hover {
+  background-color: #f8f9fa;
+}
+
+.expandedMap {
+  height: 60vh;
+  width: 100%;
+}
+
+.expandedMotoboyList {
+  padding: 15px 20px;
+  border-top: 1px solid #e1e5eb;
+  overflow-y: auto;
+  max-height: 30vh;
+}
+
+.expandedMotoboyList h3 {
+  font-size: 16px;
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+}
+
+.motoboyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.motoboyCard {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  border: 1px solid #e1e5eb;
+}
+
+.motoboyCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.motoboyInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.motoboyAvatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.motoboyDetails h4 {
+  font-size: 15px;
+  margin: 0 0 3px 0;
+}
+
+.status {
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-bottom: 5px;
+}
+
+.online {
+  background-color: #e3fcef;
+  color: #00a650;
+}
+
+.offline {
+  background-color: #f8f9fa;
+  color: #95a5a6;
+}
+
+.delivering {
+  background-color: #e3f2fd;
+  color: #2980b9;
+}
+
+.deliveryInfo {
+  font-size: 12px;
+  color: #666;
+}
+
+.motoboyActions {
+  display: flex;
+  gap: 5px;
+}
+
+.motoboyActions button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnLocate {
+  background-color: #3498db;
+  color: white;
+}
+
+.btnLocate:hover {
+  background-color: #2980b9;
+}
+
+.btnAddDelivery {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.btnAddDelivery:hover {
+  background-color: #27ae60;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .modalContent {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
+  .expandedMap {
+    height: 50vh;
+  }
+  
+  .motoboyGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modalHeader h2 {
+    font-size: 18px;
+  }
+}
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modalContent {
+  position: relative;
+  width: 80%;
+  height: 80%;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ccc;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+.closeButton:hover {
+  background: #aaa;
+}
+.etaInfo {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}

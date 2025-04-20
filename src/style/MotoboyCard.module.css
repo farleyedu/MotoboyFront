@@ -1,0 +1,188 @@
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 8px 0;
+    display: flex;
+    align-items: flex-start;
+    width: 150px;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    width: 280px;
+    z-index: 3;
+  }
+  
+  .active {
+    border: 2px solid #3498db;
+    background-color: #f0f7fc;
+  }
+  
+  .cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .avatarWrapper {
+    flex-shrink: 0; /* 👈 impede de encolher */
+    width: 40px;     /* 👈 tamanho fixo */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .titleBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .name {
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .status {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-top: 2px;
+    text-transform: capitalize;
+    display: inline-block;
+  }
+  
+  .status-online {
+    background-color: #e0f7e0;
+    color: #2e7d32;
+  }
+  
+  .status-delivering {
+    background-color: #fff4e5;
+    color: #aa530d;
+  }
+  
+  .status-offline {
+    background-color: #ececec;
+    color: #777;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .card:hover .actions {
+    opacity: 1;
+    pointer-events: all;
+  }
+  
+  .actions button {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background-color: #e1e5eb;
+    color: #2c3e50;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .actions button:hover {
+    background-color: #d0d5db;
+  }
+  
+  /* Expansão (detalhes) */
+  .detalhes {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 10px;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .secao {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .secaoTitulo {
+    font-weight: bold;
+    font-size: 0.75rem;
+    color: #555;
+    margin-bottom: 4px;
+  }
+  
+  .pedidosLista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    background: #f5f5f5;
+    color: #333;
+    font-size: 0.70rem;
+    border-radius: 12px;
+    padding: 4px 6px;
+  }
+  
+  .badgeRetirado {
+    background: #e7f3ff;
+  }
+  
+  .badgeConcluida {
+    background: #e8f5e9;
+  }
+  
+  .badgeProxima {
+    background: #f3e5f5;
+  }
+  
+  .icon {
+    margin-right: 4px;
+    font-size: 0.8rem;
+  }
+  
+  .eta {
+    font-style: italic;
+    color: #555;
+  }
+  

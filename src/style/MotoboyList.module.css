@@ -1,0 +1,191 @@
+/* Container principal */
+.motoboyListContainer {
+  padding: 10px 16px;
+  background: transparent;
+}
+
+/* Lista horizontal */
+.motoboyList {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.motoboyList::-webkit-scrollbar {
+  display: none;
+}
+
+/* Card base */
+.card {
+  background-color: #fff;
+  border: 1px solid #e1e5eb;
+  border-radius: 10px;
+  min-width: 130px;
+  max-width: 140px;
+  height: 54px; /* reduzido */
+  padding: 6px; /* reduzido */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.25s ease-in-out;
+  overflow: hidden;
+}
+
+.card:hover {
+  max-width: 280px;
+  height: auto;
+  z-index: 2;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.active {
+  border: 2px solid #3498db;
+  background-color: #f0f7fc;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.avatar {
+  width: 32px; /* reduzido */
+  height: 32px; /* reduzido */
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.titleBlock h4 {
+  font-size: 12px; /* reduzido */
+  margin: 0;
+  color: #2c3e50;
+}
+
+.status {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 3px;
+  text-transform: capitalize;
+}
+
+.online {
+  background-color: #e3fcef;
+  color: #00a650;
+}
+
+.offline {
+  background-color: #f8f9fa;
+  color: #95a5a6;
+}
+
+.delivering {
+  background-color: #e3f2fd;
+  color: #2980b9;
+}
+
+.actions {
+  display: none;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.card:hover .actions {
+  display: flex;
+}
+
+.actions button {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background-color: #e1e5eb;
+  color: #2c3e50;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.actions button:hover {
+  background-color: #d0d5db;
+}
+
+.cardExpanded {
+  font-size: 12px;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.deliveryGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.groupLabel {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 2px;
+  font-size: 12px;
+}
+
+.pedidoItem {
+  font-size: 11px;
+  color: #444;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: #f4f4f4;
+  transition: background 0.2s;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pedidoItem:hover {
+  background: #e8f1fc;
+}
+
+.pedidoId {
+  font-weight: 600;
+  color: #1e88e5;
+  margin-right: 4px;
+}
+
+.eta {
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+}
+
+@media (max-width: 768px) {
+  .card {
+    min-width: 120px;
+    padding: 6px;
+    height: 70px;
+  }
+
+  .titleBlock h4 {
+    font-size: 11px;
+  }
+
+  .pedidoItem {
+    font-size: 10px;
+  }
+
+  .groupLabel {
+    font-size: 11px;
+  }
+}
