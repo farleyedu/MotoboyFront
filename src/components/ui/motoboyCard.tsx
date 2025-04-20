@@ -22,21 +22,27 @@ const MotoboyCard: React.FC<Props> = ({
         ? motoboy.avatar
         : '/img/perfil-motoboy.jpg';
 
+    console.log('IMAGEM MOT OBOY =>', imageUrl);
+
     return (
         <div className={`${styles.card} ${isActive ? styles.active : ''}`}>
             <div className={styles.cardHeader}>
                 <div className={styles.left}>
                     <div className={styles.avatarWrapper}>
-                        <img
-                            src={imageUrl}
-                            alt={motoboy.name}
-                            width={36}
-                            height={36}
-                            className={styles.avatar}
-                            onError={(e) => {
-                                (e.currentTarget as HTMLImageElement).src = '/img/perfil-motoboy.jpg';
-                            }}
-                        />
+                    <img
+  src={motoboy.avatar?.startsWith('http') ? motoboy.avatar : '/img/perfil-motoboy.jpg'}
+  alt={motoboy.name}
+  width={36}
+  height={36}
+  className={styles.avatar}
+  onError={(e) => {
+    const target = e.currentTarget as HTMLImageElement;
+    if (!target.src.endsWith('/img/perfil-motoboy.jpg')) {
+      target.src = '/img/perfil-motoboy.jpg';
+    }
+  }}
+/>
+
                     </div>
                     <div className={styles.titleBlock}>
                         <h4 className={styles.name}>{motoboy.name}</h4>

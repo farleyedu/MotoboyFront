@@ -48,10 +48,12 @@
   }
   
   .avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
     object-fit: cover;
+    background: #ccc; /* fallback visual */
+    display: block;
   }
   
   .titleBlock {
