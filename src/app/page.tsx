@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import MapaMotoboys, { MotoboyStatus } from "@/components/ui/motoboy-map";
 import MapComponent from "@/components/ui/motoboy-map";
 import { Coordinates, Motoboy } from "@/components/ui/types";
+import { stat } from "fs";
 
 //export type MotoboyStatus = 'online' | 'offline' | 'delivering';
 
@@ -13,24 +14,26 @@ export default function Home() {
   const pizzeriaLocation: [number, number] = [-48.256364, -18.916427];
 
   const orders = [
-    {
-      id: 1,
-      address: "Rua Exemplo, 123",
-      items: "Pizza, Refrigerante" as string | string[],
-      value: "R$50,00",
-      region: "Centro",
-      assigned_driver: null,
-      coordinates: [-48.214971, -18.905784]
-    },
-    {
-      id: 2,
-      address: "Av. Teste, 456",
-      items: "Pizza Grande" as string | string[],
-      value: "R$70,00",
-      region: "Zona Sul",
-      assigned_driver: null,
-      coordinates: [-48.256362, -18.916437]
-    }
+    { id: 1, address: 'Av. João Naves', items: 'Pizza Calabresa', value: 'R$45', region: 'Centro', status: 'pendente',
+       coordinates: [-48.2791, -18.9143] as Coordinates},
+    { id: 2, address: 'Rua da Pizzaria', items: 'Pizza Portuguesa', value: 'R$50', region: 'Fundinho', status: 'em_rota',
+       coordinates: [-48.2778, -18.9112] as Coordinates},
+    { id: 3, address: 'Av. Afonso Pena', items: 'Refrigerante', value: 'R$10', region: 'Martins', status: 'concluida',
+       coordinates: [-48.2700, -18.9175] as Coordinates},
+    { id: 4, address: 'Rua Acre', items: 'Pizza Marguerita', value: 'R$60', region: 'Brasil', status: 'em_rota',
+       coordinates: [-48.2755, -18.9100] as Coordinates},
+    { id: 5, address: 'Av. Floriano Peixoto', items: 'Pizza 4 Queijos', value: 'R$65', region: 'Santa Mônica',
+       status: 'pendente', coordinates: [-48.2651, -18.9193] as Coordinates},
+    { id: 6, address: 'Rua das Pedras', items: 'Pizza Vegetariana', value: 'R$55', region: 'Tibery', status: 'concluida',
+       coordinates: [-48.2602, -18.9221] as Coordinates},
+    { id: 7, address: 'Av. Getúlio Vargas', items: 'Pizza Frango Catupiry', value: 'R$70', region: 'Tabajaras', 
+      status: 'em_rota', coordinates: [-48.2815, -18.9200] as Coordinates},
+    { id: 8, address: 'Rua Goiás', items: 'Refrigerante e Pizza', value: 'R$58', region: 'Centro', status: 'pendente',
+       coordinates: [-48.2678, -18.9180] as Coordinates},
+    { id: 9, address: 'Av. Rondon Pacheco', items: 'Pizza Bacon', value: 'R$67', region: 'Saraiva', status: 'concluida',
+       coordinates: [-48.2505, -18.9135] as Coordinates},
+    { id: 10, address: 'Rua Pará', items: 'Pizza Chocolate', value: 'R$48', region: 'Umuarama', status: 'pendente',
+       coordinates: [-48.2563, -18.9150] as Coordinates }
   ];
 
   // Dados fictícios para os períodos

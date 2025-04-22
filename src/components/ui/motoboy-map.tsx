@@ -31,6 +31,7 @@ interface Order {
   items: string | string[];
   value?: string;
   region?: string;
+  status?: string;
   assigned_driver?: number;
   coordinates: Coordinates; // importante para marcar no mapa
 }
@@ -48,26 +49,7 @@ interface MapComponentProps {
   orders: Order[];
 }
 
-const orders = [
-  {
-    id: 1,
-    address: 'Av. João Naves de Ávila, 2121',
-    items: ['Pizza Calabresa', 'Refrigerante'],
-    value: 'R$ 45,00',
-    region: 'Uberlândia',
-    assigned_driver: null,
-    coordinates: [-48.2772, -18.9146], // Uberlândia - UFU Santa Mônica
-  },
-  {
-    id: 2,
-    address: 'R. Tiradentes, 50',
-    items: 'Pizza Portuguesa',
-    value: 'R$ 38,00',
-    region: 'Uberlândia',
-    assigned_driver: null,
-    coordinates: [-48.283, -18.911], // Outro ponto em Uberlândia
-  }
-];
+
 
 
 const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys, orders }) => {
@@ -164,26 +146,25 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
   };
 
   const addOrderMarkers = (targetMap: mapboxgl.Map) => {
-    console.log('Pedidos recebidos ##################:', orders); // 👈 Adicione isso
-
     orders.forEach(order => {
       const coords = order.coordinates;
-  
-      if (
-        !Array.isArray(coords) ||
-        coords.length !== 2 ||
-        typeof coords[0] !== 'number' ||
-        typeof coords[1] !== 'number' ||
-        coords[0] === 0 && coords[1] === 0
-      ) {
-        console.warn(`Pedido ${order.id} ignorado por coordenadas inválidas:`, coords);
-        return;
-      }
-  
+
       const el = document.createElement('div');
-      el.className = styles.orderMarker;
+      switch (order.status) {
+        case 'concluida':
+          el.className = styles.orderMarkerConcluida;
+          break;
+        case 'em_rota':
+          el.className = styles.orderMarkerEmRota;
+          break;
+        case 'pendente':
+        default:
+          el.className = styles.orderMarkerPendente;
+          break;
+      }
+
       el.title = `Pedido #${order.id}`;
-  
+
       const marker = new mapboxgl.Marker(el)
         .setLngLat(coords)
         .setPopup(
@@ -194,7 +175,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
           `)
         )
         .addTo(targetMap);
-  
+
       orderMarkers.current.push(marker);
     });
   };

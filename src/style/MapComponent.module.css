@@ -149,3 +149,27 @@
   font-size: 13px;
   color: #333;
 }
+.orderMarkerConcluida {
+  background-color: #4caf50; /* verde */
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.orderMarkerEmRota {
+  background-color: #fbc02d; /* amarelo */
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.orderMarkerPendente {
+  background-color: #e53935; /* vermelho */
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
