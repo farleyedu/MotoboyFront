@@ -4,11 +4,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from '../../style/MapComponent.module.css';
-
+import ReactDOM from 'react-dom/client';
 import MotoboyList from './MotoboyList';
 import DeliveryDetailsPanel from './DeliveryDetailsPanel';
 import ExpandedMapModal from '../modal/ExpandedMapModal';
 import { Coordinates, Delivery } from './types';
+import OrderPopup from './OrderPopUp';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN || '';
 
@@ -148,7 +149,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
   const addOrderMarkers = (targetMap: mapboxgl.Map) => {
     orders.forEach(order => {
       const coords = order.coordinates;
-
+  
       const el = document.createElement('div');
       switch (order.status) {
         case 'concluida':
@@ -162,20 +163,17 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
           el.className = styles.orderMarkerPendente;
           break;
       }
-
-      el.title = `Pedido #${order.id}`;
-
+  
+      // Cria container para React
+      const popupDiv = document.createElement('div');
+      const root = ReactDOM.createRoot(popupDiv);
+      root.render(<OrderPopup order={order} />);
+  
       const marker = new mapboxgl.Marker(el)
         .setLngLat(coords)
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25 }).setHTML(`
-            <strong>Pedido #${order.id}</strong><br />
-            ${order.address || 'Sem endereço'}<br />
-            ${Array.isArray(order.items) ? order.items.join(', ') : order.items}
-          `)
-        )
+        .setPopup(new mapboxgl.Popup({ offset: 25 }).setDOMContent(popupDiv))
         .addTo(targetMap);
-
+  
       orderMarkers.current.push(marker);
     });
   };

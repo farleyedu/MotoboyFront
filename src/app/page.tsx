@@ -129,9 +129,11 @@ export default function Home() {
     );
     setPedidoSelecionado(null);
   };
+  const [chatAberto, setChatAberto] = useState(true);
 
   return (
-<div className="w-full max-w-screen-2xl mx-auto px-5 pr-60 space-y-8">
+<main className={`w-full h-full overflow-auto space-y-8 ${chatAberto ? 'pr-[5rem]' : ''}`}>
+
 {/* Painel Administrativo */}
       <Card className="border border-gray-300 shadow-sm">
         <CardHeader>
@@ -290,6 +292,6 @@ export default function Home() {
           </Button>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
