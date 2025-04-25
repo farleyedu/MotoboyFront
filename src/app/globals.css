@@ -129,3 +129,31 @@
     @apply h-full;
   }
 }
+.mapboxgl-popup {
+  max-width: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  z-index: 9999 !important;
+
+}
+
+.mapboxgl-popup-content {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  width: auto !important;
+  max-width: none !important;
+  overflow: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+.mapboxgl-popup-tip {
+  display: none !important;
+}  
+

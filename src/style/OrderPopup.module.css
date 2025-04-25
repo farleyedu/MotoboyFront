@@ -1,16 +1,22 @@
 /* OrderPopup.module.css */
 
 .container {
-    width: 300px;
-    padding: 16px;
-    border-radius: 12px;
+    max-width: 240px; /* compatível com o Mapbox */
+    width: 100%;
+    max-height: 75vh;
+    overflow-y: auto;
+    padding: 12px;
+    border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     background-color: #fff;
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    box-sizing: border-box;
+    font-size: 13px;
   }
+  
   
   .header {
     font-weight: bold;
@@ -30,7 +36,7 @@
     font-weight: 600;
     font-size: 14px;
     color: #444;
-    margin-top: 8px;
+    margin-top: 4px;
   }
   
   .items {
@@ -45,14 +51,16 @@
     text-align: right;
     font-weight: bold;
     color: #222;
+    margin-top: -4px;
   }
   
   .timings {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 4px;
+    gap: 4px 12px;
     font-size: 12px;
     color: #555;
+    padding-top: 4px;
   }
   
   .timeLabel {
@@ -60,6 +68,7 @@
     align-items: center;
     gap: 4px;
     font-weight: 500;
+    white-space: nowrap;
   }
   
   .timeValue {
@@ -78,6 +87,7 @@
   .motoboyLabel {
     font-size: 13px;
     color: #555;
+    font-weight: 600;
   }
   
   .motoboyInfo {
@@ -87,15 +97,58 @@
   }
   
   .motoboyAvatar {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
+    border: 1px solid #ddd;
   }
   
   .statusOnline {
     font-size: 12px;
     color: #4caf50;
+    font-weight: 500;
+  }
+  .mapboxgl-popup-content {
+    padding: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+    border-radius: 12px !important;
+    box-sizing: border-box;
+  }
+  
+  .mapboxgl-popup-tip {
+    display: block;
+  }
+
+  .motoboyPlaceholder {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .assignButton {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    align-self: start;
+    transition: background-color 0.2s ease;
+  }
+  
+  .assignButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .statusOffline {
+    font-size: 12px;
+    color: #f44336;
     font-weight: 500;
   }
   

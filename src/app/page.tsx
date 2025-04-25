@@ -14,27 +14,153 @@ export default function Home() {
   const pizzeriaLocation: [number, number] = [-48.256364, -18.916427];
 
   const orders = [
-    { id: 1, address: 'Av. João Naves', items: 'Pizza Calabresa', value: 'R$45', region: 'Centro', status: 'pendente',
-       coordinates: [-48.2791, -18.9143] as Coordinates},
-    { id: 2, address: 'Rua da Pizzaria', items: 'Pizza Portuguesa', value: 'R$50', region: 'Fundinho', status: 'em_rota',
-       coordinates: [-48.2778, -18.9112] as Coordinates},
-    { id: 3, address: 'Av. Afonso Pena', items: 'Refrigerante', value: 'R$10', region: 'Martins', status: 'concluida',
-       coordinates: [-48.2700, -18.9175] as Coordinates},
-    { id: 4, address: 'Rua Acre', items: 'Pizza Marguerita', value: 'R$60', region: 'Brasil', status: 'em_rota',
-       coordinates: [-48.2755, -18.9100] as Coordinates},
-    { id: 5, address: 'Av. Floriano Peixoto', items: 'Pizza 4 Queijos', value: 'R$65', region: 'Santa Mônica',
-       status: 'pendente', coordinates: [-48.2651, -18.9193] as Coordinates},
-    { id: 6, address: 'Rua das Pedras', items: 'Pizza Vegetariana', value: 'R$55', region: 'Tibery', status: 'concluida',
-       coordinates: [-48.2602, -18.9221] as Coordinates},
-    { id: 7, address: 'Av. Getúlio Vargas', items: 'Pizza Frango Catupiry', value: 'R$70', region: 'Tabajaras', 
-      status: 'em_rota', coordinates: [-48.2815, -18.9200] as Coordinates},
-    { id: 8, address: 'Rua Goiás', items: 'Refrigerante e Pizza', value: 'R$58', region: 'Centro', status: 'pendente',
-       coordinates: [-48.2678, -18.9180] as Coordinates},
-    { id: 9, address: 'Av. Rondon Pacheco', items: 'Pizza Bacon', value: 'R$67', region: 'Saraiva', status: 'concluida',
-       coordinates: [-48.2505, -18.9135] as Coordinates},
-    { id: 10, address: 'Rua Pará', items: 'Pizza Chocolate', value: 'R$48', region: 'Umuarama', status: 'pendente',
-       coordinates: [-48.2563, -18.9150] as Coordinates }
+    {
+      id: 1,
+      address: 'Av. João Naves',
+      items: 'Pizza Calabresa',
+      value: 'R$45',
+      region: 'Centro',
+      status: 'pendente',
+      coordinates: [-48.2791, -18.9143] as Coordinates,
+      horarioPedido: '12:00',
+      previsaoEntrega: '12:30',
+      horarioSaida: '12:15',
+      horarioEntrega: '12:45',
+      motoboy: {
+        name: 'Motoboy A',
+        avatar: '/img/motoboy-a.jpg',
+        status: 'online'
+      }
+    },
+    {
+      id: 2,
+      address: 'Rua da Pizzaria',
+      items: 'Pizza Portuguesa',
+      value: 'R$50',
+      region: 'Fundinho',
+      status: 'em_rota',
+      coordinates: [-48.2778, -18.9112] as Coordinates,
+      horarioPedido: '12:00',
+      previsaoEntrega: '12:30',
+      horarioSaida: '12:15',
+      horarioEntrega: '12:45',
+      motoboy: {
+        name: 'Motoboy A',
+        avatar: '/img/motoboy-a.jpg',
+        status: 'online'
+      }
+    },
+    {
+      id: 3,
+      address: 'Av. Afonso Pena',
+      items: 'Refrigerante',
+      value: 'R$10',
+      region: 'Martins',
+      status: 'concluida',
+      coordinates: [-48.2700, -18.9175] as Coordinates,
+      horarioPedido: '12:00',
+      previsaoEntrega: '12:30',
+      horarioSaida: '12:15',
+      horarioEntrega: '12:45',
+      motoboy: {
+        name: 'Motoboy A',
+        avatar: '/img/motoboy-a.jpg',
+        status: 'online'
+      }
+    },
+    {
+      id: 4,
+      address: 'Rua Acre',
+      items: 'Pizza Marguerita',
+      value: 'R$60',
+      region: 'Brasil',
+      status: 'em_rota',
+      coordinates: [-48.2755, -18.9100] as Coordinates,
+      horarioPedido: '12:00',
+      previsaoEntrega: '12:30',
+      horarioSaida: '12:15',
+      horarioEntrega: '12:45'
+    },
+    {
+      id: 5,
+      address: 'Av. Floriano Peixoto',
+      items: 'Pizza 4 Queijos',
+      value: 'R$65',
+      region: 'Santa Mônica',
+      status: 'pendente',
+      coordinates: [-48.2651, -18.9193] as Coordinates,
+      horarioPedido: '12:00',
+      previsaoEntrega: '12:30',
+      horarioSaida: '12:15',
+      horarioEntrega: '12:45'
+    },
+    {
+      id: 6,
+      address: 'Rua das Pedras',
+      items: 'Pizza Vegetariana',
+      value: 'R$55',
+      region: 'Tibery',
+      status: 'concluida',
+      coordinates: [-48.2602, -18.9221] as Coordinates,
+      horarioPedido: '12:00',
+      previsaoEntrega: '12:30',
+      horarioSaida: '12:15',
+      horarioEntrega: '12:45'
+    },
+    {
+      id: 7,
+      address: 'Av. Getúlio Vargas',
+      items: 'Pizza Frango Catupiry',
+      value: 'R$70',
+      region: 'Tabajaras',
+      status: 'em_rota',
+      coordinates: [-48.2815, -18.9200] as Coordinates,
+      horarioPedido: '12:00',
+      previsaoEntrega: '12:30',
+      horarioSaida: '12:15',
+      horarioEntrega: '12:45'
+    },
+    {
+      id: 8,
+      address: 'Rua Goiás',
+      items: 'Refrigerante e Pizza',
+      value: 'R$58',
+      region: 'Centro',
+      status: 'pendente',
+      coordinates: [-48.2678, -18.9180] as Coordinates,
+      horarioPedido: '12:00',
+      previsaoEntrega: '12:30',
+      horarioSaida: '12:15',
+      horarioEntrega: '12:45'
+    },
+    {
+      id: 9,
+      address: 'Av. Rondon Pacheco',
+      items: 'Pizza Bacon',
+      value: 'R$67',
+      region: 'Saraiva',
+      status: 'concluida',
+      coordinates: [-48.2505, -18.9135] as Coordinates,
+      horarioPedido: '12:00',
+      previsaoEntrega: '12:30',
+      horarioSaida: '12:15',
+      horarioEntrega: '12:45'
+    },
+    {
+      id: 10,
+      address: 'Rua Pará',
+      items: 'Pizza Chocolate',
+      value: 'R$48',
+      region: 'Umuarama',
+      status: 'pendente',
+      coordinates: [-48.2563, -18.9150] as Coordinates,
+      horarioPedido: '12:00',
+      previsaoEntrega: '12:30',
+      horarioSaida: '12:15',
+      horarioEntrega: '12:45'
+    }
   ];
+  
 
   // Dados fictícios para os períodos
   const pedidos = {
@@ -65,7 +191,7 @@ export default function Home() {
       avatar: "https://via.placeholder.com/50",
       phone: "123456789",
       vehicle: "Moto",
-      status: "online" as MotoboyStatus, // agora "online" é reconhecido como literal
+      status: "online" as MotoboyStatus,
       location: [-48.214972, -18.905934] as Coordinates,
       deliveries: []
     },
@@ -75,11 +201,92 @@ export default function Home() {
       avatar: "https://via.placeholder.com/50",
       phone: "987654321",
       vehicle: "Scooter",
-      status: "offline" as MotoboyStatus, // literal permitido
+      status: "offline" as MotoboyStatus,
       location: [-48.279946, -18.943977] as Coordinates,
+      deliveries: []
+    },
+    {
+      id: 3,
+      name: "Motoboy C",
+      avatar: "https://via.placeholder.com/50",
+      phone: "111222333",
+      vehicle: "Moto",
+      status: "online" as MotoboyStatus,
+      location: [-48.267891, -18.921344] as Coordinates,
+      deliveries: []
+    },
+    {
+      id: 4,
+      name: "Motoboy D",
+      avatar: "https://via.placeholder.com/50",
+      phone: "444555666",
+      vehicle: "Scooter",
+      status: "offline" as MotoboyStatus,
+      location: [-48.253841, -18.915771] as Coordinates,
+      deliveries: []
+    },
+    {
+      id: 5,
+      name: "Motoboy E",
+      avatar: "https://via.placeholder.com/50",
+      phone: "777888999",
+      vehicle: "Moto",
+      status: "online" as MotoboyStatus,
+      location: [-48.243120, -18.910300] as Coordinates,
+      deliveries: []
+    },
+    {
+      id: 6,
+      name: "Motoboy F",
+      avatar: "https://via.placeholder.com/50",
+      phone: "222333444",
+      vehicle: "Scooter",
+      status: "offline" as MotoboyStatus,
+      location: [-48.232011, -18.908245] as Coordinates,
+      deliveries: []
+    },
+    {
+      id: 7,
+      name: "Motoboy G",
+      avatar: "https://via.placeholder.com/50",
+      phone: "555666777",
+      vehicle: "Moto",
+      status: "online" as MotoboyStatus,
+      location: [-48.259001, -18.919001] as Coordinates,
+      deliveries: []
+    },
+    {
+      id: 8,
+      name: "Motoboy H",
+      avatar: "https://via.placeholder.com/50",
+      phone: "888999000",
+      vehicle: "Scooter",
+      status: "online" as MotoboyStatus,
+      location: [-48.245672, -18.916543] as Coordinates,
+      deliveries: []
+    },
+    {
+      id: 9,
+      name: "Motoboy I",
+      avatar: "https://via.placeholder.com/50",
+      phone: "999000111",
+      vehicle: "Moto",
+      status: "offline" as MotoboyStatus,
+      location: [-48.272200, -18.914200] as Coordinates,
+      deliveries: []
+    },
+    {
+      id: 10,
+      name: "Motoboy J",
+      avatar: "https://via.placeholder.com/50",
+      phone: "000111222",
+      vehicle: "Moto",
+      status: "online" as MotoboyStatus,
+      location: [-48.264400, -18.911100] as Coordinates,
       deliveries: []
     }
   ];
+  
 
 
 

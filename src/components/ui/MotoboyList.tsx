@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Motoboy, Delivery } from './types';
 import MotoboyCard from './motoboyCard';
 import styles from '../../style/MotoboyList.module.css';
@@ -18,10 +18,36 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
   onShowDetails,
   onHoverPedido,
 }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showNav, setShowNav] = useState(false);
+
+  const onlineMotoboys = motoboys.filter((m) => m.status === 'online');
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      const el = scrollRef.current;
+      if (el) {
+        setShowNav(el.scrollWidth > el.clientWidth);
+      }
+    };
+
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, [onlineMotoboys]);
+
+  const scroll = (dir: 'left' | 'right') => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: dir === 'left' ? -200 : 200, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className={styles.motoboyListContainer}>
-      <div className={styles.motoboyList}>
-        {motoboys.map((motoboy) => (
+      {showNav && <button className={styles.navButton} onClick={() => scroll('left')}>←</button>}
+
+      <div className={styles.motoboyList} ref={scrollRef}>
+        {onlineMotoboys.map((motoboy) => (
           <MotoboyCard
             key={motoboy.id}
             motoboy={motoboy}
@@ -32,6 +58,8 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
           />
         ))}
       </div>
+
+      {showNav && <button className={styles.navButton} onClick={() => scroll('right')}>→</button>}
     </div>
   );
 };

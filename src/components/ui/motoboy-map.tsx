@@ -169,15 +169,28 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
       const root = ReactDOM.createRoot(popupDiv);
       root.render(<OrderPopup order={order} />);
   
+      const popup = new mapboxgl.Popup({
+        offset: 25,
+        anchor: 'auto' as any, // permite auto posicionamento inteligente
+        closeButton: false 
+      }).setDOMContent(popupDiv);
+  
       const marker = new mapboxgl.Marker(el)
         .setLngLat(coords)
-        .setPopup(new mapboxgl.Popup({ offset: 25 }).setDOMContent(popupDiv))
+        .setPopup(popup)
         .addTo(targetMap);
+  
+      // Centraliza visualmente com deslocamento para cima (sem afetar lógica do anchor)
+      targetMap.easeTo({
+        center: coords,
+        offset: [0, -50], // desloca visualmente o centro 50px pra cima
+        zoom: 15,
+        essential: true
+      });
   
       orderMarkers.current.push(marker);
     });
   };
-  
 
   const updateMarkerPositions = (isExpandedMap = false) => {
     markers.current
