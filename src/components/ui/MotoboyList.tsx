@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Motoboy, Delivery } from './types';
 import MotoboyCard from './motoboyCard';
 import styles from '../../style/MotoboyList.module.css';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MotoboyListProps {
   motoboys: Motoboy[];
@@ -27,17 +28,14 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
     const checkOverflow = () => {
       const el = scrollRef.current;
       if (el) {
-        console.log("clientWidth:", el.clientWidth, "scrollWidth:", el.scrollWidth);
         setShowNav(el.scrollWidth > el.clientWidth);
       }
     };
 
-    const timeout = setTimeout(checkOverflow, 0); // garante que o DOM já esteja pronto
-
+    const timeout = setTimeout(checkOverflow, 0);
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', checkOverflow);
     }
-
     return () => {
       clearTimeout(timeout);
       if (typeof window !== 'undefined') {
@@ -45,8 +43,6 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
       }
     };
   }, [onlineMotoboys.length]);
-
-
 
   const scroll = (dir: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -56,7 +52,15 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
 
   return (
     <div className={styles.motoboyListWrapper}>
-      <button className={styles.navButton} onClick={() => scroll('left')}>←</button>
+      {showNav && (
+        <button
+          className={`${styles.navButton} ${styles.navButtonLeft}`}
+          style={{ left: '-10px', top: '50%', transform: 'translateY(-50%)' }}
+          onClick={() => scroll('left')}
+        >
+          <ChevronLeft size={28} />
+        </button>
+      )}
 
       <div className={styles.motoboyList} ref={scrollRef}>
         {onlineMotoboys.map((motoboy) => (
@@ -71,11 +75,17 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
         ))}
       </div>
 
-      <button className={styles.navButton} onClick={() => scroll('right')}>→</button>
+      {showNav && (
+        <button
+          className={`${styles.navButton} ${styles.navButtonRight}`}
+          style={{ right: '-10px', top: '50%', transform: 'translateY(-50%)' }}
+          onClick={() => scroll('right')}
+        >
+          <ChevronRight size={28} />
+        </button>
+      )}
     </div>
-
   );
-
 };
 
 export default MotoboyList;

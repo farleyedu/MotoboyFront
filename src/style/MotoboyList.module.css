@@ -4,32 +4,66 @@
   background: transparent;
 }
 
-/* Lista horizontal */
+.motoboyListWrapper {
+  position: relative;
+  width: 100%;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: center;
+}
+
 .motoboyList {
   display: flex;
   flex-direction: row;
   gap: 10px;
   align-items: flex-end;
-  overflow-x: auto; /* <-- ISSO AQUI É FUNDAMENTAL */
+  overflow-x: auto;
   scroll-behavior: smooth;
   padding: 4px 0;
-  max-width: 90vw; /* restaurado para não cortar os cards */
+  max-width: 90vw;
 }
-
 
 .motoboyList::-webkit-scrollbar {
   display: none;
 }
 
-/* Card base */
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  z-index: 2;
+}
+
+.navButtonLeft {
+  left: 0;
+}
+
+.navButtonRight {
+  right: 0;
+}
+
+.navButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+/* Cards e Hover seguem normais */
 .card {
   background-color: #fff;
   border: 1px solid #e1e5eb;
   border-radius: 10px;
   min-width: 130px;
   max-width: 140px;
-  height: 54px; /* reduzido */
-  padding: 6px; /* reduzido */
+  height: 54px;
+  padding: 6px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,7 +71,7 @@
   flex-shrink: 0;
   transition: all 0.25s ease-in-out;
   overflow: hidden;
-  align-self: flex-start; /* força cada card a respeitar seu próprio topo */
+  align-self: flex-start;
 }
 
 .card:hover {
@@ -60,14 +94,14 @@
 }
 
 .avatar {
-  width: 32px; /* reduzido */
-  height: 32px; /* reduzido */
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .titleBlock h4 {
-  font-size: 12px; /* reduzido */
+  font-size: 12px;
   margin: 0;
   color: #2c3e50;
 }
@@ -193,29 +227,4 @@
   .groupLabel {
     font-size: 11px;
   }
-}
-.motoboyListWrapper {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-}
-
-.navButton {
-  background: white;
-  border: none;
-  padding: 6px 10px;
-  font-size: 18px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  height: 54px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.navButton:hover {
-  background-color: #f1f1f1;
 }
