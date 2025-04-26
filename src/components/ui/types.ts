@@ -30,6 +30,16 @@ export interface Motoboy {
   deliveries: Delivery[];
 }
 
+export interface Order {
+  id: number;
+  address?: string;
+  items: string | string[];
+  value?: string;
+  region?: string;
+  status?: string;
+  assigned_driver?: number;
+  coordinates: Coordinates; // importante para marcar no mapa
+}
 
 
 

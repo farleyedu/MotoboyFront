@@ -8,8 +8,9 @@ import ReactDOM from 'react-dom/client';
 import MotoboyList from './MotoboyList';
 import DeliveryDetailsPanel from './DeliveryDetailsPanel';
 import ExpandedMapModal from '../modal/ExpandedMapModal';
-import { Coordinates, Delivery } from './types';
+import { Coordinates, Delivery, Order } from './types';
 import OrderPopup from './OrderPopUp';
+import SelectOrdersMode from './SelectOrdersMode';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN || '';
 
@@ -26,16 +27,16 @@ interface Motoboy {
   deliveries: Delivery[];
 }
 
-interface Order {
-  id: number;
-  address?: string;
-  items: string | string[];
-  value?: string;
-  region?: string;
-  status?: string;
-  assigned_driver?: number;
-  coordinates: Coordinates; // importante para marcar no mapa
-}
+// interface Order {
+//   id: number;
+//   address?: string;
+//   items: string | string[];
+//   value?: string;
+//   region?: string;
+//   status?: string;
+//   assigned_driver?: number;
+//   coordinates: Coordinates; // importante para marcar no mapa
+// }
 
 interface MarkerRef {
   id: number;
@@ -65,7 +66,9 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
   const [showDetailsPanel, setShowDetailsPanel] = useState<boolean>(false);
   const [showExpandedMap, setShowExpandedMap] = useState<boolean>(false);
   const [selectedMotoboy, setSelectedMotoboy] = useState<Motoboy | null>(null);
-
+  const [isSelectingRoute, setIsSelectingRoute] = useState(false);
+  const pendingOrders = orders.filter(order => order.status === 'pendente');
+  
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
@@ -202,6 +205,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
         }
       });
   };
+  
 
   const locateMotoboy = (motoboyId: number, isExpandedMap = false) => {
     const motoboy = motoboys.find(m => m.id === motoboyId);
@@ -211,6 +215,19 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
     if (!targetMap) return;
 
     targetMap.flyTo({ center: motoboy.location, zoom: 15, essential: true });
+  };
+
+  const handleStartSelection = () => {
+    setIsSelectingRoute(true);
+  };
+  
+  const handleConfirmSelection = (selectedOrders: Order[], selectedMotoboy: Motoboy) => {
+    console.log('Confirmado pedidos:', selectedOrders, 'para motoboy:', selectedMotoboy);
+    setIsSelectingRoute(false);
+  };
+  
+  const handleCancelSelection = () => {
+    setIsSelectingRoute(false);
   };
 
   const showMotoboyDetails = (motoboyId: number) => {
@@ -244,25 +261,64 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
   return (
     <div className={styles.mapComponentContainer}>
       <div className={styles.map}>
-        <button
-          className={styles.expandButtonFloating}
-          onClick={expandMap}
-          aria-label="Expandir Mapa"
-        >
-          <i className="fas fa-expand" />
-        </button>
-        <div ref={mapContainer} className={styles.mapInner} />
-        <div className={styles.floatingMotoboyList}>
-          <MotoboyList
+        {/* Botão Expandir Mapa (continua normal) */}
+        {!isSelectingRoute && (
+          <button
+            className={styles.expandButtonFloating}
+            onClick={expandMap}
+            aria-label="Expandir Mapa"
+          >
+            <i className="fas fa-expand" />
+          </button>
+        )}
+  
+        {/* Botão Selecionar Rota (aparece só no modo normal) */}
+        {!isSelectingRoute && (
+          <button
+            onClick={handleStartSelection}
+            aria-label="Selecionar Rota"
+            style={{
+              position: 'absolute',
+              bottom: '80px',
+              left: '16px',
+              padding: '8px 12px',
+              backgroundColor: 'white',
+              borderRadius: '8px',
+              boxShadow: '0px 2px 8px rgba(0,0,0,0.2)',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              zIndex: 1000
+            }}
+          >
+            ➕ Selecionar Rota
+          </button>
+        )}
+  
+        {/* Se estiver selecionando, mostra o fluxo de seleção. Senão, o mapa normal */}
+        {isSelectingRoute ? (
+          <SelectOrdersMode
+            orders={pendingOrders}
             motoboys={motoboys}
-            activeMotoboy={activeMotoboyId}
-            onLocateMotoboy={locateMotoboy}
-            onShowDetails={showMotoboyDetails}
-            onHoverPedido={(pedido, index, all) => drawRouteUntil(pedido, index, all)}
+            onConfirm={handleConfirmSelection}
+            onCancel={handleCancelSelection}
           />
-        </div>
+        ) : (
+          <>
+            <div ref={mapContainer} className={styles.mapInner} />
+            <div className={styles.floatingMotoboyList}>
+              <MotoboyList
+                motoboys={motoboys}
+                activeMotoboy={activeMotoboyId}
+                onLocateMotoboy={locateMotoboy}
+                onShowDetails={showMotoboyDetails}
+                onHoverPedido={(pedido, index, all) => drawRouteUntil(pedido, index, all)}
+              />
+            </div>
+          </>
+        )}
       </div>
-
+  
+      {/* Painel lateral de detalhes */}
       {showDetailsPanel && selectedMotoboy && (
         <DeliveryDetailsPanel
           motoboy={selectedMotoboy}
@@ -271,7 +327,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
           onAssignOrder={assignOrderToMotoboy}
         />
       )}
-
+  
+      {/* Modal de expandir mapa */}
       {showExpandedMap && (
         <ExpandedMapModal
           mapContainerRef={expandedMapContainer}
@@ -283,6 +340,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ pizzeriaLocation, motoboys,
       )}
     </div>
   );
+  
 };
 
 export default MapComponent;
