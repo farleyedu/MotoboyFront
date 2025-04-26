@@ -19,7 +19,7 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
   onHoverPedido,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [showNav, setShowNav] = useState(false);
+  const [showNav, setShowNav] = useState(true);
 
   const onlineMotoboys = motoboys.filter((m) => m.status === 'online');
 
@@ -27,14 +27,26 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
     const checkOverflow = () => {
       const el = scrollRef.current;
       if (el) {
+        console.log("clientWidth:", el.clientWidth, "scrollWidth:", el.scrollWidth);
         setShowNav(el.scrollWidth > el.clientWidth);
       }
     };
 
-    checkOverflow();
-    window.addEventListener('resize', checkOverflow);
-    return () => window.removeEventListener('resize', checkOverflow);
-  }, [onlineMotoboys]);
+    const timeout = setTimeout(checkOverflow, 0); // garante que o DOM já esteja pronto
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', checkOverflow);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', checkOverflow);
+      }
+    };
+  }, [onlineMotoboys.length]);
+
+
 
   const scroll = (dir: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -43,8 +55,8 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
   };
 
   return (
-    <div className={styles.motoboyListContainer}>
-      {showNav && <button className={styles.navButton} onClick={() => scroll('left')}>←</button>}
+    <div className={styles.motoboyListWrapper}>
+      <button className={styles.navButton} onClick={() => scroll('left')}>←</button>
 
       <div className={styles.motoboyList} ref={scrollRef}>
         {onlineMotoboys.map((motoboy) => (
@@ -59,9 +71,11 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
         ))}
       </div>
 
-      {showNav && <button className={styles.navButton} onClick={() => scroll('right')}>→</button>}
+      <button className={styles.navButton} onClick={() => scroll('right')}>→</button>
     </div>
+
   );
+
 };
 
 export default MotoboyList;

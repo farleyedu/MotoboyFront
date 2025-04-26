@@ -8,9 +8,14 @@
 .motoboyList {
   display: flex;
   flex-direction: row;
-  gap: 10px; /* espaço entre os cards */
-align-items: flex-end;
+  gap: 10px;
+  align-items: flex-end;
+  overflow-x: auto; /* <-- ISSO AQUI É FUNDAMENTAL */
+  scroll-behavior: smooth;
+  padding: 4px 0;
+  max-width: 90vw; /* restaurado para não cortar os cards */
 }
+
 
 .motoboyList::-webkit-scrollbar {
   display: none;
@@ -188,4 +193,29 @@ align-items: flex-end;
   .groupLabel {
     font-size: 11px;
   }
+}
+.motoboyListWrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.navButton {
+  background: white;
+  border: none;
+  padding: 6px 10px;
+  font-size: 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navButton:hover {
+  background-color: #f1f1f1;
 }
