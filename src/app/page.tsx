@@ -160,7 +160,7 @@ export default function Home() {
       horarioEntrega: '12:45'
     }
   ];
-  
+
 
   // Dados fictícios para os períodos
   const pedidos = {
@@ -286,12 +286,6 @@ export default function Home() {
       deliveries: []
     }
   ];
-  
-
-
-
-
-
 
   const [pedidosRecentes, setPedidosRecentes] = useState([
     { id: 101, cliente: "João Pereira", status: "Entregue", total: "R$45,00", motoboy: null },
@@ -339,9 +333,9 @@ export default function Home() {
   const [chatAberto, setChatAberto] = useState(true);
 
   return (
-<main className={`w-full h-full overflow-auto space-y-8 ${chatAberto ? 'pr-[5rem]' : ''}`}>
+    <main className={`w-full h-full overflow-auto space-y-8 ${chatAberto ? 'pr-[5rem]' : ''}`}>
 
-{/* Painel Administrativo */}
+      {/* Painel Administrativo */}
       <Card className="border border-gray-300 shadow-sm">
         <CardHeader>
           <CardTitle className="text-xl font-bold text-gray-800">
@@ -361,9 +355,8 @@ export default function Home() {
                   <button
                     key={opcao}
                     onClick={() => setPeriodoTotal(opcao)}
-                    className={`w-3 h-3 rounded-full ${
-                      periodoTotal === opcao ? "bg-blue-500" : "bg-gray-300"
-                    }`}
+                    className={`w-3 h-3 rounded-full ${periodoTotal === opcao ? "bg-blue-500" : "bg-gray-300"
+                      }`}
                   ></button>
                 ))}
               </div>
@@ -382,9 +375,8 @@ export default function Home() {
                   <button
                     key={opcao}
                     onClick={() => setPeriodoEntrega(opcao)}
-                    className={`w-3 h-3 rounded-full ${
-                      periodoEntrega === opcao ? "bg-blue-500" : "bg-gray-300"
-                    }`}
+                    className={`w-3 h-3 rounded-full ${periodoEntrega === opcao ? "bg-blue-500" : "bg-gray-300"
+                      }`}
                   ></button>
                 ))}
               </div>
@@ -403,9 +395,8 @@ export default function Home() {
                   <button
                     key={opcao}
                     onClick={() => setPeriodoConcluido(opcao)}
-                    className={`w-3 h-3 rounded-full ${
-                      periodoConcluido === opcao ? "bg-blue-500" : "bg-gray-300"
-                    }`}
+                    className={`w-3 h-3 rounded-full ${periodoConcluido === opcao ? "bg-blue-500" : "bg-gray-300"
+                      }`}
                   ></button>
                 ))}
               </div>

@@ -7,46 +7,81 @@ interface SelectOrdersModeProps {
   motoboys: Motoboy[];
   onConfirm: (selectedOrders: Order[], selectedMotoboy: Motoboy) => void;
   onCancel: () => void;
+  isChatOpen: boolean; // <- Adicionado!
 }
 
-export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel }: SelectOrdersModeProps) {
+export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel, isChatOpen }: SelectOrdersModeProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const [selectedOrders, setSelectedOrders] = useState<Order[]>([]);
   const [selectedMotoboy, setSelectedMotoboy] = useState<Motoboy | null>(null);
+  const markersRef = useRef<Record<number, mapboxgl.Marker>>({});
 
   useEffect(() => {
-    if (mapRef.current || !mapContainer.current) return;
+    const handleResize = () => {
+      if (mapRef.current) {
+        mapRef.current.resize();
+      }
+    };
 
-    mapRef.current = new mapboxgl.Map({
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (mapRef.current) {
+      requestAnimationFrame(() => {
+        mapRef.current?.resize();
+      });
+    }
+  }, [isChatOpen]);
+
+  useEffect(() => {
+    if (!mapContainer.current) return;
+
+    const map = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-48.2772, -18.9146], // Centro padrão Uberlândia ou sua pizzaria
+      center: [-48.2772, -18.9146],
       zoom: 13,
     });
 
-    orders.forEach((order) => {
-      const el = document.createElement('div');
-      el.style.width = '20px';
-      el.style.height = '20px';
-      el.style.backgroundColor = selectedOrders.includes(order) ? '#1abc9c' : '#e74c3c';
-      el.style.borderRadius = '50%';
-      el.style.cursor = 'pointer';
+    mapRef.current = map;
 
-      const marker = new mapboxgl.Marker(el)
-        .setLngLat(order.coordinates)
-        .addTo(mapRef.current!);
+    map.on('load', () => {
+      orders.forEach((order) => {
+        const markerElement = createMarkerElement(order);
 
-      el.addEventListener('click', () => {
-        toggleOrder(order);
+        const marker = new mapboxgl.Marker({ element: markerElement })
+          .setLngLat(order.coordinates)
+          .addTo(map);
+
+        markersRef.current[order.id] = marker;
       });
     });
 
     return () => {
-      mapRef.current?.remove();
+      map.remove();
       mapRef.current = null;
+      markersRef.current = {};
     };
-  }, [orders, selectedOrders]);
+  }, []);
+
+  const createMarkerElement = (order: Order) => {
+    const el = document.createElement('div');
+    el.style.width = '20px';
+    el.style.height = '20px';
+    el.style.backgroundColor = selectedOrders.find(o => o.id === order.id) ? '#1abc9c' : '#e74c3c';
+    el.style.borderRadius = '50%';
+    el.style.cursor = 'pointer';
+
+    el.addEventListener('click', () => toggleOrder(order));
+
+    return el;
+  };
 
   const toggleOrder = (order: Order) => {
     setSelectedOrders((prev) => {
@@ -57,6 +92,14 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
       }
     });
   };
+
+  useEffect(() => {
+    Object.entries(markersRef.current).forEach(([id, marker]) => {
+      const el = marker.getElement();
+      const isSelected = selectedOrders.find(o => o.id === parseInt(id));
+      el.style.backgroundColor = isSelected ? '#1abc9c' : '#e74c3c';
+    });
+  }, [selectedOrders]);
 
   const handleConfirm = () => {
     if (selectedOrders.length > 0 && selectedMotoboy) {
