@@ -8,7 +8,6 @@ import MapComponent from "@/components/ui/motoboy-map";
 import { Coordinates, Motoboy } from "@/components/ui/types";
 import { stat } from "fs";
 
-//export type MotoboyStatus = 'online' | 'offline' | 'delivering';
 
 export default function Home() {
   const pizzeriaLocation: [number, number] = [-48.256364, -18.916427];
@@ -161,29 +160,12 @@ export default function Home() {
     }
   ];
 
-
   // Dados fictícios para os períodos
   const pedidos = {
     dia: { total: 10, entrega: 5, concluido: 5 },
     semana: { total: 70, entrega: 30, concluido: 40 },
     mes: { total: 300, entrega: 120, concluido: 180 },
   };
-
-  // Estados separados para cada card
-  const [periodoTotal, setPeriodoTotal] = useState<"dia" | "semana" | "mes">("dia");
-  const [periodoEntrega, setPeriodoEntrega] = useState<"dia" | "semana" | "mes">("dia");
-  const [periodoConcluido, setPeriodoConcluido] = useState<"dia" | "semana" | "mes">("dia");
-
-  const opcoes: Array<"dia" | "semana" | "mes"> = ["dia", "semana", "mes"]; // Array de opções
-
-  // Dados fictícios para motoboys e pedidos recentes
-  // const [motoboys, setMotoboys] = useState([
-  //   { id: 1, name: "Carlos Silva", status: "Disponível", entregas: 5 },
-  //   { id: 2, name: "Ana Souza", status: "Em entrega", entregas: 3 },
-  //   { id: 3, name: "Marcos Lima", status: "Disponível", entregas: 7 },
-  // ]);
-
-
   const motoboys = [
     {
       id: 1,
@@ -287,6 +269,14 @@ export default function Home() {
     }
   ];
 
+  // Estados separados para cada card
+  const [periodoTotal, setPeriodoTotal] = useState<"dia" | "semana" | "mes">("dia");
+  const [periodoEntrega, setPeriodoEntrega] = useState<"dia" | "semana" | "mes">("dia");
+  const [periodoConcluido, setPeriodoConcluido] = useState<"dia" | "semana" | "mes">("dia");
+  const [isChatOpen, setIsChatOpen] = useState(true);
+
+  const opcoes: Array<"dia" | "semana" | "mes"> = ["dia", "semana", "mes"]; // Array de opções
+
   const [pedidosRecentes, setPedidosRecentes] = useState([
     { id: 101, cliente: "João Pereira", status: "Entregue", total: "R$45,00", motoboy: null },
     { id: 102, cliente: "Maria Fernandes", status: "Em entrega", total: "R$32,50", motoboy: "Ana Souza" },
@@ -330,10 +320,10 @@ export default function Home() {
     );
     setPedidoSelecionado(null);
   };
-  const [chatAberto, setChatAberto] = useState(true);
+  //const [chatAberto, setChatAberto] = useState(true);
 
   return (
-    <main className={`w-full h-full overflow-auto space-y-8 ${chatAberto ? 'pr-[5rem]' : ''}`}>
+    <main className={`w-full h-full overflow-auto space-y-8 ${isChatOpen ? 'pr-[5rem]' : ''}`}>
 
       {/* Painel Administrativo */}
       <Card className="border border-gray-300 shadow-sm">
@@ -406,11 +396,33 @@ export default function Home() {
           </div>
         </CardContent>
       </Card>
+           {/* Botão para abrir o chat quando fechado */}
+           {!isChatOpen && (
+        <button
+          style={{
+            position: 'fixed',
+            top: '16px',
+            left: '16px',
+            padding: '8px 12px',
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            boxShadow: '0px 2px 8px rgba(0,0,0,0.2)',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            zIndex: 1000
+          }}
+          onClick={() => setIsChatOpen(true)}
+        >
+          Abrir Chat
+        </button>
+      )}
       <MapComponent
         pizzeriaLocation={pizzeriaLocation}
         motoboys={motoboys}
         orders={orders}
+        isChatOpen={isChatOpen} // <- Faltou passar isso aqui!
       />
+
       {/* Motoboys Ativos */}
       <div className="border border-gray-300 rounded-lg shadow-sm p-4 bg-white">
         <h2 className="text-xl font-bold text-gray-800 mb-3">Motoboys Ativos</h2>

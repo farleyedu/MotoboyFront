@@ -2,36 +2,57 @@
 import React from 'react';
 import styles from '../../style/OrderPopup.module.css';
 
-interface OrderPopupProps {
-  order: {
-    id: number;
-    address?: string;
-    items: string | string[];
-    value?: string;
-    status?: string;
-    horarioPedido?: string;
-    previsaoEntrega?: string;
-    horarioSaida?: string;
-    horarioEntrega?: string;
-    motoboy?: {
-      name: string;
-      avatar: string;
-      status: 'online' | 'offline';
-    };
-  };
+/**
+ * Interface para as propriedades do motoboy associado a um pedido
+ */
+interface OrderMotoboy {
+  name: string;
+  avatar: string;
+  status: 'online' | 'offline';
 }
 
+/**
+ * Interface para as propriedades de um pedido no popup
+ */
+interface OrderDetails {
+  id: number;
+  address?: string;
+  items: string | string[];
+  value?: string;
+  status?: string;
+  horarioPedido?: string;
+  previsaoEntrega?: string;
+  horarioSaida?: string;
+  horarioEntrega?: string;
+  motoboy?: OrderMotoboy;
+}
+
+/**
+ * Interface para as propriedades do componente OrderPopup
+ */
+interface OrderPopupProps {
+  order: OrderDetails;
+}
+
+/**
+ * Componente que exibe as informações detalhadas de um pedido em um popup no mapa
+ * @param order - Objeto contendo as informações do pedido
+ */
 const OrderPopup: React.FC<OrderPopupProps> = ({ order }) => {
+  // Garante que os itens sempre sejam tratados como array
   const itemsArray = Array.isArray(order.items) ? order.items : [order.items];
-  console.log('Order items:', order); // Debugging line to check the items array
+  
   return (
     <div className={styles.container}>
+      {/* Cabeçalho do pedido */}
       <div className={styles.header}>Pedido #{order.id}</div>
 
+      {/* Endereço do pedido */}
       <div className={styles.location}>
         <i className="fas fa-map-marker-alt" /> {order.address ?? 'Endereço não informado'}
       </div>
 
+      {/* Lista de itens do pedido */}
       <div className={styles.sectionTitle}>Itens</div>
       <ul className={styles.items}>
         {itemsArray.map((item, index) => (
@@ -39,35 +60,74 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ order }) => {
         ))}
       </ul>
 
+      {/* Valor do pedido */}
       <div className={styles.value}>{order.value ?? 'R$ --'}</div>
 
-      <div className={styles.timings}>
-        <div><span className={styles.timeLabel}>🕒 Pedido</span><div className={styles.timeValue}>{order.horarioPedido ?? '--'}</div></div>
-        <div><span className={styles.timeLabel}>⏰ Previsão</span><div className={styles.timeValue}>{order.previsaoEntrega ?? '--'}</div></div>
-        <div><span className={styles.timeLabel}>🔔 Saída</span><div className={styles.timeValue}>{order.horarioSaida ?? '--'}</div></div>
-        <div><span className={styles.timeLabel}>⏳ Entrega</span><div className={styles.timeValue}>{order.horarioEntrega ?? '--'}</div></div>
-      </div>
+      {/* Detalhes de tempo */}
+      <TimeInformation
+        horarioPedido={order.horarioPedido}
+        previsaoEntrega={order.previsaoEntrega}
+        horarioSaida={order.horarioSaida}
+        horarioEntrega={order.horarioEntrega}
+      />
 
-      <div className={styles.motoboySection}>
-        <div className={styles.motoboyLabel}>Motoboy</div>
-        {order.motoboy ? (
-          <div className={styles.motoboyInfo}>
-            <img src={order.motoboy.avatar} className={styles.motoboyAvatar} alt="Motoboy" />
-            <div>
-              <div>{order.motoboy.name}</div>
-              <div className={order.motoboy.status === 'offline' ? styles.statusOffline : styles.statusOnline}>
-                {order.motoboy.status === 'offline' ? '🔴 Offline' : '🟢 Online'}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className={styles.motoboyPlaceholder}>
-            Nenhum motoboy atribuído. <button className={styles.assignButton}>Atribuir</button>
-          </div>
-        )}
-      </div>
+      {/* Informações do motoboy */}
+      <MotoboyInformation motoboy={order.motoboy} />
     </div>
   );
 };
+
+/**
+ * Componente para exibir informações de tempo do pedido
+ */
+const TimeInformation: React.FC<{
+  horarioPedido?: string;
+  previsaoEntrega?: string;
+  horarioSaida?: string;
+  horarioEntrega?: string;
+}> = ({ horarioPedido, previsaoEntrega, horarioSaida, horarioEntrega }) => (
+  <div className={styles.timings}>
+    <div>
+      <span className={styles.timeLabel}>🕒 Pedido</span>
+      <div className={styles.timeValue}>{horarioPedido ?? '--'}</div>
+    </div>
+    <div>
+      <span className={styles.timeLabel}>⏰ Previsão</span>
+      <div className={styles.timeValue}>{previsaoEntrega ?? '--'}</div>
+    </div>
+    <div>
+      <span className={styles.timeLabel}>🔔 Saída</span>
+      <div className={styles.timeValue}>{horarioSaida ?? '--'}</div>
+    </div>
+    <div>
+      <span className={styles.timeLabel}>⏳ Entrega</span>
+      <div className={styles.timeValue}>{horarioEntrega ?? '--'}</div>
+    </div>
+  </div>
+);
+
+/**
+ * Componente para exibir informações do motoboy
+ */
+const MotoboyInformation: React.FC<{ motoboy?: OrderMotoboy }> = ({ motoboy }) => (
+  <div className={styles.motoboySection}>
+    <div className={styles.motoboyLabel}>Motoboy</div>
+    {motoboy ? (
+      <div className={styles.motoboyInfo}>
+        <img src={motoboy.avatar} className={styles.motoboyAvatar} alt="Motoboy" />
+        <div>
+          <div>{motoboy.name}</div>
+          <div className={motoboy.status === 'offline' ? styles.statusOffline : styles.statusOnline}>
+            {motoboy.status === 'offline' ? '🔴 Offline' : '🟢 Online'}
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div className={styles.motoboyPlaceholder}>
+        Nenhum motoboy atribuído. <button className={styles.assignButton}>Atribuir</button>
+      </div>
+    )}
+  </div>
+);
 
 export default OrderPopup;
