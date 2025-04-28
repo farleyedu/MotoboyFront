@@ -5,6 +5,16 @@
   width: 100%;
   position: relative;
   min-height: 480px; /* Garante espaço para os cards flutuantes */
+  transition: width 0.3s ease, height 0.3s ease; /* Suaviza a transição quando o chat abre/fecha */
+}
+
+/* Ajuste baseado no estado do chat */
+.mapComponentContainer[data-chat-open="true"] {
+  width: 100%;
+}
+
+.mapComponentContainer[data-chat-open="false"] {
+  width: 100%;
 }
 
 .map {
@@ -12,12 +22,24 @@
   width: 100%;
   position: relative;
   background-color: #f0f0f0;
+  transition: width 0.3s ease, height 0.3s ease; /* Suaviza a transição */
 }
 
 .mapInner {
   position: absolute;
   inset: 0;
   height: 100%;
+  width: 100%;
+  transition: width 0.3s ease; /* Suaviza a transição quando o chat abre/fecha */
+}
+
+/* Ajuste do mapa interno baseado no estado do chat */
+.mapInner[data-chat-open="true"] {
+  width: 100%;
+}
+
+.mapInner[data-chat-open="false"] {
+  width: 100%;
 }
 
 /* Botão flutuante de expandir */
@@ -122,17 +144,7 @@
   background-color: #2980b9;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .map {
-    height: 320px;
-  }
-
-  .expandButtonFloating {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
-}
+/* Marcadores de pedidos */
 .orderMarker {
   width: 16px;
   height: 16px;
@@ -143,12 +155,6 @@
   cursor: pointer;
 }
 
-
-.popupPedido {
-  font-family: sans-serif;
-  font-size: 13px;
-  color: #333;
-}
 .orderMarkerConcluida {
   background-color: #4caf50; /* verde */
   width: 18px;
@@ -173,3 +179,132 @@
   border: 2px solid white;
 }
 
+.popupPedido {
+  font-family: sans-serif;
+  font-size: 13px;
+  color: #333;
+}
+
+/* Estilos específicos para o modo de seleção */
+.selectOrdersContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+}
+
+.selectOrdersMap {
+  width: 100%;
+  height: 80%;
+  transition: width 0.3s ease;
+}
+
+.selectOrdersControls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background-color: white;
+  border-top: 1px solid #e0e0e0;
+}
+
+.motoboysGrid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.motoboyAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.motoboyAvatarSelected {
+  background-color: #3498db;
+}
+
+.motoboyAvatarUnselected {
+  background-color: #bdc3c7;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.confirmButton {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.confirmButtonDisabled {
+  background-color: #e0e0e0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.selectedOrdersChips {
+  margin-top: 8px;
+  padding: 8px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.orderChip {
+  padding: 2px 6px;
+  background-color: #1abc9c;
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .map {
+    height: 320px;
+  }
+
+  .expandButtonFloating {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
+
+/* Classe aplicada quando o mapa está sendo redimensionado para evitar travamentos na UI */
+.resizingMap {
+  pointer-events: none;
+}

@@ -16,6 +16,65 @@ import useMapMarkers from '../../lib/hooks/useMapMarkers';
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN || '';
 
 /**
+ * Hook personalizado para gerenciar o redimensionamento do mapa
+ * @param mapRef - Referência para a instância do mapa
+ * @param dependencies - Array de dependências que devem disparar o redimensionamento
+ */
+function useMapResize(
+  mapRef: React.MutableRefObject<mapboxgl.Map | null>,
+  dependencies: any[]
+) {
+  useEffect(() => {
+    if (!mapRef.current) return;
+    
+    // Função para redimensionar o mapa
+    const resizeMap = () => {
+      // Verificamos se o mapa ainda existe
+      if (mapRef.current) {
+        // Usamos setTimeout para garantir que o DOM foi atualizado
+        setTimeout(() => {
+          mapRef.current?.resize();
+        }, 100);
+        
+        // Também tentamos um segundo resize após mais tempo
+        // para garantir que todas as transições de CSS foram concluídas
+        setTimeout(() => {
+          mapRef.current?.resize();
+        }, 300);
+      }
+    };
+    
+    // Executamos o resize imediatamente
+    resizeMap();
+    
+    // Criamos um observador de redimensionamento para capturar mudanças na janela
+    const resizeObserver = new ResizeObserver((entries) => {
+      resizeMap();
+    });
+    
+    // Encontramos o container do mapa
+    const mapContainer = mapRef.current.getContainer();
+    
+    // Observamos o container do mapa
+    if (mapContainer) {
+      resizeObserver.observe(mapContainer);
+    }
+    
+    // Também observamos a janela para mudanças gerais
+    window.addEventListener('resize', resizeMap);
+    
+    // Limpeza
+    return () => {
+      if (mapContainer) {
+        resizeObserver.unobserve(mapContainer);
+      }
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', resizeMap);
+    };
+  }, dependencies);
+}
+
+/**
  * Componente principal do mapa de motoboys
  */
 const MapComponent: React.FC<{
@@ -92,14 +151,10 @@ const MapComponent: React.FC<{
     pizzeriaLocation
   );
 
-  // Efeito para redimensionar o mapa quando o chat é aberto/fechado
-  useEffect(() => {
-    if (mapRef.current && !isSelectingRoute) {
-      requestAnimationFrame(() => {
-        mapRef.current?.resize();
-      });
-    }
-  }, [isChatOpen, isSelectingRoute]);
+  // Usando o hook personalizado para gerenciar o redimensionamento do mapa
+  // quando o chat é aberto/fechado ou quando outras mudanças ocorrem
+  useMapResize(mapRef, [isChatOpen, isSelectingRoute]);
+  useMapResize(expandedMapRef, [showExpandedMap]);
 
   // Handlers para as ações de seleção de rota
   const handleStartSelection = () => setIsSelectingRoute(true);
@@ -197,8 +252,31 @@ const MapComponent: React.FC<{
     </button>
   );
 
+  // Este efeito adiciona um evento de resize na janela para garantir que o mapa será redimensionado
+  // quando qualquer alteração no layout ocorrer
+  useEffect(() => {
+    const handleResize = () => {
+      if (mapRef.current) {
+        mapRef.current.resize();
+      }
+      if (expandedMapRef.current && showExpandedMap) {
+        expandedMapRef.current.resize();
+      }
+    };
+
+    // Executa no mount e quando as dependências mudam
+    handleResize();
+
+    // Detecta mudanças no tamanho da janela
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isChatOpen, showExpandedMap]); // re-executa quando o chat ou o mapa expandido mudam
+
   return (
-    <div className={styles.mapComponentContainer}>
+    <div className={styles.mapComponentContainer} data-chat-open={isChatOpen ? 'true' : 'false'}>
       <div className={styles.map}>
         {!isSelectingRoute && <ExpandMapButton />}
         {!isSelectingRoute && <SelectRouteButton />}
@@ -213,7 +291,11 @@ const MapComponent: React.FC<{
           />
         ) : (
           <>
-            <div ref={mapContainer} className={styles.mapInner} />
+            <div 
+              ref={mapContainer} 
+              className={styles.mapInner} 
+              data-chat-open={isChatOpen ? 'true' : 'false'}
+            />
             <div className={styles.floatingMotoboyList}>
               <MotoboyList
                 motoboys={motoboys}
