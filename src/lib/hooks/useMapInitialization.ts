@@ -1,3 +1,5 @@
+// useMapInitialization.ts
+
 import { useRef, useEffect, MutableRefObject } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Coordinates } from '../../components/ui/types';
@@ -26,26 +28,35 @@ export function useMapInitialization(
   }
 ): MutableRefObject<mapboxgl.Map | null> {
   const mapRef = useRef<mapboxgl.Map | null>(null);
-  
-  useEffect(() => {
-    // Se o modo de seleção estiver ativo ou o mapa já estiver inicializado, não faça nada
-    if (!isActive || mapRef.current || !containerRef.current) return;
 
-    // Configurações padrão do mapa
+  useEffect(() => {
+    if (!isActive || !containerRef.current) return;
+
+    if (mapRef.current && mapRef.current.getContainer() === containerRef.current) {
+      // Se o mapa já está correto no container, não faz nada
+      return;
+    }
+
+    const accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN;
+    if (!accessToken) {
+      console.error('Mapbox access token is missing. Please set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN.');
+      return;
+    }
+
+    mapboxgl.accessToken = accessToken;
+
     const defaultOptions = {
       zoom: 13,
       style: 'mapbox://styles/mapbox/streets-v11',
       attributionControl: false,
     };
 
-    // Mescla as opções padrão com as opções personalizadas
     const mapOptions = { ...defaultOptions, ...options };
 
-    // Inicializa o mapa
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: mapOptions.style,
-      center,
+      center: center,
       zoom: mapOptions.zoom,
       attributionControl: mapOptions.attributionControl,
       maxBounds: mapOptions.maxBounds,
@@ -53,22 +64,19 @@ export function useMapInitialization(
 
     mapRef.current = map;
 
-    // Adiciona controles de navegação
     map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    // Quando o mapa terminar de carregar, executa o callback
     map.on('load', () => {
       if (onMapLoaded) {
         onMapLoaded(map);
       }
     });
 
-    // Função de limpeza quando o componente for desmontado
     return () => {
       map.remove();
       mapRef.current = null;
     };
-  }, [containerRef, center, isActive, onMapLoaded, options]);
+  }, [containerRef, center[0], center[1], isActive]);
 
   /**
    * Método para redimensionar o mapa (útil quando o contêiner muda de tamanho)
@@ -81,7 +89,6 @@ export function useMapInitialization(
     }
   };
 
-  // Adiciona o método resize ao objeto da referência para facilitar o acesso
   if (mapRef.current) {
     (mapRef as any).resize = resizeMap;
   }
