@@ -1,9 +1,10 @@
-// SelectOrdersMode.tsx (corrigido)
+// SelectOrdersMode.tsx (refatorado para usar CSS Modules)
 
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Order, Motoboy, Coordinates } from '../ui/types';
 import useMapInitialization from '../../lib/hooks/useMapInitialization';
+import styles from '../../style/SelectOrdersMode.module.css'; // Importando o CSS Module
 
 interface SelectOrdersModeProps {
   orders: Order[];
@@ -15,10 +16,7 @@ interface SelectOrdersModeProps {
 
 const MapOnly = ({ mapContainer }: { mapContainer: React.RefObject<HTMLDivElement | null> }) => {
   return (
-    <div
-      ref={mapContainer}
-      style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: '30%' }}
-    />
+    <div ref={mapContainer} className={styles.mapContainer} />
   );
 };
 
@@ -126,93 +124,44 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div className={styles.container}>
       <MapOnly mapContainer={mapContainer} />
 
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: '30%',
-        backgroundColor: 'white',
-        padding: '12px',
-        borderTop: '1px solid #e0e0e0',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12px'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '12px' }}>
+      <div className={styles.overlay}>
+        <div className={styles.motoboyList}>
           {motoboys.map((motoboy) => (
             <div
               key={motoboy.id}
               onClick={() => setSelectedMotoboy(motoboy)}
-              style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '50%',
-                backgroundColor: selectedMotoboy?.id === motoboy.id ? '#3498db' : '#bdc3c7',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 'bold',
-                color: 'white',
-                cursor: 'pointer',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-                transition: 'transform 0.2s ease, background-color 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
+              className={`${styles.motoboy} ${selectedMotoboy?.id === motoboy.id ? styles.motoboySelected : ''}`}
             >
               {motoboy.name[0]}
             </div>
           ))}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+        <div className={styles.buttonGroup}>
           <button
             onClick={handleConfirm}
             disabled={!selectedMotoboy || selectedOrders.length === 0}
-            style={{
-              padding: '8px 16px',
-              borderRadius: '4px',
-              backgroundColor: (!selectedMotoboy || selectedOrders.length === 0) ? '#e0e0e0' : '#1abc9c',
-              color: (!selectedMotoboy || selectedOrders.length === 0) ? '#888' : 'white',
-              border: 'none',
-              cursor: (!selectedMotoboy || selectedOrders.length === 0) ? 'not-allowed' : 'pointer',
-              fontWeight: 'bold',
-              transition: 'background-color 0.2s ease'
-            }}
+            className={styles.confirmButton}
           >
             Confirmar ({selectedOrders.length}) pedidos
           </button>
           <button
             onClick={onCancel}
-            style={{
-              padding: '8px 16px',
-              borderRadius: '4px',
-              backgroundColor: '#e74c3c',
-              color: 'white',
-              border: 'none',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              transition: 'background-color 0.2s ease'
-            }}
+            className={styles.cancelButton}
           >
             Cancelar
           </button>
         </div>
 
         {selectedOrders.length > 0 && (
-          <div style={{ marginTop: '8px', padding: '8px', backgroundColor: '#f5f5f5', borderRadius: '4px', fontSize: '14px' }}>
-            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>Pedidos selecionados:</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+          <div className={styles.selectedOrders}>
+            <div className={styles.selectedOrdersTitle}>Pedidos selecionados:</div>
+            <div className={styles.selectedOrdersList}>
               {selectedOrders.map(order => (
-                <span key={order.id} style={{ padding: '2px 6px', backgroundColor: '#1abc9c', color: 'white', borderRadius: '12px', fontSize: '12px' }}>
+                <span key={order.id} className={styles.orderBadge}>
                   #{order.id}
                 </span>
               ))}
