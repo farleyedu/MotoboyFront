@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import { Coordinates, Motoboy, Order, MarkerRef } from '../../components/ui/types';
 import ReactDOM from 'react-dom/client';
 import React from 'react';
-
+import OrderPopup from '../../components/ui/OrderPopUp';
 /**
  * Hook para gerenciar marcadores no mapa Mapbox
  * 
@@ -100,49 +100,67 @@ export function useMapMarkers(
   /**
    * Adiciona marcadores para cada pedido no mapa
    */
-  const addOrderMarkers = () => {
-    if (!map) return;
-
+  const addOrderMarkers = (targetMap: mapboxgl.Map) => {
     orders.forEach(order => {
       const coords = order.coordinates;
-
-      // Criar elemento do marcador com estilo baseado no status do pedido
       const el = document.createElement('div');
+      el.style.width = '40px';
+      el.style.height = '40px';
+      el.style.position = 'relative';
+      el.style.cursor = 'pointer';
+  
+      const img = document.createElement('img');
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'contain';
+      img.style.pointerEvents = 'none';
+  
+      // Define o ícone correto baseado no status
       switch (order.status) {
-        case 'concluida':
-          el.className = styles.orderMarkerConcluida;
+        case 'pendente':
+          img.src = '/assets/img/order-pendente.png';
           break;
         case 'em_rota':
-          el.className = styles.orderMarkerEmRota;
+          img.src = '/assets/img/order-emrota.png';
           break;
-        case 'pendente':
+        case 'concluida':
+          img.src = '/assets/img/order-concluido.png';
+          break;
         default:
-          el.className = styles.orderMarkerPendente;
+          img.src = '/assets/img/order-pendente.png'; // Padrão
           break;
       }
-
-      // Criar popup com React
+  
+      el.appendChild(img);
+  
+      // Criar popup React
       const popupDiv = document.createElement('div');
+      document.body.appendChild(popupDiv); // Adiciona o elemento ao DOM
+  
       const root = ReactDOM.createRoot(popupDiv);
-      
-      // Usando React.createElement para evitar problemas de tipagem com JSX
-      root.render(React.createElement(OrderPopupComponent, { order }));
-
-      // Criar e adicionar o marcador ao mapa
+      root.render(React.createElement(OrderPopup, { order: order }));  
       const popup = new mapboxgl.Popup({
         offset: 25,
         anchor: 'auto' as any,
         closeButton: false
       }).setDOMContent(popupDiv);
-
+  
+      // Adicione um evento para remover o componente quando o popup for fechado
+      popup.on('close', () => {
+        root.unmount();
+        document.body.removeChild(popupDiv);
+      });
+  
       const marker = new mapboxgl.Marker(el)
         .setLngLat(coords)
         .setPopup(popup)
-        .addTo(map);
-
+        .addTo(targetMap);
+  
       orderMarkers.current.push(marker);
     });
   };
+  
+  
 
   /**
    * Atualiza a posição de todos os marcadores de motoboys

@@ -1,5 +1,3 @@
-// SelectOrdersMode.tsx (refatorado para usar CSS Modules)
-
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Order, Motoboy, Coordinates } from '../ui/types';
@@ -20,42 +18,7 @@ const MapOnly = ({ mapContainer }: { mapContainer: React.RefObject<HTMLDivElemen
   );
 };
 
-function useMapResize(
-  mapRef: React.MutableRefObject<mapboxgl.Map | null>,
-  dependencies: any[]
-) {
-  useEffect(() => {
-    if (!mapRef.current) return;
 
-    const resizeMap = () => {
-      if (mapRef.current) {
-        setTimeout(() => {
-          mapRef.current?.resize();
-        }, 100);
-        setTimeout(() => {
-          mapRef.current?.resize();
-        }, 300);
-      }
-    };
-
-    resizeMap();
-
-    const resizeObserver = new ResizeObserver(() => resizeMap());
-    const mapContainer = mapRef.current.getContainer();
-
-    if (mapContainer) {
-      resizeObserver.observe(mapContainer);
-    }
-
-    window.addEventListener('resize', resizeMap);
-
-    return () => {
-      if (mapContainer) resizeObserver.unobserve(mapContainer);
-      resizeObserver.disconnect();
-      window.removeEventListener('resize', resizeMap);
-    };
-  }, dependencies);
-}
 
 export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel, isChatOpen }: SelectOrdersModeProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -80,32 +43,88 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     });
   };
 
+  function useMapResize(
+    mapRef: React.MutableRefObject<mapboxgl.Map | null>,
+    dependencies: any[]
+  ) {
+    useEffect(() => {
+      Object.entries(markersRef.current).forEach(([id, marker]) => {
+        const el = marker.getElement();
+    
+        // Limpa o conteúdo anterior
+        el.innerHTML = '';
+    
+        const img = document.createElement('img');
+        img.src = '/4ae1ab30-0667-4424-a15e-205f589a5324.png';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '50%';
+        img.style.pointerEvents = 'none';
+    
+        el.appendChild(img);
+    
+        const isSelected = selectedOrders.findIndex(o => o.id === parseInt(id));
+        if (isSelected !== -1) {
+          const numberBadge = document.createElement('div');
+          numberBadge.innerText = (isSelected + 1).toString();
+          numberBadge.style.position = 'absolute';
+          numberBadge.style.top = '50%';
+          numberBadge.style.left = '50%';
+          numberBadge.style.transform = 'translate(-50%, -50%)';
+          numberBadge.style.color = 'white';
+          numberBadge.style.fontWeight = 'bold';
+          numberBadge.style.fontSize = '16px';
+          numberBadge.style.textShadow = '0 0 2px black';
+          el.appendChild(numberBadge);
+        }
+      });
+    }, [selectedOrders]);
+    
+  }
+
   const mapRef = useMapInitialization(mapContainer, mapCenter, true, handleMapLoaded);
   useMapResize(mapRef, [isChatOpen]);
 
   const createMarkerElement = (order: Order) => {
     const el = document.createElement('div');
-    el.style.width = '20px';
-    el.style.height = '20px';
-    el.style.backgroundColor = selectedOrders.find(o => o.id === order.id) ? '#1abc9c' : '#e74c3c';
-    el.style.borderRadius = '50%';
+    el.style.width = '40px';
+    el.style.height = '40px';
+    el.style.position = 'relative';
     el.style.cursor = 'pointer';
-    el.style.border = '2px solid white';
-    el.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.3)';
-    el.style.transition = 'background-color 0.05s linear';
-
+  
+    const img = document.createElement('img');
+    img.src = '/assets/img/pinPNG.png';
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'contain';
+    img.style.pointerEvents = 'none';
+  
+    el.appendChild(img);
+  
+    const selectedIndex = selectedOrders.findIndex(o => o.id === order.id);
+    if (selectedIndex !== -1) {
+      const numberBadge = document.createElement('div');
+      numberBadge.innerText = (selectedIndex + 1).toString();
+      numberBadge.style.position = 'absolute';
+      numberBadge.style.top = '50%';
+      numberBadge.style.left = '50%';
+      numberBadge.style.transform = 'translate(-50%, -50%)';
+      numberBadge.style.color = 'white';
+      numberBadge.style.fontWeight = 'bold';
+      numberBadge.style.fontSize = '16px';
+      numberBadge.style.textShadow = '0 0 2px black';
+      el.appendChild(numberBadge);
+    }
+  
     el.addEventListener('click', () => toggleOrder(order));
-    el.addEventListener('mouseenter', () => {
-      el.style.boxShadow = '0 0 8px rgba(0, 0, 0, 0.5)';
-      el.style.backgroundColor = '#3498db';
-    });
-    el.addEventListener('mouseleave', () => {
-      el.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.3)';
-      el.style.backgroundColor = selectedOrders.find(o => o.id === order.id) ? '#1abc9c' : '#e74c3c';
-    });
-
+  
     return el;
   };
+  
+  
+  
+
 
   const toggleOrder = (order: Order) => {
     setSelectedOrders((prev) => {
