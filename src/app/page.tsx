@@ -51,7 +51,7 @@ export default function Home() {
       horarioEntrega: '12:45',
       motoboy: {
         name: 'Motoboy A',
-        avatar: '/img/motoboy-a.jpg',
+        avatar: '',
         status: 'online'
       }
     },

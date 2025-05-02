@@ -15,6 +15,8 @@
     gap: 10px;
     box-sizing: border-box;
     font-size: 13px;
+    position: relative;
+    z-index: 1000;
   }
   
   
@@ -115,6 +117,7 @@
     background: transparent !important;
     border-radius: 12px !important;
     box-sizing: border-box;
+    width: 240px;
   }
   
   .mapboxgl-popup-tip {

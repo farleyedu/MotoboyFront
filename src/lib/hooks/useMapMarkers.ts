@@ -1,46 +1,26 @@
 import { useRef, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Coordinates, Motoboy, Order, MarkerRef } from '../../components/ui/types';
-import ReactDOM from 'react-dom/client';
-import React from 'react';
-import OrderPopup from '../../components/ui/OrderPopUp';
-/**
- * Hook para gerenciar marcadores no mapa Mapbox
- * 
- * @param map - Referência para a instância do mapa Mapbox
- * @param motoboys - Array de motoboys para criar marcadores
- * @param orders - Array de pedidos para criar marcadores
- * @param styles - Estilos CSS para os marcadores
- * @param activeMotoboyId - ID do motoboy atualmente ativo
- * @param isExpandedMap - Flag indicando se é o mapa expandido
- * @param OrderPopupComponent - Componente React para o popup de pedidos
- * 
- * @returns Funções e referências para gerenciar os marcadores
- */
-export function useMapMarkers(
+
+export default function useMapMarkers(
   map: mapboxgl.Map | null,
   motoboys: Motoboy[],
   orders: Order[],
   styles: Record<string, string>,
   activeMotoboyId: number | null,
   isExpandedMap: boolean,
-  OrderPopupComponent: React.ComponentType<{ order: Order }>,
+  setSelectedOrder: (order: Order) => void, // ✅ Aqui trocado
   baseLocation: Coordinates
 ) {
-  // Refs para armazenar marcadores
   const motoboyMarkers = useRef<MarkerRef[]>([]);
   const orderMarkers = useRef<mapboxgl.Marker[]>([]);
 
-  // Limpa todos os marcadores quando o componente é desmontado
   useEffect(() => {
     return () => {
       clearAllMarkers();
     };
   }, []);
 
-  /**
-   * Limpa todos os marcadores do mapa
-   */
   const clearAllMarkers = () => {
     motoboyMarkers.current.forEach(marker => marker.marker.remove());
     motoboyMarkers.current = [];
@@ -49,9 +29,6 @@ export function useMapMarkers(
     orderMarkers.current = [];
   };
 
-  /**
-   * Adiciona um marcador para a localização base (ex: pizzaria)
-   */
   const addBaseMarker = () => {
     if (!map) return;
 
@@ -61,9 +38,6 @@ export function useMapMarkers(
       .addTo(map);
   };
 
-  /**
-   * Adiciona marcadores para cada motoboy no mapa
-   */
   const addMotoboyMarkers = () => {
     if (!map) return;
 
@@ -97,9 +71,6 @@ export function useMapMarkers(
     });
   };
 
-  /**
-   * Adiciona marcadores para cada pedido no mapa
-   */
   const addOrderMarkers = (targetMap: mapboxgl.Map) => {
     orders.forEach(order => {
       const coords = order.coordinates;
@@ -108,63 +79,28 @@ export function useMapMarkers(
       el.style.height = '40px';
       el.style.position = 'relative';
       el.style.cursor = 'pointer';
-  
+
       const img = document.createElement('img');
       img.style.width = '100%';
       img.style.height = '100%';
       img.style.objectFit = 'contain';
       img.style.pointerEvents = 'none';
-  
-      // Define o ícone correto baseado no status
-      switch (order.status) {
-        case 'pendente':
-          img.src = '/assets/img/order-pendente.png';
-          break;
-        case 'em_rota':
-          img.src = '/assets/img/order-emrota.png';
-          break;
-        case 'concluida':
-          img.src = '/assets/img/order-concluido.png';
-          break;
-        default:
-          img.src = '/assets/img/order-pendente.png'; // Padrão
-          break;
-      }
-  
+      img.src = '/assets/img/pinPNG.png';
+
       el.appendChild(img);
-  
-      // Criar popup React
-      const popupDiv = document.createElement('div');
-      document.body.appendChild(popupDiv); // Adiciona o elemento ao DOM
-  
-      const root = ReactDOM.createRoot(popupDiv);
-      root.render(React.createElement(OrderPopup, { order: order }));  
-      const popup = new mapboxgl.Popup({
-        offset: 25,
-        anchor: 'auto' as any,
-        closeButton: false
-      }).setDOMContent(popupDiv);
-  
-      // Adicione um evento para remover o componente quando o popup for fechado
-      popup.on('close', () => {
-        root.unmount();
-        document.body.removeChild(popupDiv);
-      });
-  
-      const marker = new mapboxgl.Marker(el)
+
+      const marker = new mapboxgl.Marker({ element: el })
         .setLngLat(coords)
-        .setPopup(popup)
         .addTo(targetMap);
-  
+
+      marker.getElement().addEventListener('click', () => {
+        setSelectedOrder(order); // ✅ Atualiza o pedido clicado
+      });
+
       orderMarkers.current.push(marker);
     });
   };
-  
-  
 
-  /**
-   * Atualiza a posição de todos os marcadores de motoboys
-   */
   const updateMarkerPositions = () => {
     motoboyMarkers.current
       .filter(m => m.isExpandedMap === isExpandedMap)
@@ -176,17 +112,9 @@ export function useMapMarkers(
       });
   };
 
-  /**
-   * Centraliza o mapa em uma coordenada específica
-   */
   const flyTo = (coordinates: Coordinates, zoom = 15) => {
     if (!map) return;
-    
-    map.flyTo({
-      center: coordinates,
-      zoom,
-      essential: true
-    });
+    map.flyTo({ center: coordinates, zoom, essential: true });
   };
 
   return {
@@ -200,5 +128,3 @@ export function useMapMarkers(
     flyTo
   };
 }
-
-export default useMapMarkers;

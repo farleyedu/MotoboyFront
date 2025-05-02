@@ -7,6 +7,21 @@
   min-height: 480px; /* Garante espaço para os cards flutuantes */
   transition: width 0.3s ease, height 0.3s ease; /* Suaviza a transição quando o chat abre/fecha */
 }
+.orderPopupContainer {
+  position: absolute;
+  top: 0;
+  left: 0; /* Se você quiser o painel na ESQUERDA */
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  overflow-y: auto;
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+}
+
 
 /* Ajuste baseado no estado do chat */
 .mapComponentContainer[data-chat-open="true"] {
@@ -31,6 +46,8 @@
   height: 100%;
   width: 100%;
   transition: width 0.3s ease; /* Suaviza a transição quando o chat abre/fecha */
+  z-index: 0; /* menor que o popup */
+  overflow: visible !important;
 }
 
 /* Ajuste do mapa interno baseado no estado do chat */

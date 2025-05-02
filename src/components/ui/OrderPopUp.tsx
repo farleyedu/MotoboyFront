@@ -1,6 +1,7 @@
 // components/ui/OrderPopup.tsx
 import React from 'react';
 import styles from '../../style/OrderPopup.module.css';
+import { Order } from './types';
 
 /**
  * Interface para as propriedades do motoboy associado a um pedido
@@ -31,7 +32,7 @@ interface OrderDetails {
  * Interface para as propriedades do componente OrderPopup
  */
 interface OrderPopupProps {
-  order: OrderDetails;
+  order: Order;
 }
 
 /**
@@ -39,9 +40,10 @@ interface OrderPopupProps {
  * @param order - Objeto contendo as informações do pedido
  */
 const OrderPopup: React.FC<OrderPopupProps> = ({ order }) => {
+  console.log('Rendering OrderPopup with order:', order);
   // Garante que os itens sempre sejam tratados como array
   const itemsArray = Array.isArray(order.items) ? order.items : [order.items];
-  
+
   return (
     <div className={styles.container}>
       {/* Cabeçalho do pedido */}
@@ -76,6 +78,18 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ order }) => {
     </div>
   );
 };
+
+// const OrderPopup: React.FC<{ order: Order }> = ({ order }) => {
+//   console.log('OrderPopup data:', order);
+
+//   return (
+//     <div className="order-popup">
+//       <h3>Pedido #{order.id}</h3>
+//       <p>Itens: {order.items}</p>
+//       <p>Endereço: {order.address}</p>
+//     </div>
+//   );
+// };
 
 /**
  * Componente para exibir informações de tempo do pedido
@@ -114,8 +128,13 @@ const MotoboyInformation: React.FC<{ motoboy?: OrderMotoboy }> = ({ motoboy }) =
     <div className={styles.motoboyLabel}>Motoboy</div>
     {motoboy ? (
       <div className={styles.motoboyInfo}>
-        <img src={motoboy.avatar} className={styles.motoboyAvatar} alt="Motoboy" />
-        <div>
+        {motoboy.avatar ? (
+          <img src={motoboy.avatar} className={styles.motoboyAvatar} alt="Motoboy" />
+        ) : (
+          <div className={styles.motoboyAvatar} style={{ backgroundColor: '#ccc' }}>
+            {motoboy.name?.charAt(0) ?? 'M'}
+          </div>
+        )}        <div>
           <div>{motoboy.name}</div>
           <div className={motoboy.status === 'offline' ? styles.statusOffline : styles.statusOnline}>
             {motoboy.status === 'offline' ? '🔴 Offline' : '🟢 Online'}

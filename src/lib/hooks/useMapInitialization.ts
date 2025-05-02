@@ -1,5 +1,3 @@
-// useMapInitialization.ts
-
 import { useRef, useEffect, MutableRefObject } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Coordinates } from '../../components/ui/types';
@@ -70,6 +68,11 @@ export function useMapInitialization(
       if (onMapLoaded) {
         onMapLoaded(map);
       }
+
+      const popup = new mapboxgl.Popup()
+        .setLngLat(center)
+        .setHTML('<div class="mapboxgl-popup-content">Conteúdo do popup</div>')
+        .addTo(map);
     });
 
     return () => {
