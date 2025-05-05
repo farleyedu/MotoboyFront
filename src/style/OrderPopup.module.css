@@ -1,160 +1,125 @@
-/* OrderPopup.module.css */
+/* style/OrderPopup.module.css */
 
 .container {
-    max-width: 300px; /* Aumentar a largura máxima */
-    width: 280px; /* Ajustar a largura para expandir à direita */
-    max-height: 100%; /* Ajuste para não ultrapassar o limite do mapa */
-    overflow-y: auto; /* Garantir que o conteúdo seja rolável se necessário */
-    padding: 12px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    background-color: #fff;
-    font-family: sans-serif;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    box-sizing: border-box;
-    font-size: 14px; /* Aumentar o tamanho da fonte */
-    position: relative;
-    z-index: 1000;
-    height: 58vh;
-  }
-  
-  
-  .header {
-    font-weight: bold;
-    font-size: 18px; /* Aumentar o tamanho da fonte do cabeçalho */
-    color: #333;
-  }
-  
-  .location {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #555;
-    gap: 6px;
-  }
-  
-  .sectionTitle {
-    font-weight: 600;
-    font-size: 14px;
-    color: #444;
-    margin-top: 4px;
-  }
-  
-  .items {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 15px; /* Aumentar o tamanho da fonte dos itens */
-    color: #333;
-  }
-  
-  .value {
-    text-align: right;
-    font-weight: bold;
-    color: #222;
-    margin-top: -4px;
-    font-size: 16px; /* Aumentar o tamanho da fonte do valor */
-  }
-  
-  .timings {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 4px 12px;
-    font-size: 13px; /* Aumentar o tamanho da fonte dos horários */
-    color: #555;
-    padding-top: 4px;
-  }
-  
-  .timeLabel {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-  
-  .timeValue {
-    font-weight: bold;
-    color: #222;
-  }
-  
-  .motoboySection {
-    border-top: 1px solid #eee;
-    padding-top: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 14px; /* Aumentar o tamanho da fonte da seção do motoboy */
-  }
-  
-  .motoboyLabel {
-    font-size: 13px;
-    color: #555;
-    font-weight: 600;
-  }
-  
-  .motoboyInfo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .motoboyAvatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid #ddd;
-  }
-  
-  .statusOnline {
-    font-size: 12px;
-    color: #4caf50;
-    font-weight: 500;
-  }
-  .mapboxgl-popup-content {
-    padding: 0 !important;
-    overflow: visible !important;
-    background: transparent !important;
-    border-radius: 12px !important;
-    box-sizing: border-box;
-    width: 240px;
-  }
-  
-  .mapboxgl-popup-tip {
-    display: block;
-  }
+  width: 300px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-sizing: border-box;
+  z-index: 12;
+  font-family: 'Inter', sans-serif;
+}
 
-  .motoboyPlaceholder {
-    font-size: 13px;
-    color: #888;
-    margin-top: 4px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  
-  .assignButton {
-    background-color: #007bff;
-    border: none;
-    color: white;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    align-self: start;
-    transition: background-color 0.2s ease;
-  }
-  
-  .assignButton:hover {
-    background-color: #0056b3;
-  }
-  
-  .statusOffline {
-    font-size: 12px;
-    color: #f44336;
-    font-weight: 500;
-  }
-  
+.header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+}
+
+.address {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.sectionTitle {
+  margin-top: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.itemsList {
+  list-style: none;
+  padding: 0;
+  margin-top: 8px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.itemPrice {
+  font-weight: bold;
+  color: #28a745;
+}
+
+.totalPrice {
+  margin-top: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: right;
+  color: #28a745;
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 16px 0;
+}
+
+.timingsSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.timeBlock {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  color: #555;
+}
+
+.motoboySection {
+  margin-top: 16px;
+}
+
+.motoboyLabel {
+  font-weight: bold;
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.motoboyInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.motoboyAvatar {
+  width: 36px;
+  height: 36px;
+  background: #ccc;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+  object-fit: cover;
+}
+
+.statusOnline {
+  font-size: 12px;
+  color: #28a745;
+}
+
+.statusOffline {
+  font-size: 12px;
+  color: #dc3545;
+}
+
+.noMotoboy {
+  font-size: 13px;
+  color: #777;
+}
