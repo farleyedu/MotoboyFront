@@ -1,10 +1,10 @@
 /* OrderPopup.module.css */
 
 .container {
-    max-width: 240px; /* compatível com o Mapbox */
-    width: 100%;
-    max-height: 75vh;
-    overflow-y: auto;
+    max-width: 300px; /* Aumentar a largura máxima */
+    width: 280px; /* Ajustar a largura para expandir à direita */
+    max-height: 100%; /* Ajuste para não ultrapassar o limite do mapa */
+    overflow-y: auto; /* Garantir que o conteúdo seja rolável se necessário */
     padding: 12px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -14,15 +14,16 @@
     flex-direction: column;
     gap: 10px;
     box-sizing: border-box;
-    font-size: 13px;
+    font-size: 14px; /* Aumentar o tamanho da fonte */
     position: relative;
     z-index: 1000;
+    height: 58vh;
   }
   
   
   .header {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px; /* Aumentar o tamanho da fonte do cabeçalho */
     color: #333;
   }
   
@@ -45,7 +46,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    font-size: 14px;
+    font-size: 15px; /* Aumentar o tamanho da fonte dos itens */
     color: #333;
   }
   
@@ -54,13 +55,14 @@
     font-weight: bold;
     color: #222;
     margin-top: -4px;
+    font-size: 16px; /* Aumentar o tamanho da fonte do valor */
   }
   
   .timings {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 4px 12px;
-    font-size: 12px;
+    font-size: 13px; /* Aumentar o tamanho da fonte dos horários */
     color: #555;
     padding-top: 4px;
   }
@@ -84,6 +86,7 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    font-size: 14px; /* Aumentar o tamanho da fonte da seção do motoboy */
   }
   
   .motoboyLabel {
