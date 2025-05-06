@@ -69,10 +69,6 @@ export function useMapInitialization(
         onMapLoaded(map);
       }
 
-      const popup = new mapboxgl.Popup()
-        .setLngLat(center)
-        .setHTML('<div class="mapboxgl-popup-content">Conteúdo do popup</div>')
-        .addTo(map);
     });
 
     return () => {

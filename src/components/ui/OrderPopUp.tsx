@@ -1,18 +1,34 @@
 // components/ui/OrderPopup.tsx
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styles from '../../style/OrderPopup.module.css';
 import { Order } from './types';
 
 interface OrderPopupProps {
   order: Order;
+  onClose: () => void;
 }
 
-const OrderPopup: React.FC<OrderPopupProps> = ({ order }) => {
+const OrderPopup: React.FC<OrderPopupProps> = ({ order, onClose }) => {
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
+
   const itemsArray = Array.isArray(order.items) ? order.items : [order.items];
 
   return (
-    <div className={styles.container}>
+    <div ref={popupRef} className={styles.container}>
       {/* Cabeçalho */}
       <div className={styles.header}>Pedido #{order.id}</div>
       <div className={styles.address}>📍 {order.address ?? 'Endereço não informado'}</div>

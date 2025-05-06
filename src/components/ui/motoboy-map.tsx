@@ -195,7 +195,7 @@ const MapComponent: React.FC<{
 
       {selectedOrder && (
         <div className={styles.orderPopupContainer}>
-          <OrderPopup order={selectedOrder} />
+          <OrderPopup order={selectedOrder} onClose={() => setSelectedOrder(null)} />
         </div>
       )}
 
