@@ -118,7 +118,7 @@ const MapComponent: React.FC<{
       const el = document.createElement('div');
       el.style.width = '40px';
       el.style.height = '40px';
-      el.style.position = 'relative'; // RELATIVE! Igual seu SelectOrdersMode
+      el.style.position = 'absolute'; // RELATIVE! Igual seu SelectOrdersMode
       el.style.cursor = 'pointer';
 
       const img = document.createElement('img');

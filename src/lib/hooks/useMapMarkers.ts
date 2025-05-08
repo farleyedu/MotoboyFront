@@ -77,7 +77,7 @@ export default function useMapMarkers(
       const el = document.createElement('div');
       el.style.width = '40px';
       el.style.height = '40px';
-      el.style.position = 'relative';
+      el.style.position = 'absolute';
       el.style.cursor = 'pointer';
 
       const img = document.createElement('img');

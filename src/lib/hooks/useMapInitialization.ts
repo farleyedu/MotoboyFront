@@ -2,17 +2,6 @@ import { useRef, useEffect, MutableRefObject } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Coordinates } from '../../components/ui/types';
 
-/**
- * Hook personalizado para gerenciar a inicialização e limpeza do mapa Mapbox
- * 
- * @param containerRef - Referência para o elemento HTML onde o mapa será renderizado
- * @param center - Coordenadas iniciais do centro do mapa
- * @param isActive - Flag que controla quando o mapa deve ser inicializado
- * @param onMapLoaded - Callback executado quando o mapa é carregado
- * @param options - Opções adicionais de configuração do mapa
- * 
- * @returns Referência para a instância do mapa
- */
 export function useMapInitialization(
   containerRef: MutableRefObject<HTMLDivElement | null>,
   center: Coordinates,
@@ -31,7 +20,6 @@ export function useMapInitialization(
     if (!isActive || !containerRef.current) return;
 
     if (mapRef.current && mapRef.current.getContainer() === containerRef.current) {
-      // Se o mapa já está correto no container, não faz nada
       return;
     }
 
@@ -72,6 +60,25 @@ export function useMapInitialization(
         onMapLoaded(map);
       }
 
+      // Lógica para adicionar o marcador
+      const el = document.createElement('div');
+      el.style.width = '40px';
+      el.style.height = '40px';
+      el.style.position = 'absolute';
+      el.style.cursor = 'pointer';
+
+      const img = document.createElement('img');
+      img.src = '/assets/img/pinPNG.png';
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'contain';
+      img.style.pointerEvents = 'none';
+
+      el.appendChild(img);
+
+      new mapboxgl.Marker({ element: el })
+        .setLngLat(center)
+        .addTo(map);
     });
 
     return () => {
@@ -79,21 +86,6 @@ export function useMapInitialization(
       mapRef.current = null;
     };
   }, [containerRef, center[0], center[1], isActive]);
-
-  /**
-   * Método para redimensionar o mapa (útil quando o contêiner muda de tamanho)
-   */
-  const resizeMap = () => {
-    if (mapRef.current) {
-      requestAnimationFrame(() => {
-        mapRef.current?.resize();
-      });
-    }
-  };
-
-  if (mapRef.current) {
-    (mapRef as any).resize = resizeMap;
-  }
 
   return mapRef;
 }
