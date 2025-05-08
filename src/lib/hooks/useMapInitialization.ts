@@ -49,7 +49,10 @@ export function useMapInitialization(
       attributionControl: false,
     };
 
-    const mapOptions = { ...defaultOptions, ...options };
+    const mapOptions = { 
+      ...defaultOptions, 
+      ...options, 
+    };
 
     const map = new mapboxgl.Map({
       container: containerRef.current,

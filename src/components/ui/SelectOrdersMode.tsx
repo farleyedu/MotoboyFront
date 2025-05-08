@@ -18,8 +18,6 @@ const MapOnly = ({ mapContainer }: { mapContainer: React.RefObject<HTMLDivElemen
   );
 };
 
-
-
 export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel, isChatOpen }: SelectOrdersModeProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [selectedOrders, setSelectedOrders] = useState<Order[]>([]);
@@ -55,7 +53,7 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
         el.innerHTML = '';
     
         const img = document.createElement('img');
-        img.src = '/4ae1ab30-0667-4424-a15e-205f589a5324.png';
+        img.src = '/assets/img/pinPNG.png';
         img.style.width = '100%';
         img.style.height = '100%';
         img.style.objectFit = 'cover';
@@ -90,37 +88,23 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     const el = document.createElement('div');
     el.style.width = '40px';
     el.style.height = '40px';
-    el.style.position = 'relative';
+    el.style.position = 'relative'; // RELATIVE, não absolute
     el.style.cursor = 'pointer';
-  
+    
     const img = document.createElement('img');
     img.src = '/assets/img/pinPNG.png';
     img.style.width = '100%';
     img.style.height = '100%';
     img.style.objectFit = 'contain';
     img.style.pointerEvents = 'none';
-  
+    
     el.appendChild(img);
-  
-    const selectedIndex = selectedOrders.findIndex(o => o.id === order.id);
-    if (selectedIndex !== -1) {
-      const numberBadge = document.createElement('div');
-      numberBadge.innerText = (selectedIndex + 1).toString();
-      numberBadge.style.position = 'absolute';
-      numberBadge.style.top = '50%';
-      numberBadge.style.left = '50%';
-      numberBadge.style.transform = 'translate(-50%, -50%)';
-      numberBadge.style.color = 'white';
-      numberBadge.style.fontWeight = 'bold';
-      numberBadge.style.fontSize = '16px';
-      numberBadge.style.textShadow = '0 0 2px black';
-      el.appendChild(numberBadge);
-    }
   
     el.addEventListener('click', () => toggleOrder(order));
   
     return el;
   };
+  
   
   
   
@@ -144,49 +128,49 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
 
   return (
     <div className={styles.container}>
-      <MapOnly mapContainer={mapContainer} />
-
-      <div className={styles.overlay}>
-        <div className={styles.motoboyList}>
-          {motoboys.map((motoboy) => (
-            <div
-              key={motoboy.id}
-              onClick={() => setSelectedMotoboy(motoboy)}
-              className={`${styles.motoboy} ${selectedMotoboy?.id === motoboy.id ? styles.motoboySelected : ''}`}
-            >
-              {motoboy.name[0]}
-            </div>
-          ))}
-        </div>
-
-        <div className={styles.buttonGroup}>
-          <button
-            onClick={handleConfirm}
-            disabled={!selectedMotoboy || selectedOrders.length === 0}
-            className={styles.confirmButton}
-          >
-            Confirmar ({selectedOrders.length}) pedidos
-          </button>
-          <button
-            onClick={onCancel}
-            className={styles.cancelButton}
-          >
-            Cancelar
-          </button>
-        </div>
-
-        {selectedOrders.length > 0 && (
-          <div className={styles.selectedOrders}>
-            <div className={styles.selectedOrdersTitle}>Pedidos selecionados:</div>
-            <div className={styles.selectedOrdersList}>
-              {selectedOrders.map(order => (
-                <span key={order.id} className={styles.orderBadge}>
-                  #{order.id}
-                </span>
-              ))}
-            </div>
+      <div className={styles.mapContainer} ref={mapContainer}>
+        <div className={styles.overlay}>
+          <div className={styles.motoboyList}>
+            {motoboys.map((motoboy) => (
+              <div
+                key={motoboy.id}
+                onClick={() => setSelectedMotoboy(motoboy)}
+                className={`${styles.motoboy} ${selectedMotoboy?.id === motoboy.id ? styles.motoboySelected : ''}`}
+              >
+                {motoboy.name[0]}
+              </div>
+            ))}
           </div>
-        )}
+
+          <div className={styles.buttonGroup}>
+            <button
+              onClick={handleConfirm}
+              disabled={!selectedMotoboy || selectedOrders.length === 0}
+              className={styles.confirmButton}
+            >
+              Confirmar ({selectedOrders.length}) pedidos
+            </button>
+            <button
+              onClick={onCancel}
+              className={styles.cancelButton}
+            >
+              Cancelar
+            </button>
+          </div>
+
+          {selectedOrders.length > 0 && (
+            <div className={styles.selectedOrders}>
+              <div className={styles.selectedOrdersTitle}>Pedidos selecionados:</div>
+              <div className={styles.selectedOrdersList}>
+                {selectedOrders.map(order => (
+                  <span key={order.id} className={styles.orderBadge}>
+                    #{order.id}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

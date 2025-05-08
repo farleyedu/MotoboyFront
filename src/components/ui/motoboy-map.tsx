@@ -1,3 +1,5 @@
+// src/components/MapaSimples.tsx
+
 import React, { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -47,26 +49,13 @@ const MapComponent: React.FC<{
   const mapContainer = useRef<HTMLDivElement>(null);
   const expandedMapContainer = useRef<HTMLDivElement | null>(null);
 
+  const mapContainerRef = useRef<HTMLDivElement>(null);
   const [activeMotoboyId, setActiveMotoboyId] = useState<number | null>(null);
   const [showDetailsPanel, setShowDetailsPanel] = useState(false);
   const [showExpandedMap, setShowExpandedMap] = useState(false);
   const [selectedMotoboy, setSelectedMotoboy] = useState<Motoboy | null>(null);
   const [isSelectingRoute, setIsSelectingRoute] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-
-  const mapRef = useMapInitialization(
-    mapContainer,
-    pizzeriaLocation,
-    !isSelectingRoute,
-    (map) => {
-      if (!mainMapMarkers) return;
-      const { addBaseMarker, addMotoboyMarkers, addOrderMarkers, updateMarkerPositions } = mainMapMarkers;
-      addBaseMarker();
-      addMotoboyMarkers();
-      addOrderMarkers(map);
-      map.on('move', updateMarkerPositions);
-    }
-  );
 
   const expandedMapRef = useMapInitialization(
     expandedMapContainer,
@@ -80,18 +69,6 @@ const MapComponent: React.FC<{
       addOrderMarkers(map);
     }
   );
-
-  const mainMapMarkers = useMapMarkers(
-    mapRef.current,
-    motoboys,
-    orders,
-    styles,
-    activeMotoboyId,
-    false,
-    setSelectedOrder,
-    pizzeriaLocation
-  );
-
   const expandedMapMarkers = useMapMarkers(
     expandedMapRef.current,
     motoboys,
@@ -102,36 +79,70 @@ const MapComponent: React.FC<{
     setSelectedOrder,
     pizzeriaLocation
   );
+  // const locateMotoboy = (motoboyId: number, isExpanded = false) => {
+  //   const motoboy = motoboys.find(m => m.id === motoboyId);
+  //   if (!motoboy) return;
+  //   (isExpanded ? expandedMapMarkers?.flyTo?.(motoboy.location) : mainMapMarkers?.flyTo?.(motoboy.location));
+  // };
+  // const mainMapMarkers = useMapMarkers(
+  //   mapRef.current,
+  //   motoboys,
+  //   orders,
+  //   styles,
+  //   activeMotoboyId,
+  //   false,
+  //   setSelectedOrder,
+  //   pizzeriaLocation
+  // );
+  // const showMotoboyDetails = (motoboyId: number) => {
+  //   const motoboy = motoboys.find(m => m.id === motoboyId);
+  //   if (!motoboy || !mapRef.current) return;
+  //   setActiveMotoboyId(motoboyId);
+  //   setSelectedMotoboy(motoboy);
+  //   setShowDetailsPanel(true);
+  //   mainMapMarkers?.flyTo?.(motoboy.location, 14);
+  // };
 
-  useMapResize(mapRef, [isChatOpen, isSelectingRoute]);
-  useMapResize(expandedMapRef, [showExpandedMap]);
 
-  const locateMotoboy = (motoboyId: number, isExpanded = false) => {
-    const motoboy = motoboys.find(m => m.id === motoboyId);
-    if (!motoboy) return;
-    (isExpanded ? expandedMapMarkers?.flyTo?.(motoboy.location) : mainMapMarkers?.flyTo?.(motoboy.location));
-  };
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
 
-  const showMotoboyDetails = (motoboyId: number) => {
-    const motoboy = motoboys.find(m => m.id === motoboyId);
-    if (!motoboy || !mapRef.current) return;
-    setActiveMotoboyId(motoboyId);
-    setSelectedMotoboy(motoboy);
-    setShowDetailsPanel(true);
-    mainMapMarkers?.flyTo?.(motoboy.location, 14);
-  };
+    const map = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [-48.2772, -18.9146], // Centro de Uberlândia
+      zoom: 13,
+    });
 
-  const assignOrderToMotoboy = (motoboyId: number, orderId: number) => {
-    console.log(`Atribuindo pedido ${orderId} ao motoboy ${motoboyId}`);
-  };
+    map.on('load', () => {
+      const el = document.createElement('div');
+      el.style.width = '40px';
+      el.style.height = '40px';
+      el.style.position = 'relative'; // RELATIVE! Igual seu SelectOrdersMode
+      el.style.cursor = 'pointer';
 
-  const drawRouteUntil = (pedido: Delivery, index: number, all: Delivery[]) => {
-    console.log('Highlight rota até pedido', pedido.id);
-  };
+      const img = document.createElement('img');
+      img.src = '/assets/img/pinPNG.png'; // Pode trocar o caminho da imagem depois
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'contain';
+      img.style.pointerEvents = 'none';
+
+      el.appendChild(img);
+
+      new mapboxgl.Marker({ element: el })
+        .setLngLat([-48.2772, -18.9146]) // Mesmo ponto de Uberlândia
+        .addTo(map);
+    });
+
+    return () => map.remove();
+  }, []);
+
+
 
   return (
-    <div className={styles.mapComponentContainer} data-chat-open={isChatOpen ? 'true' : 'false'}>
-      <div className={styles.map}>
+    <div className={styles.mapComponentContainer} ref={mapContainerRef}>
+      {<div className={styles.map}>
         {!isSelectingRoute && (
           <>
             <button
@@ -161,7 +172,6 @@ const MapComponent: React.FC<{
             </button>
           </>
         )}
-
         {isSelectingRoute ? (
           <SelectOrdersMode
             orders={orders.filter(order => order.status === 'pendente')}
@@ -180,7 +190,7 @@ const MapComponent: React.FC<{
               className={styles.mapInner}
               data-chat-open={isChatOpen ? 'true' : 'false'}
             />
-            <div className={styles.floatingMotoboyList}>
+            {/* <div className={styles.floatingMotoboyList}>
               <MotoboyList
                 motoboys={motoboys}
                 activeMotoboy={activeMotoboyId}
@@ -188,40 +198,11 @@ const MapComponent: React.FC<{
                 onShowDetails={showMotoboyDetails}
                 onHoverPedido={drawRouteUntil}
               />
-            </div>
+            </div> */}
           </>
         )}
-      </div>
-
-      {selectedOrder && (
-        <div className={styles.orderPopupContainer}>
-          <OrderPopup order={selectedOrder} onClose={() => setSelectedOrder(null)} />
-        </div>
-      )}
-
-      {showDetailsPanel && selectedMotoboy && (
-        <DeliveryDetailsPanel
-          motoboy={selectedMotoboy}
-          pendingOrders={orders.filter(o => !o.assigned_driver)}
-          onClose={() => {
-            setShowDetailsPanel(false);
-            setActiveMotoboyId(null);
-          }}
-          onAssignOrder={assignOrderToMotoboy}
-        />
-      )}
-
-      {showExpandedMap && (
-        <ExpandedMapModal
-          mapContainerRef={expandedMapContainer}
-          motoboys={motoboys}
-          onClose={() => setShowExpandedMap(false)}
-          onLocateMotoboy={(id) => locateMotoboy(id, true)}
-          onShowDetails={showMotoboyDetails}
-        />
-      )}
+      </div> }
     </div>
   );
-};
-
+}
 export default MapComponent;

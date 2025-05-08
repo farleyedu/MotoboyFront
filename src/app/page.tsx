@@ -33,59 +33,53 @@ interface Order {
 }
 
 export default function Home() {
-  const pizzeriaLocation: [number, number] = [-48.256364, -18.916427];
+  const pizzeriaLocation: [number, number] = [-48.2772, -18.9146];
 
   // Os pedidos agora estão de acordo com a tipagem correta
   const orders: Order[] = [
     {
       id: 1,
-      address: 'Av. João Naves',
-      items: 'Pizza Calabresa',
-      value: 'R$45',
-      region: 'Centro',
+      address: 'Av. Rondon Pacheco, 5000 - Tibery, Uberlândia - MG',
+      items: 'Hambúrguer Artesanal',
+      value: 'R$45.00',
+      region: 'Tibery',
       status: 'pendente',
-      coordinates: [-48.2791, -18.9143],
-      horarioPedido: '12:00',
-      previsaoEntrega: '12:30',
-      horarioSaida: '12:15',
-      horarioEntrega: '12:45',
-      motoboy: {
-        name: 'Motoboy A',
-        avatar: '',
-        status: 'online'
-      }
+      coordinates: [-48.2772, -18.9146],
+      horarioPedido: '18:00',
+      previsaoEntrega: '18:40',
+      horarioSaida: '18:15',
+      horarioEntrega: '18:50',
     },
-    // Continue adicionando outros pedidos aqui, alguns podem não ter o campo motoboy
     {
-      id: 4,
-      address: 'Rua Acre',
-      items: 'Pizza Marguerita',
-      value: 'R$60',
-      region: 'Brasil',
+      id: 2,
+      address: 'Rua Santos Dumont, 320 - Centro, Uberlândia - MG',
+      items: 'Esfirra de Carne',
+      value: 'R$30.00',
+      region: 'Centro',
       status: 'em_rota',
-      coordinates: [-48.2755, -18.9100],
-      horarioPedido: '12:00',
-      previsaoEntrega: '12:30',
-      horarioSaida: '12:15',
-      horarioEntrega: '12:45',
-    },
-    // Outros pedidos...
+      coordinates: [-48.2772, -18.9146],
+      horarioPedido: '18:05',
+      previsaoEntrega: '18:45',
+      horarioSaida: '18:20',
+      horarioEntrega: '18:55',
+    }
   ];
+  
 
   // Continuar com definição dos motoboys
-  const motoboys = [
-    {
-      id: 1,
-      name: "Motoboy A",
-      avatar: "https://via.placeholder.com/50",
-      phone: "123456789",
-      vehicle: "Moto",
-      status: "online" as MotoboyStatus,
-      location: [-48.214972, -18.905934] as Coordinates,
-      deliveries: []
-    },
-    // Outros motoboys...
-  ];
+  const motoboys = Array.from({ length: 10 }, (_, i) => ({
+    id: i + 1,
+    name: `Motoboy ${String.fromCharCode(65 + i)}`,
+    avatar: `https://via.placeholder.com/50?text=M${String.fromCharCode(65 + i)}`,
+    phone: `12345678${i}`,
+    vehicle: 'Moto',
+    status: (i % 2 === 0 ? 'online' : 'offline') as MotoboyStatus,
+    location: [
+      -48.214972 + Math.random() * 0.1,
+      -18.905934 + Math.random() * 0.1
+    ] as Coordinates,
+    deliveries: []
+  }));
 
   // Estados separados para cada card
   const [periodoTotal, setPeriodoTotal] = useState<"dia" | "semana" | "mes">("dia");
