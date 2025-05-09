@@ -1,93 +1,40 @@
-import { useRef, useEffect, MutableRefObject } from 'react';
+// src/lib/hooks/useMapInitialization.ts
+
+import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Coordinates } from '../../components/ui/types';
 
-export function useMapInitialization(
-  containerRef: MutableRefObject<HTMLDivElement | null>,
+export default function useMapInitialization(
+  containerRef: React.RefObject<HTMLDivElement | null>,
   center: Coordinates,
-  isActive: boolean,
-  onMapLoaded?: (map: mapboxgl.Map) => void,
-  options?: {
-    zoom?: number;
-    style?: string;
-    attributionControl?: boolean;
-    maxBounds?: mapboxgl.LngLatBoundsLike;
-  }
-): MutableRefObject<mapboxgl.Map | null> {
+  shouldInitialize: boolean,
+  onLoad?: (map: mapboxgl.Map) => void,
+  onMapReady?: (map: mapboxgl.Map) => void
+) {
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
-    if (!isActive || !containerRef.current) return;
-
-    if (mapRef.current && mapRef.current.getContainer() === containerRef.current) {
-      return;
-    }
-
-    const accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN;
-    if (!accessToken) {
-      console.error('Mapbox access token is missing. Please set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN.');
-      return;
-    }
-
-    mapboxgl.accessToken = accessToken;
-
-    const defaultOptions = {
-      zoom: 13,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      attributionControl: false,
-    };
-
-    const mapOptions = { 
-      ...defaultOptions, 
-      ...options, 
-    };
+    if (!shouldInitialize || !containerRef.current || mapRef.current) return;
 
     const map = new mapboxgl.Map({
       container: containerRef.current,
-      style: mapOptions.style,
-      center: center,
-      zoom: mapOptions.zoom,
-      attributionControl: mapOptions.attributionControl,
-      maxBounds: mapOptions.maxBounds,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center,
+      zoom: 13,
     });
 
     mapRef.current = map;
-
-    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    if (onMapReady) onMapReady(map);
 
     map.on('load', () => {
-      if (onMapLoaded) {
-        onMapLoaded(map);
-      }
-
-      // Lógica para adicionar o marcador
-      const el = document.createElement('div');
-      el.style.width = '40px';
-      el.style.height = '40px';
-      el.style.position = 'absolute';
-      el.style.cursor = 'pointer';
-
-      const img = document.createElement('img');
-      img.src = '/assets/img/pinPNG.png';
-      img.style.width = '100%';
-      img.style.height = '100%';
-      img.style.objectFit = 'contain';
-      img.style.pointerEvents = 'none';
-
-      el.appendChild(img);
-
-      new mapboxgl.Marker({ element: el })
-        .setLngLat(center)
-        .addTo(map);
+      if (onLoad) onLoad(map);
     });
 
     return () => {
       map.remove();
       mapRef.current = null;
     };
-  }, [containerRef, center[0], center[1], isActive]);
+  }, [shouldInitialize, containerRef]);
 
   return mapRef;
 }
-
-export default useMapInitialization;

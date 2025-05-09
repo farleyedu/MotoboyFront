@@ -127,7 +127,7 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ zIndex: isChatOpen ? 10 : 5 }}>
       <div className={styles.mapContainer} ref={mapContainer}>
         <div className={styles.overlay}>
           <div className={styles.motoboyList}>

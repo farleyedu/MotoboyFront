@@ -43,8 +43,8 @@
   inset: 0;
   height: 100%;
   width: 100%;
-  transition: width 0.3s ease; /* Suaviza a transição quando o chat abre/fecha */
-  z-index: 0; /* menor que o popup */
+  transition: width 0.3s ease;
+  z-index: 5; /* Ajustado para garantir que o MapComponent esteja atrás do SelectOrdersMode */
   overflow: visible !important;
 }
 

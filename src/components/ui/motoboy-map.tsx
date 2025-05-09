@@ -48,6 +48,7 @@ const MapComponent: React.FC<{
   const [isSelectingRoute, setIsSelectingRoute] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [mapInstance, setMapInstance] = useState<mapboxgl.Map | null>(null);
+  const [mapKey, setMapKey] = useState(Date.now());
 
   useMapResize(mapContainerRef, mapInstanceRef);
 
@@ -106,6 +107,11 @@ const MapComponent: React.FC<{
     mainMapMarkers?.drawRouteUntil?.(orderId);
   };
 
+  const handleCancelSelectOrdersMode = () => {
+    setIsSelectingRoute(false);
+    setMapKey(Date.now());
+  };
+
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -141,7 +147,7 @@ const MapComponent: React.FC<{
     });
 
     return () => map.remove();
-  }, []);
+  }, [mapKey]);
 
   useEffect(() => {
     if (mapInstance) {
@@ -151,41 +157,57 @@ const MapComponent: React.FC<{
       }, 350);
     }
   }, [isChatOpen]);
-
+ 
   return (
     <div className={styles.mapComponentContainer} ref={mapContainerRef}>
-      <div className={styles.map}>
-        {!isSelectingRoute && (
-          <>
-            <button
-              className={styles.expandButtonFloating}
-              onClick={() => setShowExpandedMap(true)}
-              aria-label="Expandir Mapa"
-            >
-              <i className="fas fa-expand" />
-            </button>
-            <button
-              onClick={() => setIsSelectingRoute(true)}
-              aria-label="Selecionar Rota"
-              style={{
-                position: 'absolute',
-                bottom: '80px',
-                left: '16px',
-                padding: '8px 12px',
-                backgroundColor: 'white',
-                borderRadius: '8px',
-                boxShadow: '0px 2px 8px rgba(0,0,0,0.2)',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                zIndex: 1000
-              }}
-            >
-              ➕ Selecionar Rota
-            </button>
-          </>
-        )}
-
-        {isSelectingRoute ? (
+      {!isSelectingRoute && (
+        <div className={styles.map}>
+          <button
+            className={styles.expandButtonFloating}
+            onClick={() => setShowExpandedMap(true)}
+            aria-label="Expandir Mapa"
+          >
+            <i className="fas fa-expand" />
+          </button>
+          <button
+            onClick={() => setIsSelectingRoute(true)}
+            aria-label="Selecionar Rota"
+            style={{
+              position: 'absolute',
+              bottom: '80px',
+              left: '16px',
+              padding: '8px 12px',
+              backgroundColor: 'white',
+              borderRadius: '8px',
+              boxShadow: '0px 2px 8px rgba(0,0,0,0.2)',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              zIndex: 1000,
+            }}
+          >
+            ➕ Selecionar Rota
+          </button>
+  
+          <div
+            key={mapKey}
+            ref={mapContainer}
+            className={styles.mapInner}
+            data-chat-open={isChatOpen ? 'true' : 'false'}
+          />
+          <div className={styles.floatingMotoboyList}>
+            <MotoboyList
+              motoboys={motoboys}
+              activeMotoboy={activeMotoboyId}
+              onLocateMotoboy={locateMotoboy}
+              onShowDetails={showMotoboyDetails}
+              onHoverPedido={(pedido, index, all) => drawRouteUntil(pedido.id)}
+            />
+          </div>
+        </div>
+      )}
+  
+      {isSelectingRoute && (
+        <div className={styles.map}>
           <SelectOrdersMode
             orders={orders.filter(order => order.status === 'pendente')}
             motoboys={motoboys}
@@ -193,44 +215,12 @@ const MapComponent: React.FC<{
               console.log('Confirmando pedidos:', selectedOrders, 'para motoboy:', selectedMotoboy);
               setIsSelectingRoute(false);
             }}
-            onCancel={() => setIsSelectingRoute(false)}
+            onCancel={handleCancelSelectOrdersMode}
             isChatOpen={isChatOpen}
           />
-        ) : (
-          <>
-            <div
-              ref={mapContainer}
-              className={styles.mapInner}
-              data-chat-open={isChatOpen ? 'true' : 'false'}
-            />
-            <div className={styles.floatingMotoboyList}>
-              <MotoboyList
-                motoboys={motoboys}
-                activeMotoboy={activeMotoboyId}
-                onLocateMotoboy={locateMotoboy}
-                onShowDetails={showMotoboyDetails}
-                onHoverPedido={(pedido, index, all) => drawRouteUntil(pedido.id)}
-              />
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* {showExpandedMap && (
-        <ExpandedMapModal
-          mapRef={expandedMapRef}
-          containerRef={expandedMapContainer}
-          onClose={() => setShowExpandedMap(false)}
-        />
-      )} */}
-{/* 
-      {showDetailsPanel && selectedMotoboy && (
-        <DeliveryDetailsPanel
-          motoboy={selectedMotoboy}
-          onClose={() => setShowDetailsPanel(false)}
-        />
-      )} */}
-
+        </div>
+      )}
+  
       {selectedOrder && (
         <OrderPopup
           order={selectedOrder}
@@ -239,6 +229,7 @@ const MapComponent: React.FC<{
       )}
     </div>
   );
+  
 };
 
 export default MapComponent;
