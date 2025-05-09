@@ -117,6 +117,14 @@ export default function useMapMarkers(
     map.flyTo({ center: coordinates, zoom, essential: true });
   };
 
+  const drawRouteUntil = (orderId: number) => {
+    const order = orders.find(o => o.id === orderId);
+    if (!order || !map) return;
+
+    // Lógica para desenhar a rota até o pedido
+    map.flyTo({ center: order.coordinates, zoom: 15, essential: true });
+  };
+
   return {
     motoboyMarkers,
     orderMarkers,
@@ -125,6 +133,7 @@ export default function useMapMarkers(
     addMotoboyMarkers,
     addOrderMarkers,
     updateMarkerPositions,
-    flyTo
+    flyTo,
+    drawRouteUntil
   };
 }
