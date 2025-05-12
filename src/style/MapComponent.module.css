@@ -4,7 +4,7 @@
   gap: 20px;
   width: 100%;
   position: relative;
-  min-height: 480px; /* Garante espaço para os cards flutuantes */
+  min-height: 570px; /* Garante espaço para os cards flutuantes */
   transition: width 0.3s ease, height 0.3s ease; /* Suaviza a transição quando o chat abre/fecha */
 }
 .orderPopupContainer {
@@ -31,12 +31,12 @@
 }
 
 .map {
-  height: 420px;
+  height: 570px;
   width: 100%;
   position: relative;
   background-color: #f0f0f0;
   transition: width 0.3s ease, height 0.3s ease; /* Suaviza a transição */
-  overflow: hidden;
+  overflow: visible;
 }
 
 .mapInner {
@@ -84,7 +84,7 @@
 /* Lista flutuante de motoboys sobre o mapa */
 .floatingMotoboyList {
   position: absolute;
-  bottom: 0;
+  bottom: -70px;
   left: 0;
   right: 0;
   padding: 0.5rem 1rem;
@@ -332,6 +332,9 @@
   background: rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 20px;
+  justify-content: stretch;
+  align-items: stretch;
+  padding: 0;
+  height: 100%;
+  width: 100%;
 }
