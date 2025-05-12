@@ -36,6 +36,7 @@
   position: relative;
   background-color: #f0f0f0;
   transition: width 0.3s ease, height 0.3s ease; /* Suaviza a transição */
+  overflow: hidden;
 }
 
 .mapInner {
@@ -87,7 +88,7 @@
   left: 0;
   right: 0;
   padding: 0.5rem 1rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+  background: none;
   z-index: 10;
   overflow-x: auto;
   display: flex;
@@ -322,4 +323,15 @@
 /* Classe aplicada quando o mapa está sendo redimensionado para evitar travamentos na UI */
 .resizingMap {
   pointer-events: none;
+}
+
+.selectOrdersOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
 }
