@@ -113,14 +113,7 @@ const MapComponent: React.FC<{
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    const map = new mapboxgl.Map({
-      container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-48.2772, -18.9146],
-      zoom: 13,
-    });
-
-    map.on('load', () => {
+    const handleMapLoaded = (map: mapboxgl.Map) => {
       const el = document.createElement('div');
       el.style.width = '40px';
       el.style.height = '40px';
@@ -139,12 +132,10 @@ const MapComponent: React.FC<{
       new mapboxgl.Marker({ element: el })
         .setLngLat([-48.2772, -18.9146])
         .addTo(map);
+    };
 
-      setMapInstance(map);
-      mapInstanceRef.current = map;
-    });
-
-    return () => map.remove();
+    const mapRef = useMapInitialization(mapContainerRef, pizzeriaLocation, true, handleMapLoaded);
+    setMapInstance(mapRef.current);
   }, []);
 
   useEffect(() => {
@@ -189,11 +180,11 @@ const MapComponent: React.FC<{
           </>
         )}
 
-        <div
+        {/* <div
           ref={mapContainer}
           className={styles.mapInner}
           data-chat-open={isChatOpen ? 'true' : 'false'}
-        />
+        /> */}
 
         {!isSelectingRoute && (
           <div className={styles.floatingMotoboyList}>
