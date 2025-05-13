@@ -34,8 +34,9 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ order, onClose }) => {
       <div className={styles.address}>📍 {order.address ?? 'Endereço não informado'}</div>
 
       {/* Itens */}
-      <div className={styles.sectionTitle}>Itens</div>
       <ul className={styles.itemsList}>
+
+        <div className={styles.sectionTitle}>Itens</div>
         {itemsArray.map((item, index) => (
           <li key={index} className={styles.item}>- {item} <span className={styles.itemPrice}>R$ {order.value}</span></li>
         ))}
@@ -66,9 +67,6 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ order, onClose }) => {
           <strong>{order.horarioEntrega ?? '--'}</strong>
         </div>
       </div>
-
-      {/* Divisão */}
-      <div className={styles.divider}></div>
 
       {/* Motoboy */}
       <div className={styles.motoboySection}>
