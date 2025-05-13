@@ -338,3 +338,16 @@
   height: 100%;
   width: 100%;
 }
+
+.orderPopup {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 300px;
+  background-color: white;
+  z-index: 2000;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 0; /* ou 10px se quiser espaço interno */
+}

@@ -110,10 +110,9 @@ const MapComponent: React.FC<{
     setIsSelectingRoute(false);
   };
 
-  useEffect(() => {
-    if (!mapContainerRef.current) return;
-
-    const handleMapLoaded = (map: mapboxgl.Map) => {
+  const handleMapLoaded = (map: mapboxgl.Map) => {
+    // Para cada pedido, crie um marcador com manipulador de clique
+    orders.forEach((order) => {
       const el = document.createElement('div');
       el.style.width = '40px';
       el.style.height = '40px';
@@ -129,14 +128,23 @@ const MapComponent: React.FC<{
 
       el.appendChild(img);
 
-      new mapboxgl.Marker({ element: el })
-        .setLngLat([-48.2772, -18.9146])
-        .addTo(map);
-    };
+      el.addEventListener('click', () => {
+        setSelectedOrder(order);  // Define o pedido correto
+      });
 
-    const mapRef = useMapInitialization(mapContainerRef, pizzeriaLocation, true, handleMapLoaded);
-    setMapInstance(mapRef.current);
-  }, []);
+      new mapboxgl.Marker({ element: el })
+        .setLngLat(order.coordinates)
+        .addTo(map);
+    });
+  };
+
+  const mapRef = useMapInitialization(mapContainerRef, pizzeriaLocation, true, handleMapLoaded);
+
+  useEffect(() => {
+    if (mapRef && mapRef.current) {
+      setMapInstance(mapRef.current);
+    }
+  }, [mapRef]);
 
   useEffect(() => {
     if (mapInstance) {
@@ -146,7 +154,7 @@ const MapComponent: React.FC<{
       }, 350);
     }
   }, [isChatOpen, isSelectingRoute]);
- 
+
   return (
     <div className={styles.mapComponentContainer} ref={mapContainerRef}>
       <div className={styles.map}>
@@ -215,10 +223,12 @@ const MapComponent: React.FC<{
       </div>
 
       {selectedOrder && (
-        <OrderPopup
-          order={selectedOrder}
-          onClose={() => setSelectedOrder(null)}
-        />
+        <div className={styles.orderPopup}>
+          <OrderPopup
+            order={selectedOrder}
+            onClose={() => setSelectedOrder(null)}
+          />
+        </div>
       )}
     </div>
   );
