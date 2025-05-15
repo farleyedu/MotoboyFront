@@ -11,9 +11,11 @@ type MotoboyStatus = "online" | "offline";
 
 // Definição da interface para Motoboy
 interface Motoboy {
+  id: number;
   name: string;
   avatar: string;
   status: MotoboyStatus;
+  location: Coordinates;
 }
 
 // Definição da interface para Order
@@ -70,14 +72,11 @@ export default function Home() {
   const motoboys = Array.from({ length: 10 }, (_, i) => ({
     id: i + 1,
     name: `Motoboy ${String.fromCharCode(65 + i)}`,
-    avatar: `https://via.placeholder.com/50?text=M${String.fromCharCode(65 + i)}`,
+    avatar: `/img/motoMark.png`,
     phone: `12345678${i}`,
     vehicle: 'Moto',
     status: (i % 2 === 0 ? 'online' : 'offline') as MotoboyStatus,
-    location: [
-      -48.214972 + Math.random() * 0.1,
-      -18.905934 + Math.random() * 0.1
-    ] as Coordinates,
+    location: [-48.2772, -18.9146] as Coordinates,
     deliveries: []
   }));
 

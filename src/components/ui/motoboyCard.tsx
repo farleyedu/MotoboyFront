@@ -34,7 +34,7 @@ const MotoboyCard: React.FC<Props> = ({
     const finalMotoboy = motoboy || mockMotoboy;
     const imageUrl = finalMotoboy.avatar?.startsWith('http')
         ? finalMotoboy.avatar
-        : '/img/perfil-motoboy.jpg';
+        : 'assets/img/perfil-motoboy.jpg';
 
     const retirados = finalMotoboy.deliveries.filter((d) => d.status === 'em_rota');
     const concluidas = finalMotoboy.deliveries.filter((d) => d.status === 'concluida');
@@ -53,8 +53,8 @@ const MotoboyCard: React.FC<Props> = ({
                             height={36}
                             onError={(e) => {
                                 const target = e.currentTarget as HTMLImageElement;
-                                if (!target.src.includes('/img/perfil-motoboy.jpg')) {
-                                    target.src = '/img/perfil-motoboy.jpg';
+                                if (!target.src.includes('assets/img/perfil-motoboy.jpg')) {
+                                    target.src = 'assets/img/perfil-motoboy.jpg';
                                 }
                             }}
                         />

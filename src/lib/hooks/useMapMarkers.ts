@@ -39,8 +39,11 @@ export default function useMapMarkers(
   };
 
   const addMotoboyMarkers = () => {
-    if (!map) return;
-
+    if (!map) {
+      console.error('Mapa não está inicializado!');
+      return;
+    }
+    console.log('Adicionando marcadores de motoboy:', motoboys.length);
     motoboys.forEach(motoboy => {
       const el = document.createElement('div');
       el.className = styles.motoboyMarker;
@@ -68,6 +71,7 @@ export default function useMapMarkers(
         element: el,
         isExpandedMap
       });
+      console.log(`Marcador para ${motoboy.name} criado.`);
     });
   };
 

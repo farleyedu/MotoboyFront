@@ -59,11 +59,11 @@ export interface Order {
   region?: string;
   status?: string;
   assigned_driver?: number;
-  coordinates: Coordinates;
-  horarioPedido?: string;
+    coordinates: Coordinates;
+    horarioPedido?: string;
   previsaoEntrega?: string;
-  horarioSaida?: string;
-  horarioEntrega?: string;
+  horarioSaida?: string | undefined;
+  horarioEntrega?: string | undefined;
   motoboy?: {
     name: string;
     avatar: string;
