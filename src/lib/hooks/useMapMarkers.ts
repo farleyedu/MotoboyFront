@@ -40,13 +40,12 @@ export default function useMapMarkers(
 
   const addMotoboyMarkers = (targetMap: mapboxgl.Map) => {
     if (!targetMap) {
-      console.log('Mapa não está inicializado!');
       return;
     }
-    console.log('Adicionando marcadores de motoboy na useMapMarkers:', motoboys.length);
-    console.log('Motoboys useMapMarkers:', motoboys); // Adicionado
     motoboys.forEach(motoboy => {
-      console.log(`Criando marcador para: ${motoboy.name} useMapMarkers`);
+        if (motoboy.status === "offline") { // Verifica se o motoboy está online
+          return; // Se não estiver online, não cria o marcador
+      }
       const el = document.createElement('div');
       el.className = styles.motoboyMarker;
       el.innerHTML = motoboy.name.charAt(0);
@@ -54,7 +53,6 @@ export default function useMapMarkers(
       if (motoboy.id === activeMotoboyId) {
         el.classList.add(styles.activeMotoboy);
       }
-
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div class="${styles.markerPopup}">
           <h3>${motoboy.name}</h3>
@@ -73,7 +71,6 @@ export default function useMapMarkers(
         element: el,
         isExpandedMap
       });
-      console.log(`Marcador para ${motoboy.name} criado. useMapMarkers`);
     });
   };
 

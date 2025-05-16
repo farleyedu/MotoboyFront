@@ -5,7 +5,7 @@
 const motoboys: Motoboy[] = [
   {
     id: 1,
-    name: "Motoboy A",
+    name: "João Motoboy",
     //avatar: "https://via.placeholder.com/50",
     phone: "123456789",
     vehicle: "Moto",
@@ -15,12 +15,52 @@ const motoboys: Motoboy[] = [
   },
   {
     id: 2,
-    name: "Motoboy B",
+    name: "Natanael Motoboy",
+    //avatar: "https://via.placeholder.com/50",
+    phone: "987654321",
+    vehicle: "Scooter",
+    status: "online",
+    location: [-48.321615, -18.913916] as Coordinates,
+    deliveries: []
+  },
+  {
+    id: 3,
+    name: "Patrick Motoboy",
     //avatar: "https://via.placeholder.com/50",
     phone: "987654321",
     vehicle: "Scooter",
     status: "offline",
     location: [-48.279946, -18.943977] as Coordinates,
+    deliveries: []
+  },
+  {
+    id: 4,
+    name: "Arthur Motoboy",
+    //avatar: "https://via.placeholder.com/50",
+    phone: "987654321",
+    vehicle: "Scooter",
+    status: "online",
+    location: [-48.239867, -18.956281] as Coordinates, 
+    deliveries: []
+  },
+  {
+    id: 5,
+    name: "Maria Motoboy",
+    //avatar: "https://via.placeholder.com/50",
+    phone: "987654321",
+    vehicle: "Scooter",
+    status: "offline",
+    location: [-48.279946, -18.943977] as Coordinates,
+    deliveries: []
+  },
+  {
+    id: 6,
+    name: "Derson Motoboy",
+    //avatar: "https://via.placeholder.com/50",
+    phone: "987654321",
+    vehicle: "Scooter",
+    status: "offline",
+    location: [-48.260377, -18.885650] as Coordinates, 
     deliveries: []
   }
 ];
@@ -32,12 +72,17 @@ const orders: Order[] = [
     items: 'Pizza Calabresa',
     value: 'R$50.00',
     region: 'Santa Mônica',
-    status: 'pendente',
-    coordinates: [-48.26169504593216, -18.919965923272528], //-18.919965923272528, -48.26169504593216
+    status: 'em_rota',
+    coordinates: [-48.26169504593216, -18.919965923272528],
     horarioPedido: '18:00',
     previsaoEntrega: '18:40',
     horarioSaida: '18:15',
-    horarioEntrega: '18:50',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 2,
@@ -46,11 +91,16 @@ const orders: Order[] = [
     value: 'R$30.00',
     region: 'Centro',
     status: 'em_rota',
-    coordinates: [-48.279520175076634, -18.916338931873838], //-18.916338931873838, -48.279520175076634
+    coordinates: [-48.279520175076634, -18.916338931873838],
     horarioPedido: '18:05',
     previsaoEntrega: '18:45',
     horarioSaida: '18:20',
-    horarioEntrega: '18:55',
+    horarioEntrega:'' ,
+    motoboy: {
+      name: 'Natanael Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 3,
@@ -58,12 +108,17 @@ const orders: Order[] = [
     items: 'Hambúrguer Artesanal',
     value: 'R$45.00',
     region: 'Tibery',
-    status: 'pendente',
+    status: 'em_rota',
     coordinates: [-48.26059413369974, -18.903979975504328],
     horarioPedido: '18:10',
     previsaoEntrega: '18:50',
     horarioSaida: '18:25',
-    horarioEntrega: '19:00',
+    horarioEntrega:'' ,
+    motoboy: {
+      name: 'Arthur Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 4,
@@ -71,12 +126,17 @@ const orders: Order[] = [
     items: 'Lasanha de Frango',
     value: 'R$35.00',
     region: 'Martins',
-    status: 'pendente',
-    coordinates: [-48.280938343387746, -18.921554165034802], // -, -
+    status: 'em_rota',
+    coordinates: [-48.280938343387746, -18.921554165034802],
     horarioPedido: '18:15',
     previsaoEntrega: '18:55',
     horarioSaida: '18:30',
-    horarioEntrega: '19:05',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 5,
@@ -85,11 +145,16 @@ const orders: Order[] = [
     value: 'R$60.00',
     region: 'Brasil',
     status: 'em_rota',
-    coordinates: [-48.27750358437522, -18.920043431119364], 
+    coordinates: [-48.27750358437522, -18.920043431119364],
     horarioPedido: '18:20',
     previsaoEntrega: '19:00',
     horarioSaida: '18:35',
-    horarioEntrega: '19:10',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Natanael Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 6,
@@ -97,12 +162,17 @@ const orders: Order[] = [
     items: 'Churrasco Misto',
     value: 'R$70.00',
     region: 'Osvaldo Rezende',
-    status: 'pendente',
-    coordinates: [-48.2767143498329, -18.920612486677978], 
+    status: 'em_rota',
+    coordinates: [-48.2767143498329, -18.920612486677978],
     horarioPedido: '18:25',
     previsaoEntrega: '19:05',
     horarioSaida: '18:40',
-    horarioEntrega: '19:15',
+    horarioEntrega:'' ,
+    motoboy: {
+      name: 'Arthur Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 7,
@@ -110,12 +180,17 @@ const orders: Order[] = [
     items: 'Feijoada Completa',
     value: 'R$55.00',
     region: 'Fundinho',
-    status: 'pendente',
-    coordinates: [-48.27989471537011, -18.918380171495865], 
+    status: 'em_rota',
+    coordinates: [-48.27989471537011, -18.918380171495865],
     horarioPedido: '18:30',
     previsaoEntrega: '19:10',
     horarioSaida: '18:45',
-    horarioEntrega: '19:20',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 8,
@@ -124,11 +199,16 @@ const orders: Order[] = [
     value: 'R$40.00',
     region: 'Aparecida',
     status: 'em_rota',
-    coordinates: [-48.27799542029218, -18.921182855055978], 
+    coordinates: [-48.27799542029218, -18.921182855055978],
     horarioPedido: '18:35',
     previsaoEntrega: '19:15',
     horarioSaida: '18:50',
-    horarioEntrega: '19:25',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Natanael Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 9,
@@ -136,12 +216,17 @@ const orders: Order[] = [
     items: 'Salada Caesar',
     value: 'R$25.00',
     region: 'Cazeca',
-    status: 'pendente',
-    coordinates: [-48.27353781537293, -18.917587554729607], 
+    status: 'em_rota',
+    coordinates: [-48.27353781537293, -18.917587554729607],
     horarioPedido: '18:40',
     previsaoEntrega: '19:20',
     horarioSaida: '18:55',
-    horarioEntrega: '19:30',
+    horarioEntrega:'' ,
+    motoboy: {
+      name: 'Arthur Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 10,
@@ -149,25 +234,35 @@ const orders: Order[] = [
     items: 'Tacos Mexicanos',
     value: 'R$50.00',
     region: 'Bom Jesus',
-    status: 'pendente',
-    coordinates: [-48.275371471184826, -18.920471810218874], 
+    status: 'em_rota',
+    coordinates: [-48.275371471184826, -18.920471810218874],
     horarioPedido: '18:45',
     previsaoEntrega: '19:25',
     horarioSaida: '19:00',
-    horarioEntrega: '19:35',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
-  {
+    {
     id: 11,
     address: 'Av. João Naves de Ávila, 900 - Santa Mônica, Uberlândia - MG',
     items: 'Pizza Margherita',
     value: 'R$45.00',
     region: 'Santa Mônica',
     status: 'em_rota',
-    coordinates: [-48.265333252499495, -18.912091519297093], 
+    coordinates: [-48.265333252499495, -18.912091519297093],
     horarioPedido: '18:50',
     previsaoEntrega: '19:30',
     horarioSaida: '19:05',
-    horarioEntrega: '19:40',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 12,
@@ -175,12 +270,17 @@ const orders: Order[] = [
     items: 'Esfirra de Frango',
     value: 'R$30.00',
     region: 'Centro',
-    status: 'pendente',
-    coordinates: [-48.272673044201305, -18.920690208645595], 
+    status: 'em_rota',
+    coordinates: [-48.272673044201305, -18.920690208645595],
     horarioPedido: '18:55',
     previsaoEntrega: '19:35',
     horarioSaida: '19:10',
-    horarioEntrega: '19:45',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Natanael Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 13,
@@ -188,12 +288,17 @@ const orders: Order[] = [
     items: 'Hambúrguer Vegano',
     value: 'R$40.00',
     region: 'Tibery',
-    status: 'pendente',
-    coordinates: [-48.25399951535756, -18.89504986567893], 
+    status: 'em_rota',
+    coordinates: [-48.25399951535756, -18.89504986567893],
     horarioPedido: '19:00',
     previsaoEntrega: '19:40',
     horarioSaida: '19:15',
-    horarioEntrega: '19:50',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Arthur Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 14,
@@ -202,11 +307,16 @@ const orders: Order[] = [
     value: 'R$35.00',
     region: 'Martins',
     status: 'em_rota',
-    coordinates: [-48.2845509442108, -18.91946825711421], 
+    coordinates: [-48.2845509442108, -18.91946825711421],
     horarioPedido: '19:05',
     previsaoEntrega: '19:45',
     horarioSaida: '19:20',
-    horarioEntrega: '19:55',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 15,
@@ -214,12 +324,17 @@ const orders: Order[] = [
     items: 'Sushi Variado',
     value: 'R$60.00',
     region: 'Brasil',
-    status: 'pendente',
-    coordinates: [-48.27198986332148, -18.912732950270843], 
+    status: 'em_rota',
+    coordinates: [-48.27198986332148, -18.912732950270843],
     horarioPedido: '19:10',
     previsaoEntrega: '19:50',
     horarioSaida: '19:25',
-    horarioEntrega: '20:00',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Natanael Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 16,
@@ -227,12 +342,17 @@ const orders: Order[] = [
     items: 'Churrasco Vegetariano',
     value: 'R$70.00',
     region: 'Osvaldo Rezende',
-    status: 'pendente',
-    coordinates: [-48.26984790148644, -18.925375754036935], 
+    status: 'em_rota',
+    coordinates: [-48.26984790148644, -18.925375754036935],
     horarioPedido: '19:15',
     previsaoEntrega: '19:55',
     horarioSaida: '19:30',
-    horarioEntrega: '20:05',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Arthur Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 17,
@@ -240,12 +360,17 @@ const orders: Order[] = [
     items: 'Feijoada Light',
     value: 'R$55.00',
     region: 'Fundinho',
-    status: 'em_rota',
-    coordinates: [-48.27310891141437, -18.90990720252138], 
+    status: 'pendente',
+    coordinates: [-48.27310891141437, -18.90990720252138],
     horarioPedido: '19:20',
     previsaoEntrega: '20:00',
-    horarioSaida: '19:35',
-    horarioEntrega: '20:10',
+    horarioSaida: '',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 18,
@@ -254,155 +379,217 @@ const orders: Order[] = [
     value: 'R$40.00',
     region: 'Aparecida',
     status: 'pendente',
-    coordinates: [-48.271123703574865, -18.925776686336015], 
+    coordinates: [-48.271123703574865, -18.925776686336015],
     horarioPedido: '19:25',
     previsaoEntrega: '20:05',
-    horarioSaida: '19:40',
-    horarioEntrega: '20:15',
+    horarioSaida: '',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Natanael Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
-    id: 18,
-    address: "Rua Francisco Zumpano, 220 – Cazeca, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Cazeca",
-    status: "pendente",
-    coordinates: [-48.267600554147606, -18.915440269816493], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    id: 19,
+    address: 'Rua Francisco Zumpano, 220 – Cazeca, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Cazeca',
+    status: 'pendente',
+    coordinates: [-48.267600554147606, -18.915440269816493],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Arthur Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 20,
-    address: "Rua Paulo Frontin, 700 – Custódio Pereira, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Custódio Pereira",
-    status: "pendente",
-    coordinates: [-48.23829319709925, -18.89230206711683], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    address: 'Rua Paulo Frontin, 700 – Custódio Pereira, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Custódio Pereira',
+    status: 'pendente',
+    coordinates: [-48.23829319709925, -18.89230206711683],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
-  {
+    {
     id: 21,
-    address: "Avenida Vasconcelos Costa, 552 – Martins, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Martins",
-    status: "pendente",
-    coordinates: [-48.28173918718118, -18.912952806066738], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    address: 'Avenida Vasconcelos Costa, 552 – Martins, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Martins',
+    status: 'pendente',
+    coordinates: [-48.28173918718118, -18.912952806066738],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 22,
-    address: "Rua Rivalino Pereira, 846 – Martins, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Martins",
-    status: "pendente",
-    coordinates: [-48.280928220991896, -18.905511518922435], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    address: 'Rua Rivalino Pereira, 846 – Martins, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Martins',
+    status: 'pendente',
+    coordinates: [-48.280928220991896, -18.905511518922435],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Natanael Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 23,
-    address: "Rua Francisco Zumpano, 300 – Martins, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Martins",
-    status: "pendente",
-    coordinates: [-48.26763462313524, -18.915279200965692], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    address: 'Rua Francisco Zumpano, 300 – Martins, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Martins',
+    status: 'pendente',
+    coordinates: [-48.26763462313524, -18.915279200965692],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Arthur Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 24,
-    address: "Rua José Pedro Ferreira, 159 – Martinésia, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Martinésia",
-    status: "pendente",
-    coordinates: [-48.42021133232419, -18.746285543492125], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    address: 'Rua José Pedro Ferreira, 159 – Martinésia, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Martinésia',
+    status: 'pendente',
+    coordinates: [-48.42021133232419, -18.746285543492125],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 26,
-    address: "Rua José Morais, 250 – Osvaldo Rezende, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Osvaldo Rezende",
-    status: "pendente",
-    coordinates: [-48.26461645447083, -18.91490592643582], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    address: 'Rua José Morais, 250 – Osvaldo Rezende, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Osvaldo Rezende',
+    status: 'pendente',
+    coordinates: [-48.26461645447083, -18.91490592643582],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '',
+    horarioEntrega: '',
+    motoboy: {
+      name: 'Natanael Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 27,
-    address: "Rua Camilo Braga, 350 – Osvaldo Rezende, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Osvaldo Rezende",
-    status: "pendente",
-    coordinates: [-48.26268649094085, -18.914304777574568], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    address: 'Rua Camilo Braga, 350 – Osvaldo Rezende, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Osvaldo Rezende',
+    status: 'concluido',
+    coordinates: [-48.26268649094085, -18.914304777574568],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '18:15',
+    horarioEntrega: '18:50',
+    motoboy: {
+      name: 'Arthur Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 28,
-    address: "Rua Segismundo Morais, 400 – Osvaldo Rezende, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Osvaldo Rezende",
-    status: "pendente",
-    coordinates: [-48.26312010856311, -18.914718430095036], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    address: 'Rua Segismundo Morais, 400 – Osvaldo Rezende, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Osvaldo Rezende',
+    status: 'concluido',
+    coordinates: [-48.26312010856311, -18.914718430095036],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '18:15',
+    horarioEntrega: '18:50',
+    motoboy: {
+      name: 'João Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 29,
-    address: "Rua Mário Rezende Ribeiro, 450 – Osvaldo Rezende, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Osvaldo Rezende",
-    status: "pendente",
-    coordinates: [-48.26555433711165, -18.91670131602251], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    address: 'Rua Mário Rezende Ribeiro, 450 – Osvaldo Rezende, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Osvaldo Rezende',
+    status: 'concluido',
+    coordinates: [-48.26555433711165, -18.91670131602251],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '18:15',
+    horarioEntrega: '18:50',
+    motoboy: {
+      name: 'Natanael Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   },
   {
     id: 30,
-    address: "Rua Ipiranga, 500 – Osvaldo Rezende, Uberlândia - MG",
-    items: "Pizza Calabresa",
-    value: "R$50.00",
-    region: "Osvaldo Rezende",
-    status: "pendente",
-    coordinates: [-48.267289453568, -18.91441597768813], 
-    horarioPedido: "18:00",
-    previsaoEntrega: "18:40",
-    horarioSaida: "18:15",
-    horarioEntrega: "18:50"
+    address: 'Rua Ipiranga, 500 – Osvaldo Rezende, Uberlândia - MG',
+    items: 'Pizza Calabresa',
+    value: 'R$50.00',
+    region: 'Osvaldo Rezende',
+    status: 'concluido',
+    coordinates: [-48.267289453568, -18.91441597768813],
+    horarioPedido: '18:00',
+    previsaoEntrega: '18:40',
+    horarioSaida: '18:15',
+    horarioEntrega: '18:50',
+    motoboy: {
+      name: 'Arthur Motoboy',
+      avatar: '',
+      status: 'online'
+    }
   }
+  
+
 ]
 
 export { orders, motoboys };

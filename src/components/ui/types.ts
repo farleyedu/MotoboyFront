@@ -20,6 +20,11 @@ export type DeliveryStatus = "em_rota" | "proxima" | "concluida";
 export type MotoboyStatus = "online" | "offline" | "delivering";
 
 /**
+ * Status possíveis para um pedido
+ */
+export type OrderStatus = "pendente" | "em_rota" | "concluido";
+
+/**
  * Informações de uma entrega
  */
 export interface Delivery {
@@ -57,7 +62,7 @@ export interface Order {
   items: string | string[];
   value?: string;
   region?: string;
-  status?: string;
+  status?: OrderStatus;
   assigned_driver?: number;
     coordinates: Coordinates;
     horarioPedido?: string;
