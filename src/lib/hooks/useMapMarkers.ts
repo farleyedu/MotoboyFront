@@ -38,13 +38,16 @@ export default function useMapMarkers(
       .addTo(map);
   };
 
-  const addMotoboyMarkers = () => {
-    if (!map) {
-      console.error('Mapa não está inicializado!');
+  const addMotoboyMarkers = (targetMap: mapboxgl.Map) => {
+    debugger
+    if (!targetMap) {
+      console.log('Mapa não está inicializado!');
       return;
     }
-    console.log('Adicionando marcadores de motoboy:', motoboys.length);
+    console.log('Adicionando marcadores de motoboy na useMapMarkers:', motoboys.length);
+    console.log('Motoboys useMapMarkers:', motoboys); // Adicionado
     motoboys.forEach(motoboy => {
+      console.log(`Criando marcador para: ${motoboy.name} useMapMarkers`);
       const el = document.createElement('div');
       el.className = styles.motoboyMarker;
       el.innerHTML = motoboy.name.charAt(0);
@@ -63,7 +66,7 @@ export default function useMapMarkers(
       const marker = new mapboxgl.Marker(el)
         .setLngLat(motoboy.location)
         .setPopup(popup)
-        .addTo(map);
+        .addTo(targetMap);
 
       motoboyMarkers.current.push({
         id: motoboy.id,
@@ -71,7 +74,7 @@ export default function useMapMarkers(
         element: el,
         isExpandedMap
       });
-      console.log(`Marcador para ${motoboy.name} criado.`);
+      console.log(`Marcador para ${motoboy.name} criado. useMapMarkers`);
     });
   };
 

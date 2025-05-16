@@ -79,7 +79,6 @@ export default function Home() {
     location: [-48.2772, -18.9146] as Coordinates,
     deliveries: []
   }));
-
   // Estados separados para cada card
   const [periodoTotal, setPeriodoTotal] = useState<"dia" | "semana" | "mes">("dia");
   const [periodoEntrega, setPeriodoEntrega] = useState<"dia" | "semana" | "mes">("dia");

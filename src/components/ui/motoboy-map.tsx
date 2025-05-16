@@ -21,7 +21,6 @@ function useMapResize(containerRef: React.RefObject<HTMLDivElement | null>, mapR
 
     const resizeMap = () => {
       mapRef.current?.resize();
-      console.log('[ResizeObserver] map.resize()');
     };
 
     const resizeObserver = new ResizeObserver(() => resizeMap());
@@ -37,7 +36,7 @@ const MapComponent: React.FC<{
   orders: Order[];
   isChatOpen: boolean;
 }> = ({ pizzeriaLocation, motoboys, orders, isChatOpen }) => {
-  const mapContainer = useRef<HTMLDivElement>(null);
+
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<mapboxgl.Map | null>(null);
 
@@ -52,6 +51,7 @@ const MapComponent: React.FC<{
   useMapResize(mapContainerRef, mapInstanceRef);
 
   const expandedMapContainer = useRef<HTMLDivElement | null>(null);
+  
   const expandedMapRef = useMapInitialization(
     expandedMapContainer,
     pizzeriaLocation,
@@ -60,11 +60,10 @@ const MapComponent: React.FC<{
       if (!expandedMapMarkers) return;
       const { addBaseMarker, addMotoboyMarkers, addOrderMarkers } = expandedMapMarkers;
       addBaseMarker();
-      addMotoboyMarkers();
+      addMotoboyMarkers(map);
       addOrderMarkers(map);
     }
   );
-
   const expandedMapMarkers = useMapMarkers(
     expandedMapRef.current,
     motoboys,
@@ -150,10 +149,18 @@ const MapComponent: React.FC<{
     if (mapInstance) {
       setTimeout(() => {
         mapInstance.resize();
-        console.log('[Effect] map.resize()');
       }, 350);
     }
   }, [isChatOpen, isSelectingRoute]);
+
+  useEffect(() => {
+    debugger
+    if (mapRef.current) {
+      console.log('Mapa inicializado, chamando addMotoboyMarkers...');
+      mainMapMarkers.addMotoboyMarkers(mapRef.current); // Chame a função aqui
+    }
+    console.log('deu errado, no if do mapInstanceRef.current', mapRef.current);
+  }, [mapRef.current, motoboys]); // Dependências do mapa e motoboys
 
   return (
     <div className={styles.mapComponentContainer} ref={mapContainerRef}>
@@ -212,7 +219,6 @@ const MapComponent: React.FC<{
               orders={orders.filter(order => order.status === 'pendente')}
               motoboys={motoboys}
               onConfirm={(selectedOrders, selectedMotoboy) => {
-                console.log('Confirmando pedidos:', selectedOrders, 'para motoboy:', selectedMotoboy);
                 setIsSelectingRoute(false);
               }}
               onCancel={handleCancelSelectOrdersMode}
