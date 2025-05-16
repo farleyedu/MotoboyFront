@@ -4,8 +4,9 @@
   gap: 20px;
   width: 100%;
   position: relative;
-  min-height: 570px; /* Garante espaço para os cards flutuantes */
   transition: width 0.3s ease, height 0.3s ease; /* Suaviza a transição quando o chat abre/fecha */
+  width: 100%;
+  height: 630px;
 }
 .orderPopupContainer {
   display: flex;
@@ -37,6 +38,8 @@
   background-color: #f0f0f0;
   transition: width 0.3s ease, height 0.3s ease; /* Suaviza a transição */
   overflow: visible;
+  width: 100%;
+  height: 630px;
 }
 
 .mapInner {
@@ -90,11 +93,12 @@
   padding: 0.5rem 1rem;
   background: none;
   z-index: 10;
-  overflow-x: auto;
   display: flex;
-  flex-wrap: nowrap;
   gap: 0.75rem;
   scrollbar-width: none;
+  flex-wrap: wrap;
+  pointer-events: auto;
+  z-index: 9999;
   /* Removido pointer-events: none */
 }
 
