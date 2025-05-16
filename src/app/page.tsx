@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import MapComponent from "@/components/ui/motoboy-map";
 import { Coordinates } from "@/components/ui/types";
+import { orders, motoboys } from "@/mocks/mockData";
 
 // Definição do tipo de status do motoboy
 type MotoboyStatus = "online" | "offline";
@@ -37,48 +38,18 @@ interface Order {
 export default function Home() {
   const pizzeriaLocation: [number, number] = [-48.2772, -18.9146];
 
-  // Os pedidos agora estão de acordo com a tipagem correta
-  const orders: Order[] = [
-    {
-      id: 1,
-      address: 'Av. Rondon Pacheco, 5000 - Tibery, Uberlândia - MG',
-      items: 'Hambúrguer Artesanal',
-      value: 'R$45.00',
-      region: 'Tibery',
-      status: 'pendente',
-      coordinates: [-48.2772, -18.9146],
-      horarioPedido: '18:00',
-      previsaoEntrega: '18:40',
-      horarioSaida: '18:15',
-      horarioEntrega: '18:50',
-    },
-    {
-      id: 2,
-      address: 'Rua Santos Dumont, 320 - Centro, Uberlândia - MG',
-      items: 'Esfirra de Carne',
-      value: 'R$30.00',
-      region: 'Centro',
-      status: 'em_rota',
-      coordinates: [-48.2772, -18.9146],
-      horarioPedido: '18:05',
-      previsaoEntrega: '18:45',
-      horarioSaida: '18:20',
-      horarioEntrega: '18:55',
-    }
-  ];
-  
-
   // Continuar com definição dos motoboys
-  const motoboys = Array.from({ length: 10 }, (_, i) => ({
-    id: i + 1,
-    name: `Motoboy ${String.fromCharCode(65 + i)}`,
-    avatar: `/img/motoMark.png`,
-    phone: `12345678${i}`,
-    vehicle: 'Moto',
-    status: (i % 2 === 0 ? 'online' : 'offline') as MotoboyStatus,
-    location: [-48.2772, -18.9146] as Coordinates,
-    deliveries: []
-  }));
+  // const motoboys = Array.from({ length: 10 }, (_, i) => ({
+  //   id: i + 1,
+  //   name: `Motoboy ${String.fromCharCode(65 + i)}`,
+  //   avatar: `/img/motoMark.png`,
+  //   phone: `12345678${i}`,
+  //   vehicle: 'Moto',
+  //   status: (i % 2 === 0 ? 'online' : 'offline') as MotoboyStatus,
+  //   location: [-48.2772, -18.9146] as Coordinates,
+  //   deliveries: []
+  // }));
+
   // Estados separados para cada card
   const [periodoTotal, setPeriodoTotal] = useState<"dia" | "semana" | "mes">("dia");
   const [periodoEntrega, setPeriodoEntrega] = useState<"dia" | "semana" | "mes">("dia");

@@ -66,7 +66,6 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
         if (isSelected !== -1) {
           const numberBadge = document.createElement('div');
           numberBadge.innerText = (isSelected + 1).toString();
-          numberBadge.style.position = 'absolute';
           numberBadge.style.top = '50%';
           numberBadge.style.left = '50%';
           numberBadge.style.transform = 'translate(-50%, -50%)';
@@ -88,7 +87,6 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     const el = document.createElement('div');
     el.style.width = '40px';
     el.style.height = '40px';
-    el.style.position = 'relative'; // RELATIVE, não absolute
     el.style.cursor = 'pointer';
     
     const img = document.createElement('img');

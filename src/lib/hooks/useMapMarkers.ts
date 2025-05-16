@@ -39,7 +39,6 @@ export default function useMapMarkers(
   };
 
   const addMotoboyMarkers = (targetMap: mapboxgl.Map) => {
-    debugger
     if (!targetMap) {
       console.log('Mapa não está inicializado!');
       return;
@@ -84,7 +83,6 @@ export default function useMapMarkers(
       const el = document.createElement('div');
       el.style.width = '40px';
       el.style.height = '40px';
-      el.style.position = 'absolute';
       el.style.cursor = 'pointer';
 
       const img = document.createElement('img');

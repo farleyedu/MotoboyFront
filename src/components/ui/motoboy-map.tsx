@@ -154,7 +154,6 @@ const MapComponent: React.FC<{
   }, [isChatOpen, isSelectingRoute]);
 
   useEffect(() => {
-    debugger
     if (mapRef.current) {
       console.log('Mapa inicializado, chamando addMotoboyMarkers...');
       mainMapMarkers.addMotoboyMarkers(mapRef.current); // Chame a função aqui
