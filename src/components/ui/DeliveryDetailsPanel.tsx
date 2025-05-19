@@ -32,11 +32,11 @@ const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({
       <div className={styles.motoboyProfile}>
         <img 
           src={motoboy.avatar || 'https://via.placeholder.com/80'} 
-          alt={`Foto de ${motoboy.name}`} 
+          alt={`Foto de ${motoboy.nome}`} 
           className={styles.motoboyAvatarLarge}
         />
         <div className={styles.profileInfo}>
-          <h4>{motoboy.name}</h4>
+          <h4>{motoboy.nome}</h4>
           <p><i className="fas fa-phone"></i> {motoboy.phone || '(Telefone não disponível)'}</p>
           <p><i className="fas fa-motorcycle"></i> {motoboy.vehicle || 'Veículo não especificado'}</p>
           <div className={`${styles.status} ${styles[motoboy.status]}`}>

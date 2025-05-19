@@ -1,9 +1,9 @@
 import React from 'react';
-import { Motoboy, Delivery } from './types';
+import { Motoboy, Delivery, MotoboyComPedidosDTO } from './types';
 import styles from '../../style/MotoboyCard.module.css';
 
 interface Props {
-    motoboy?: Motoboy;
+    motoboy?: MotoboyComPedidosDTO;
     onLocateMotoboy?: (id: number) => void;
     onShowDetails?: (id: number) => void;
     onHoverPedido?: (pedido: Delivery, index: number, all: Delivery[]) => void;
@@ -17,13 +17,13 @@ const MotoboyCard: React.FC<Props> = ({
     onHoverPedido = () => { },
     isActive = false,
 }) => {
-    const mockMotoboy: Motoboy = {
+    const mockMotoboy: MotoboyComPedidosDTO = {
         id: 1,
-        name: 'Michael Scott',
+        nome: 'Michael Scott',
         status: 'online',
         avatar: '',
         location: [-48.28, -18.91],
-        deliveries: [
+        pedidos: [
             { id: 1240, status: 'em_rota', address: '', items: '', value: '', departureTime: '', eta: '', etaMinutes: 0, coordinates: [0, 0] },
             { id: 1238, status: 'em_rota', address: '', items: '', value: '', departureTime: '', eta: '', etaMinutes: 0, coordinates: [0, 0] },
             { id: 1234, status: 'concluida', address: '', items: '', value: '', departureTime: '', eta: '', etaMinutes: 0, coordinates: [0, 0] },
@@ -36,9 +36,9 @@ const MotoboyCard: React.FC<Props> = ({
         ? finalMotoboy.avatar
         : 'assets/img/perfil-motoboy.jpg';
 
-    const retirados = finalMotoboy.deliveries.filter((d) => d.status === 'em_rota');
-    const concluidas = finalMotoboy.deliveries.filter((d) => d.status === 'concluida');
-    const proxima = finalMotoboy.deliveries.find((d) => d.status === 'proxima');
+        const retirados = (finalMotoboy.pedidos ?? []).filter((d) => d.status === 'em_rota');
+        const concluidas = (finalMotoboy.pedidos ?? []).filter((d) => d.status === 'concluida');
+        const proxima = (finalMotoboy.pedidos ?? []).find((d) => d.status === 'proxima');
 
     return (
         <div className={`${styles.card} ${isActive ? styles.active : ''}`}>
@@ -47,7 +47,7 @@ const MotoboyCard: React.FC<Props> = ({
                     <div className={styles.avatarWrapper}>
                         <img
                             src={imageUrl}
-                            alt={finalMotoboy.name}
+                            alt={finalMotoboy.nome}
                             className={styles.avatar}
                             width={36}
                             height={36}
@@ -60,7 +60,7 @@ const MotoboyCard: React.FC<Props> = ({
                         />
                     </div>
                     <div className={styles.titleBlock}>
-                        <h4 className={styles.name}>{finalMotoboy.name}</h4>
+                        <h4 className={styles.name}>{finalMotoboy.nome}</h4>
                         <span className={`${styles.status} ${styles[`status-${finalMotoboy.status}`]}`}>
                             {finalMotoboy.status}
                         </span>

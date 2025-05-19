@@ -1,10 +1,10 @@
 import { useRef, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { Coordinates, Motoboy, Order, MarkerRef } from '../../components/ui/types';
+import { Coordinates, Motoboy, Order, MarkerRef, MotoboyComPedidosDTO } from '../../components/ui/types';
 
 export default function useMapMarkers(
   map: mapboxgl.Map | null,
-  motoboys: Motoboy[],
+  motoboys: MotoboyComPedidosDTO[],
   orders: Order[],
   styles: Record<string, string>,
   activeMotoboyId: number | null,
@@ -68,15 +68,15 @@ export default function useMapMarkers(
       }
       const el = document.createElement('div');
       el.className = styles.motoboyMarker;
-      el.innerHTML = motoboy.name.charAt(0);
+      el.innerHTML = motoboy.nome.charAt(0);
 
       if (motoboy.id === activeMotoboyId) {
         el.classList.add(styles.activeMotoboy);
       }
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div class="${styles.markerPopup}">
-          <h3>${motoboy.name}</h3>
-          <p>${motoboy.deliveries.length} entregas em andamento</p>
+          <h3>${motoboy.nome}</h3>
+          <p>${motoboy.pedidos.length} entregas em andamento</p>
         </div>
       `);
 
@@ -138,17 +138,6 @@ export default function useMapMarkers(
     });
   };
 
-  const updateMarkerPositions = () => {
-    motoboyMarkers.current
-      .filter(m => m.isExpandedMap === isExpandedMap)
-      .forEach(markerObj => {
-        const motoboy = motoboys.find(m => m.id === markerObj.id);
-        if (motoboy) {
-          markerObj.marker.setLngLat(motoboy.location);
-        }
-      });
-  };
-
   const flyTo = (coordinates: Coordinates, zoom = 15) => {
     if (!map) return;
     map.flyTo({ center: coordinates, zoom, essential: true });
@@ -161,6 +150,18 @@ export default function useMapMarkers(
     // Lógica para desenhar a rota até o pedido
     map.flyTo({ center: order.coordinates, zoom: 15, essential: true });
   };
+
+  // 🔁 NOVO: Atualização externa da localização dos motoboys
+const updateMarkerPositions = (updatedMotoboys: Motoboy[]) => {
+  motoboyMarkers.current
+    .filter(m => m.isExpandedMap === isExpandedMap)
+    .forEach(markerObj => {
+      const updated = updatedMotoboys.find(m => m.id === markerObj.id);
+      if (updated) {
+        markerObj.marker.setLngLat(updated.location);
+      }
+    });
+};
 
   return {
     motoboyMarkers,

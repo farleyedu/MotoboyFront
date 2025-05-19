@@ -164,7 +164,7 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
                   onClick={() => setSelectedMotoboy(motoboy)}
                   className={`${styles.motoboy} ${selectedMotoboy?.id === motoboy.id ? styles.motoboySelected : ''}`}
                 >
-                  {motoboy.name[0]}
+                  {motoboy.nome[0]}
                 </div>
               ))}
           </div>

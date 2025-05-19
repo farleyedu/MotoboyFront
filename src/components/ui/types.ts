@@ -44,13 +44,23 @@ export interface Delivery {
  */
 export interface Motoboy {
   id: number;
-  name: string;
+  nome: string;
   avatar?: string;
   phone?: string;
   vehicle?: string;
   status: MotoboyStatus;
   location: Coordinates;
-  deliveries: Delivery[];
+}
+
+export interface MotoboyComPedidosDTO {
+  id: number;
+  nome: string;
+  avatar?: string;
+  phone?: string;
+  vehicle?: string;
+  status: MotoboyStatus;
+  location: Coordinates;
+  pedidos: Delivery[];
 }
 
 /**

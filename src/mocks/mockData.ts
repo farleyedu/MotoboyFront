@@ -1,67 +1,55 @@
 // // src/mocks/mockData.ts
 
- import { Coordinates, Motoboy, Order } from '../components/ui/types';
+ import { Coordinates, Motoboy, MotoboyComPedidosDTO, Order } from '../components/ui/types';
 
-const motoboys: Motoboy[] = [
+const motoboys: MotoboyComPedidosDTO[] = [
   {
     id: 1,
-    name: "João Motoboy",
+    nome: "João Motoboy",
     //avatar: "https://via.placeholder.com/50",
-    phone: "123456789",
-    vehicle: "Moto",
     status: "online",
     location: [-48.2791, -18.9143] as Coordinates,
-    deliveries: []
+    pedidos: []
   },
   {
     id: 2,
-    name: "Natanael Motoboy",
+    nome: "Natanael Motoboy",
     //avatar: "https://via.placeholder.com/50",
-    phone: "987654321",
-    vehicle: "Scooter",
     status: "online",
     location: [-48.321615, -18.913916] as Coordinates,
-    deliveries: []
+    pedidos: []
   },
   {
     id: 3,
-    name: "Patrick Motoboy",
+    nome: "Patrick Motoboy",
     //avatar: "https://via.placeholder.com/50",
-    phone: "987654321",
-    vehicle: "Scooter",
     status: "offline",
     location: [-48.279946, -18.943977] as Coordinates,
-    deliveries: []
+    pedidos: []
   },
   {
     id: 4,
-    name: "Arthur Motoboy",
+    nome: "Arthur Motoboy",
     //avatar: "https://via.placeholder.com/50",
-    phone: "987654321",
-    vehicle: "Scooter",
     status: "online",
-    location: [-48.239867, -18.956281] as Coordinates, 
-    deliveries: []
+    location: [-48.239867, -18.956281] as Coordinates,
+    pedidos: []
   },
   {
     id: 5,
-    name: "Maria Motoboy",
+    nome: "Maria Motoboy",
     //avatar: "https://via.placeholder.com/50",
-    phone: "987654321",
-    vehicle: "Scooter",
     status: "offline",
     location: [-48.279946, -18.943977] as Coordinates,
-    deliveries: []
+    pedidos: []
   },
   {
     id: 6,
-    name: "Derson Motoboy",
+    nome: "Derson Motoboy",
     //avatar: "https://via.placeholder.com/50",
-    phone: "987654321",
-    vehicle: "Scooter",
     status: "offline",
-    location: [-48.260377, -18.885650] as Coordinates, 
-    deliveries: []
+    location: [-48.260377, -18.885650] as Coordinates,
+    pedidos: []
   }
 ];
 
