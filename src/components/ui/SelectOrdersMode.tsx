@@ -21,20 +21,21 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
   const [selectedOrders, setSelectedOrders] = useState<Order[]>([]);
   const [selectedMotoboy, setSelectedMotoboy] = useState<Motoboy | null>(null);
   const markersRef = useRef<Record<number, mapboxgl.Marker>>({});
+  const [showMotoboyWarning, setShowMotoboyWarning] = useState(false);
 
   useEffect(() => {
     selectedOrders.forEach((order, index) => {
       const marker = markersRef.current[order.id];
       if (!marker) return;
-  
+
       const el = marker.getElement();
       const badge = el.querySelector('[data-badge]') as HTMLDivElement | null;
-  
+
       if (badge) {
         badge.innerText = (index + 1).toString();
       }
     });
-  
+
     // Remover número de quem não está mais selecionado
     Object.entries(markersRef.current).forEach(([id, marker]) => {
       const el = marker.getElement();
@@ -45,15 +46,15 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
       }
     });
   }, [selectedOrders]);
-  
+
 
 
   const mapCenter: Coordinates =
     orders.length > 0
       ? [
-          orders.reduce((acc, order) => acc + order.coordinates[0], 0) / orders.length,
-          orders.reduce((acc, order) => acc + order.coordinates[1], 0) / orders.length,
-        ]
+        orders.reduce((acc, order) => acc + order.coordinates[0], 0) / orders.length,
+        orders.reduce((acc, order) => acc + order.coordinates[1], 0) / orders.length,
+      ]
       : [-48.2772, -18.9146];
 
   const handleMapLoaded = (map: mapboxgl.Map) => {
@@ -73,12 +74,17 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     el.style.width = '40px';
     el.style.height = '40px';
     el.style.cursor = 'pointer';
-    el.style.display = 'flex';
-    el.style.alignItems = 'center';
-    el.style.justifyContent = 'center';
-    el.style.position = 'relative';
-    el.setAttribute('data-selected', 'false');
-  
+
+    // ⚠️ Removido position/align/etc do el
+
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.style.width = '100%';
+    wrapper.style.height = '100%';
+    wrapper.style.display = 'flex';
+    wrapper.style.alignItems = 'center';
+    wrapper.style.justifyContent = 'center';
+
     const img = document.createElement('img');
     img.src = '/assets/img/pinPNG.png';
     img.style.width = '100%';
@@ -87,10 +93,8 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     img.style.pointerEvents = 'none';
     img.style.transition = 'transform 0.2s ease';
     img.setAttribute('data-marker-img', 'true');
-    el.appendChild(img);
-  
+
     const badge = document.createElement('div');
-    badge.className = 'order-number-badge';
     badge.setAttribute('data-badge', 'true');
     badge.style.position = 'absolute';
     badge.style.top = '50%';
@@ -102,11 +106,17 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     badge.style.textShadow = '0 0 2px black';
     badge.style.pointerEvents = 'none';
     badge.style.zIndex = '2';
-    el.appendChild(badge);
-  
+    badge.style.transition = 'opacity 0.2s ease';
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(badge);
+    el.appendChild(wrapper);
+
+    el.setAttribute('data-selected', 'false');
+
     el.addEventListener('click', () => {
       const isAlreadySelected = el.getAttribute('data-selected') === 'true';
-  
+
       if (isAlreadySelected) {
         img.style.transform = 'scale(1)';
         el.setAttribute('data-selected', 'false');
@@ -117,14 +127,21 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
         setSelectedOrders((prev) => [...prev, order]);
       }
     });
-  
+
     return el;
   };
-  
-  
+
+
+
 
   const handleConfirm = () => {
-    if (selectedOrders.length > 0 && selectedMotoboy) {
+    if (!selectedMotoboy) {
+      setShowMotoboyWarning(true);
+      setTimeout(() => setShowMotoboyWarning(false), 2000);
+      return;
+    }
+
+    if (selectedOrders.length > 0) {
       onConfirm(selectedOrders, selectedMotoboy);
     }
   };
@@ -133,22 +150,29 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     <div className={styles.container} style={{ zIndex: isChatOpen ? 10 : 5 }}>
       <div className={styles.mapContainer} ref={mapContainer}>
         <div className={styles.overlay}>
+          {showMotoboyWarning && (
+            <div className={styles.warningText}>
+              Selecione um motoboy primeiro
+            </div>
+          )}
           <div className={styles.motoboyList}>
-            {motoboys.map((motoboy) => (
-              <div
-                key={motoboy.id}
-                onClick={() => setSelectedMotoboy(motoboy)}
-                className={`${styles.motoboy} ${selectedMotoboy?.id === motoboy.id ? styles.motoboySelected : ''}`}
-              >
-                {motoboy.name[0]}
-              </div>
-            ))}
+            {motoboys
+              .filter(m => m.status === 'online')
+              .map((motoboy) => (
+                <div
+                  key={motoboy.id}
+                  onClick={() => setSelectedMotoboy(motoboy)}
+                  className={`${styles.motoboy} ${selectedMotoboy?.id === motoboy.id ? styles.motoboySelected : ''}`}
+                >
+                  {motoboy.name[0]}
+                </div>
+              ))}
           </div>
 
           <div className={styles.buttonGroup}>
             <button
               onClick={handleConfirm}
-              disabled={!selectedMotoboy || selectedOrders.length === 0}
+              disabled={false}
               className={styles.confirmButton}
             >
               Confirmar ({selectedOrders.length}) pedidos

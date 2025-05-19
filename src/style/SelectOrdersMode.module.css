@@ -106,4 +106,25 @@
     border-radius: 12px;
     font-size: 12px;
   }
+
+.warningText {
+  position: relative;
+  bottom: 100px; /* Fica acima da lista de motoboys */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(231, 76, 60, 0.9);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 20;
+  animation: fadeOut 2s forwards;
+}
+  
+  @keyframes fadeOut {
+    0%   { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
   
