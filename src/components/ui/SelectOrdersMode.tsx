@@ -22,6 +22,32 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
   const [selectedMotoboy, setSelectedMotoboy] = useState<Motoboy | null>(null);
   const markersRef = useRef<Record<number, mapboxgl.Marker>>({});
 
+  useEffect(() => {
+    selectedOrders.forEach((order, index) => {
+      const marker = markersRef.current[order.id];
+      if (!marker) return;
+  
+      const el = marker.getElement();
+      const badge = el.querySelector('[data-badge]') as HTMLDivElement | null;
+  
+      if (badge) {
+        badge.innerText = (index + 1).toString();
+      }
+    });
+  
+    // Remover número de quem não está mais selecionado
+    Object.entries(markersRef.current).forEach(([id, marker]) => {
+      const el = marker.getElement();
+      const badge = el.querySelector('[data-badge]') as HTMLDivElement | null;
+      const stillSelected = selectedOrders.find(o => o.id === parseInt(id));
+      if (!stillSelected && badge) {
+        badge.innerText = '';
+      }
+    });
+  }, [selectedOrders]);
+  
+
+
   const mapCenter: Coordinates =
     orders.length > 0
       ? [
@@ -50,6 +76,7 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     el.style.display = 'flex';
     el.style.alignItems = 'center';
     el.style.justifyContent = 'center';
+    el.style.position = 'relative';
     el.setAttribute('data-selected', 'false');
   
     const img = document.createElement('img');
@@ -60,14 +87,26 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     img.style.pointerEvents = 'none';
     img.style.transition = 'transform 0.2s ease';
     img.setAttribute('data-marker-img', 'true');
-  
     el.appendChild(img);
+  
+    const badge = document.createElement('div');
+    badge.className = 'order-number-badge';
+    badge.setAttribute('data-badge', 'true');
+    badge.style.position = 'absolute';
+    badge.style.top = '50%';
+    badge.style.left = '50%';
+    badge.style.transform = 'translate(-50%, -50%)';
+    badge.style.color = 'white';
+    badge.style.fontWeight = 'bold';
+    badge.style.fontSize = '14px';
+    badge.style.textShadow = '0 0 2px black';
+    badge.style.pointerEvents = 'none';
+    badge.style.zIndex = '2';
+    el.appendChild(badge);
   
     el.addEventListener('click', () => {
       const isAlreadySelected = el.getAttribute('data-selected') === 'true';
-    
-      const img = el.querySelector('[data-marker-img]') as HTMLImageElement;
-    
+  
       if (isAlreadySelected) {
         img.style.transform = 'scale(1)';
         el.setAttribute('data-selected', 'false');
@@ -81,6 +120,7 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
   
     return el;
   };
+  
   
 
   const handleConfirm = () => {
