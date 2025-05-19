@@ -13,9 +13,7 @@ interface SelectOrdersModeProps {
 }
 
 const MapOnly = ({ mapContainer }: { mapContainer: React.RefObject<HTMLDivElement | null> }) => {
-  return (
-    <div ref={mapContainer} className={styles.mapContainer} />
-  );
+  return <div ref={mapContainer} className={styles.mapContainer} />;
 };
 
 export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel, isChatOpen }: SelectOrdersModeProps) {
@@ -24,12 +22,13 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
   const [selectedMotoboy, setSelectedMotoboy] = useState<Motoboy | null>(null);
   const markersRef = useRef<Record<number, mapboxgl.Marker>>({});
 
-  const mapCenter: Coordinates = orders.length > 0
-    ? [
-        orders.reduce((acc, order) => acc + order.coordinates[0], 0) / orders.length,
-        orders.reduce((acc, order) => acc + order.coordinates[1], 0) / orders.length
-      ]
-    : [-48.2772, -18.9146];
+  const mapCenter: Coordinates =
+    orders.length > 0
+      ? [
+          orders.reduce((acc, order) => acc + order.coordinates[0], 0) / orders.length,
+          orders.reduce((acc, order) => acc + order.coordinates[1], 0) / orders.length,
+        ]
+      : [-48.2772, -18.9146];
 
   const handleMapLoaded = (map: mapboxgl.Map) => {
     orders.forEach((order) => {
@@ -41,82 +40,48 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     });
   };
 
-  function useMapResize(
-    mapRef: React.MutableRefObject<mapboxgl.Map | null>,
-    dependencies: any[]
-  ) {
-    useEffect(() => {
-      Object.entries(markersRef.current).forEach(([id, marker]) => {
-        const el = marker.getElement();
-    
-        // Limpa o conteúdo anterior
-        el.innerHTML = '';
-    
-        const img = document.createElement('img');
-        img.src = '/assets/img/pinPNG.png';
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
-        img.style.borderRadius = '50%';
-        img.style.pointerEvents = 'none';
-    
-        el.appendChild(img);
-    
-        const isSelected = selectedOrders.findIndex(o => o.id === parseInt(id));
-        if (isSelected !== -1) {
-          const numberBadge = document.createElement('div');
-          numberBadge.innerText = (isSelected + 1).toString();
-          numberBadge.style.top = '50%';
-          numberBadge.style.left = '50%';
-          numberBadge.style.transform = 'translate(-50%, -50%)';
-          numberBadge.style.color = 'white';
-          numberBadge.style.fontWeight = 'bold';
-          numberBadge.style.fontSize = '16px';
-          numberBadge.style.textShadow = '0 0 2px black';
-          el.appendChild(numberBadge);
-        }
-      });
-    }, [selectedOrders]);
-    
-  }
-
   const mapRef = useMapInitialization(mapContainer, mapCenter, true, handleMapLoaded);
-  useMapResize(mapRef, [isChatOpen]);
 
   const createMarkerElement = (order: Order) => {
     const el = document.createElement('div');
     el.style.width = '40px';
     el.style.height = '40px';
     el.style.cursor = 'pointer';
-    
+    el.style.display = 'flex';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'center';
+    el.setAttribute('data-selected', 'false');
+  
     const img = document.createElement('img');
     img.src = '/assets/img/pinPNG.png';
     img.style.width = '100%';
     img.style.height = '100%';
     img.style.objectFit = 'contain';
     img.style.pointerEvents = 'none';
-    
+    img.style.transition = 'transform 0.2s ease';
+    img.setAttribute('data-marker-img', 'true');
+  
     el.appendChild(img);
   
-    el.addEventListener('click', () => toggleOrder(order));
+    el.addEventListener('click', () => {
+      const isAlreadySelected = el.getAttribute('data-selected') === 'true';
+    
+      const img = el.querySelector('[data-marker-img]') as HTMLImageElement;
+    
+      if (isAlreadySelected) {
+        img.style.transform = 'scale(1)';
+        el.setAttribute('data-selected', 'false');
+        setSelectedOrders((prev) => prev.filter(o => o.id !== order.id));
+      } else {
+        img.style.transform = 'scale(1.4)';
+        el.setAttribute('data-selected', 'true');
+        setSelectedOrders((prev) => [...prev, order]);
+      }
+    });
   
     return el;
   };
   
-  
-  
-  
-
-
-  const toggleOrder = (order: Order) => {
-    setSelectedOrders((prev) => {
-      if (prev.find(o => o.id === order.id)) {
-        return prev.filter(o => o.id !== order.id);
-      } else {
-        return [...prev, order];
-      }
-    });
-  };
 
   const handleConfirm = () => {
     if (selectedOrders.length > 0 && selectedMotoboy) {
@@ -148,10 +113,7 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
             >
               Confirmar ({selectedOrders.length}) pedidos
             </button>
-            <button
-              onClick={onCancel}
-              className={styles.cancelButton}
-            >
+            <button onClick={onCancel} className={styles.cancelButton}>
               Cancelar
             </button>
           </div>
@@ -160,7 +122,7 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
             <div className={styles.selectedOrders}>
               <div className={styles.selectedOrdersTitle}>Pedidos selecionados:</div>
               <div className={styles.selectedOrdersList}>
-                {selectedOrders.map(order => (
+                {selectedOrders.map((order) => (
                   <span key={order.id} className={styles.orderBadge}>
                     #{order.id}
                   </span>
