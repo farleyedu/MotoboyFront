@@ -29,13 +29,33 @@ export default function useMapMarkers(
     orderMarkers.current = [];
   };
 
-  const addBaseMarker = () => {
-    if (!map) return;
-
-    new mapboxgl.Marker({ color: '#e74c3c', scale: 1.2 })
+  const addBaseMarker = (targetMap: mapboxgl.Map) => {
+    if (!targetMap) return;
+  
+    const el = document.createElement('div');
+    el.style.display = 'flex';
+    el.style.flexDirection = 'column';
+    el.style.alignItems = 'center';
+    
+    const icon = document.createElement('img');
+    icon.src = '/assets/img/store.png'; // ícone da loja
+    icon.style.width = '36px';
+    icon.style.height = '36px';
+    icon.style.objectFit = 'contain';
+    
+    const label = document.createElement('span');
+    label.innerText = 'Store';
+    label.style.marginTop = '2px';
+    label.style.fontSize = '12px';
+    label.style.color = '#333';
+    label.style.fontWeight = 'bold';
+    
+    el.appendChild(icon);
+    el.appendChild(label);
+    
+    new mapboxgl.Marker(el)
       .setLngLat(baseLocation)
-      .setPopup(new mapboxgl.Popup().setHTML('<h3>Pizzaria</h3><p>Sede</p>'))
-      .addTo(map);
+      .addTo(targetMap);
   };
 
   const addMotoboyMarkers = (targetMap: mapboxgl.Map) => {
@@ -76,29 +96,44 @@ export default function useMapMarkers(
 
   const addOrderMarkers = (targetMap: mapboxgl.Map) => {
     orders.forEach(order => {
+      debugger;
       const coords = order.coordinates;
       const el = document.createElement('div');
       el.style.width = '40px';
       el.style.height = '40px';
       el.style.cursor = 'pointer';
-
+  
       const img = document.createElement('img');
       img.style.width = '100%';
       img.style.height = '100%';
       img.style.objectFit = 'contain';
       img.style.pointerEvents = 'none';
-      img.src = '/assets/img/pinPNG.png';
-
+  
+      // 🔽 Aqui o switch por status
+      switch (order.status) {
+        case 'pendente':
+          img.src = '/assets/img/pinPNG.png';
+          break;
+        case 'em_rota':
+          img.src = '/assets/img/pin-em-rota.png';
+          break;
+        case 'concluido':
+          img.src = '/assets/img/pin-concluido.png';
+          break;
+        default:
+          img.src = '/assets/img/pin-default.png';
+      }
+  
       el.appendChild(img);
-
+  
       const marker = new mapboxgl.Marker({ element: el })
         .setLngLat(coords)
         .addTo(targetMap);
-
+  
       marker.getElement().addEventListener('click', () => {
-        setSelectedOrder(order); // ✅ Atualiza o pedido clicado
+        setSelectedOrder(order);
       });
-
+  
       orderMarkers.current.push(marker);
     });
   };

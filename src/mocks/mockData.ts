@@ -140,12 +140,12 @@ const orders: Order[] = [
   },
   {
     id: 5,
-    address: 'Av. Floriano Peixoto, 300 - Brasil, Uberlândia - MG',
+    address: 'R. Pirapora, 410 - Tibery, Uberlândia - MG',
     items: 'Sushi Combo',
     value: 'R$60.00',
     region: 'Brasil',
     status: 'em_rota',
-    coordinates: [-48.27750358437522, -18.920043431119364],
+    coordinates: [-48.237514136828594, -18.904548455707445], //-, -
     horarioPedido: '18:20',
     previsaoEntrega: '19:00',
     horarioSaida: '18:35',
@@ -158,12 +158,12 @@ const orders: Order[] = [
   },
   {
     id: 6,
-    address: 'Rua Duque de Caxias, 400 - Osvaldo Rezende, Uberlândia - MG',
+    address: 'R. Paschoal Bruno, 957 - Santa Luzia, Uberlândia - MG',
     items: 'Churrasco Misto',
     value: 'R$70.00',
     region: 'Osvaldo Rezende',
     status: 'em_rota',
-    coordinates: [-48.2767143498329, -18.920612486677978],
+    coordinates: [-48.22828633993229, -18.941062305885794], //-, -
     horarioPedido: '18:25',
     previsaoEntrega: '19:05',
     horarioSaida: '18:40',
@@ -176,12 +176,12 @@ const orders: Order[] = [
   },
   {
     id: 7,
-    address: 'Av. João Pinheiro, 500 - Fundinho, Uberlândia - MG',
+    address: 'R. Marceli Manoel Barcelos, 328 - Jardim Ipanema, Uberlândia - MG',
     items: 'Feijoada Completa',
     value: 'R$55.00',
     region: 'Fundinho',
     status: 'em_rota',
-    coordinates: [-48.27989471537011, -18.918380171495865],
+    coordinates: [-48.218259212949086, -18.881982330066943], //-, -
     horarioPedido: '18:30',
     previsaoEntrega: '19:10',
     horarioSaida: '18:45',
@@ -194,12 +194,12 @@ const orders: Order[] = [
   },
   {
     id: 8,
-    address: 'Rua Olegário Maciel, 600 - Aparecida, Uberlândia - MG',
+    address: 'Av. Sucupira, 662 - Res. Integração, Uberlândia - MG',
     items: 'Macarrão à Bolonhesa',
     value: 'R$40.00',
     region: 'Aparecida',
     status: 'em_rota',
-    coordinates: [-48.27799542029218, -18.921182855055978],
+    coordinates: [-48.205430493083256, -18.914325872534896], //-, -
     horarioPedido: '18:35',
     previsaoEntrega: '19:15',
     horarioSaida: '18:50',
@@ -212,12 +212,12 @@ const orders: Order[] = [
   },
   {
     id: 9,
-    address: 'Av. Cesário Alvim, 700 - Cazeca, Uberlândia - MG',
+    address: 'R. José Rezende dos Santos, 1705 - Brasil, Uberlândia - MG',
     items: 'Salada Caesar',
     value: 'R$25.00',
     region: 'Cazeca',
     status: 'em_rota',
-    coordinates: [-48.27353781537293, -18.917587554729607],
+    coordinates: [-48.26569595560473, -18.886863650723328], //-, -
     horarioPedido: '18:40',
     previsaoEntrega: '19:20',
     horarioSaida: '18:55',
@@ -248,12 +248,12 @@ const orders: Order[] = [
   },
     {
     id: 11,
-    address: 'Av. João Naves de Ávila, 900 - Santa Mônica, Uberlândia - MG',
+    address: 'Rua Pirapuã, 140 - Jardim Karaíba, Uberlândia - MG',
     items: 'Pizza Margherita',
     value: 'R$45.00',
     region: 'Santa Mônica',
     status: 'em_rota',
-    coordinates: [-48.265333252499495, -18.912091519297093],
+    coordinates: [-48.26160173452336, -18.948079040448224], //-, -
     horarioPedido: '18:50',
     previsaoEntrega: '19:30',
     horarioSaida: '19:05',
@@ -266,12 +266,12 @@ const orders: Order[] = [
   },
   {
     id: 12,
-    address: 'Rua Tenente Virmondes, 1000 - Centro, Uberlândia - MG',
+    address: 'R. Reginaldo Sobreira da Silva, 145 - Shopping Park, Uberlândia - MG',
     items: 'Esfirra de Frango',
     value: 'R$30.00',
     region: 'Centro',
     status: 'em_rota',
-    coordinates: [-48.272673044201305, -18.920690208645595],
+    coordinates: [-48.265951019177194, -18.991141724994524], //-, -
     horarioPedido: '18:55',
     previsaoEntrega: '19:35',
     horarioSaida: '19:10',
@@ -284,12 +284,12 @@ const orders: Order[] = [
   },
   {
     id: 13,
-    address: 'Av. Rondon Pacheco, 238 - Tibery, Uberlândia - MG',
+    address: 'R. Rosângela Pena Cordeiro, 42 - Shopping Park, Uberlândia - MG',
     items: 'Hambúrguer Vegano',
     value: 'R$40.00',
     region: 'Tibery',
     status: 'em_rota',
-    coordinates: [-48.25399951535756, -18.89504986567893],
+    coordinates: [-48.268710594498955, -18.978219021553063], //-, -
     horarioPedido: '19:00',
     previsaoEntrega: '19:40',
     horarioSaida: '19:15',
@@ -302,12 +302,12 @@ const orders: Order[] = [
   },
   {
     id: 14,
-    address: 'Rua Goiás, 1200 - Martins, Uberlândia - MG',
+    address: 'R. do Feirante, 1222 - Planalto, Uberlândia - MG',
     items: 'Lasanha de Legumes',
     value: 'R$35.00',
     region: 'Martins',
     status: 'em_rota',
-    coordinates: [-48.2845509442108, -18.91946825711421],
+    coordinates: [-48.318062458931905, -18.938010113192647], //-, -
     horarioPedido: '19:05',
     previsaoEntrega: '19:45',
     horarioSaida: '19:20',
@@ -356,57 +356,42 @@ const orders: Order[] = [
   },
   {
     id: 17,
-    address: 'Av. João Pinheiro, 1500 - Fundinho, Uberlândia - MG',
+    address: 'R. Josephina de Souza Leite, 203 - Nova Uberlândia, Uberlândia - MG',
     items: 'Feijoada Light',
     value: 'R$55.00',
     region: 'Fundinho',
     status: 'pendente',
-    coordinates: [-48.27310891141437, -18.90990720252138],
+    coordinates: [-48.30472288901687, -18.955364557842657], //-, -
     horarioPedido: '19:20',
     previsaoEntrega: '20:00',
     horarioSaida: '',
     horarioEntrega: '',
-    motoboy: {
-      name: 'João Motoboy',
-      avatar: '',
-      status: 'online'
-    }
   },
   {
     id: 18,
-    address: 'Rua Olegário Maciel, 1600 - Aparecida, Uberlândia - MG',
+    address: 'R. Maria Antônieta Dantas, 187 - Dona Zulmira, Uberlândia - MG',
     items: 'Macarrão Integral',
     value: 'R$40.00',
     region: 'Aparecida',
     status: 'pendente',
-    coordinates: [-48.271123703574865, -18.925776686336015],
+    coordinates: [-48.31601362218728, -18.915006139956102], //-, -
     horarioPedido: '19:25',
     previsaoEntrega: '20:05',
     horarioSaida: '',
     horarioEntrega: '',
-    motoboy: {
-      name: 'Natanael Motoboy',
-      avatar: '',
-      status: 'online'
-    }
   },
   {
     id: 19,
-    address: 'Rua Francisco Zumpano, 220 – Cazeca, Uberlândia - MG',
+    address: 'R. Interplanetária, 722 - Jardim Brasília, Uberlândia - MG',
     items: 'Pizza Calabresa',
     value: 'R$50.00',
     region: 'Cazeca',
     status: 'pendente',
-    coordinates: [-48.267600554147606, -18.915440269816493],
+    coordinates: [-48.30365114272393, -18.897078405852827], //-, -
     horarioPedido: '18:00',
     previsaoEntrega: '18:40',
     horarioSaida: '',
     horarioEntrega: '',
-    motoboy: {
-      name: 'Arthur Motoboy',
-      avatar: '',
-      status: 'online'
-    }
   },
   {
     id: 20,
@@ -420,11 +405,6 @@ const orders: Order[] = [
     previsaoEntrega: '18:40',
     horarioSaida: '',
     horarioEntrega: '',
-    motoboy: {
-      name: 'João Motoboy',
-      avatar: '',
-      status: 'online'
-    }
   },
     {
     id: 21,
@@ -438,29 +418,19 @@ const orders: Order[] = [
     previsaoEntrega: '18:40',
     horarioSaida: '',
     horarioEntrega: '',
-    motoboy: {
-      name: 'João Motoboy',
-      avatar: '',
-      status: 'online'
-    }
   },
   {
     id: 22,
-    address: 'Rua Rivalino Pereira, 846 – Martins, Uberlândia - MG',
+    address: 'R. Manoel Maurício Araújo, 140 - Maravilha, Uberlândia - MG',
     items: 'Pizza Calabresa',
     value: 'R$50.00',
     region: 'Martins',
     status: 'pendente',
-    coordinates: [-48.280928220991896, -18.905511518922435],
+    coordinates: [-48.29853980827422, -18.884278815262004], //-, -
     horarioPedido: '18:00',
     previsaoEntrega: '18:40',
     horarioSaida: '',
     horarioEntrega: '',
-    motoboy: {
-      name: 'Natanael Motoboy',
-      avatar: '',
-      status: 'online'
-    }
   },
   {
     id: 23,
@@ -474,29 +444,19 @@ const orders: Order[] = [
     previsaoEntrega: '18:40',
     horarioSaida: '',
     horarioEntrega: '',
-    motoboy: {
-      name: 'Arthur Motoboy',
-      avatar: '',
-      status: 'online'
-    }
   },
   {
     id: 24,
-    address: 'Rua José Pedro Ferreira, 159 – Martinésia, Uberlândia - MG',
+    address: 'Rua República do Piratini, 204, Uberlândia - MG',
     items: 'Pizza Calabresa',
     value: 'R$50.00',
     region: 'Martinésia',
     status: 'pendente',
-    coordinates: [-48.42021133232419, -18.746285543492125],
+    coordinates: [-48.268945460038445, -18.87434448948697], //-, -
     horarioPedido: '18:00',
     previsaoEntrega: '18:40',
     horarioSaida: '',
     horarioEntrega: '',
-    motoboy: {
-      name: 'João Motoboy',
-      avatar: '',
-      status: 'online'
-    }
   },
   {
     id: 26,
@@ -510,11 +470,6 @@ const orders: Order[] = [
     previsaoEntrega: '18:40',
     horarioSaida: '',
     horarioEntrega: '',
-    motoboy: {
-      name: 'Natanael Motoboy',
-      avatar: '',
-      status: 'online'
-    }
   },
   {
     id: 27,
@@ -554,12 +509,12 @@ const orders: Order[] = [
   },
   {
     id: 29,
-    address: 'Rua Mário Rezende Ribeiro, 450 – Osvaldo Rezende, Uberlândia - MG',
+    address: 'R. Serra do Tombador, 752 - São Jorge, Uberlândia - MG',
     items: 'Pizza Calabresa',
     value: 'R$50.00',
     region: 'Osvaldo Rezende',
     status: 'concluido',
-    coordinates: [-48.26555433711165, -18.91670131602251],
+    coordinates: [-48.22938210435599, -18.96774583949544], //-, -
     horarioPedido: '18:00',
     previsaoEntrega: '18:40',
     horarioSaida: '18:15',
@@ -572,12 +527,12 @@ const orders: Order[] = [
   },
   {
     id: 30,
-    address: 'Rua Ipiranga, 500 – Osvaldo Rezende, Uberlândia - MG',
+    address: 'R. do Morango, 296 - Pacaembu, Uberlândia - MG',
     items: 'Pizza Calabresa',
     value: 'R$50.00',
     region: 'Osvaldo Rezende',
     status: 'concluido',
-    coordinates: [-48.267289453568, -18.91441597768813],
+    coordinates: [-48.296010426428815, -18.881096449810958], //-, -
     horarioPedido: '18:00',
     previsaoEntrega: '18:40',
     horarioSaida: '18:15',

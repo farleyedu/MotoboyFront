@@ -20,7 +20,7 @@ export default function useMapInitialization(
       container: containerRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
       center,
-      zoom: 13,
+      zoom: 12.5,
     });
 
     mapRef.current = map;

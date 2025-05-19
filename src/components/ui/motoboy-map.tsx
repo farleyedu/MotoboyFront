@@ -59,7 +59,7 @@ const MapComponent: React.FC<{
     (map) => {
       if (!expandedMapMarkers) return;
       const { addBaseMarker, addMotoboyMarkers, addOrderMarkers } = expandedMapMarkers;
-      addBaseMarker();
+      addBaseMarker(map);
       addMotoboyMarkers(map);
       addOrderMarkers(map);
     }
@@ -110,31 +110,8 @@ const MapComponent: React.FC<{
   };
 
   const handleMapLoaded = (map: mapboxgl.Map) => {
-    // Para cada pedido, crie um marcador com manipulador de clique
-    orders.forEach((order) => {
-      const el = document.createElement('div');
-      el.style.width = '40px';
-      el.style.height = '40px';
-      el.style.position = 'absolute';
-      el.style.cursor = 'pointer';
-
-      const img = document.createElement('img');
-      img.src = '/assets/img/pinPNG.png';
-      img.style.width = '100%';
-      img.style.height = '100%';
-      img.style.objectFit = 'contain';
-      img.style.pointerEvents = 'none';
-
-      el.appendChild(img);
-
-      el.addEventListener('click', () => {
-        setSelectedOrder(order);  // Define o pedido correto
-      });
-
-      new mapboxgl.Marker({ element: el })
-        .setLngLat(order.coordinates)
-        .addTo(map);
-    });
+    mainMapMarkers.addOrderMarkers(map);
+    mainMapMarkers.addBaseMarker(map); // opcional: marca pizzaria
   };
 
   const mapRef = useMapInitialization(mapContainerRef, pizzeriaLocation, true, handleMapLoaded);
