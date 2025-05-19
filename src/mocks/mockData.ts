@@ -2,56 +2,6 @@
 
  import { Coordinates, Motoboy, MotoboyComPedidosDTO, Order } from '../components/ui/types';
 
-const motoboys: MotoboyComPedidosDTO[] = [
-  {
-    id: 1,
-    nome: "João Motoboy",
-    //avatar: "https://via.placeholder.com/50",
-    status: "online",
-    location: [-48.2791, -18.9143] as Coordinates,
-    pedidos: []
-  },
-  {
-    id: 2,
-    nome: "Natanael Motoboy",
-    //avatar: "https://via.placeholder.com/50",
-    status: "online",
-    location: [-48.321615, -18.913916] as Coordinates,
-    pedidos: []
-  },
-  {
-    id: 3,
-    nome: "Patrick Motoboy",
-    //avatar: "https://via.placeholder.com/50",
-    status: "offline",
-    location: [-48.279946, -18.943977] as Coordinates,
-    pedidos: []
-  },
-  {
-    id: 4,
-    nome: "Arthur Motoboy",
-    //avatar: "https://via.placeholder.com/50",
-    status: "online",
-    location: [-48.239867, -18.956281] as Coordinates,
-    pedidos: []
-  },
-  {
-    id: 5,
-    nome: "Maria Motoboy",
-    //avatar: "https://via.placeholder.com/50",
-    status: "offline",
-    location: [-48.279946, -18.943977] as Coordinates,
-    pedidos: []
-  },
-  {
-    id: 6,
-    nome: "Derson Motoboy",
-    //avatar: "https://via.placeholder.com/50",
-    status: "offline",
-    location: [-48.260377, -18.885650] as Coordinates,
-    pedidos: []
-  }
-];
 
 const orders: Order[] = [
   {
@@ -535,4 +485,4 @@ const orders: Order[] = [
 
 ]
 
-export { orders, motoboys };
+export { orders };

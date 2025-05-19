@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Motoboy, Delivery } from './types';
+import { Motoboy, Delivery, MotoboyComPedidosDTO } from './types';
 import MotoboyCard from './motoboyCard';
 import styles from '../../style/MotoboyList.module.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MotoboyListProps {
-  motoboys: Motoboy[];
+  motoboys: MotoboyComPedidosDTO[];
   activeMotoboy: number | null;
   onLocateMotoboy: (id: number) => void;
   onShowDetails: (id: number) => void;
@@ -67,10 +67,10 @@ const MotoboyList: React.FC<MotoboyListProps> = ({
           <MotoboyCard
             key={motoboy.id}
             motoboy={motoboy}
-            isActive={activeMotoboy === motoboy.id}
             onLocateMotoboy={onLocateMotoboy}
             onShowDetails={onShowDetails}
             onHoverPedido={onHoverPedido}
+            isActive={motoboy.id === activeMotoboy}
           />
         ))}
       </div>

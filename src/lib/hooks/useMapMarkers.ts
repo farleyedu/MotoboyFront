@@ -59,32 +59,35 @@ export default function useMapMarkers(
   };
 
   const addMotoboyMarkers = (targetMap: mapboxgl.Map) => {
-    if (!targetMap) {
-      return;
-    }
+    if (!targetMap) return;
     motoboys.forEach(motoboy => {
-        if (motoboy.status === "offline") { // Verifica se o motoboy está online
-          return; // Se não estiver online, não cria o marcador
+      if (motoboy.status === "offline") return;
+  
+      if (!Array.isArray(motoboy.location) || motoboy.location.length !== 2) {
+        console.warn("Motoboy com location inválido:", motoboy);
+        return;
       }
+  
       const el = document.createElement('div');
       el.className = styles.motoboyMarker;
       el.innerHTML = motoboy.nome.charAt(0);
-
+  
       if (motoboy.id === activeMotoboyId) {
         el.classList.add(styles.activeMotoboy);
       }
+  
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div class="${styles.markerPopup}">
           <h3>${motoboy.nome}</h3>
           <p>${motoboy.pedidos.length} entregas em andamento</p>
         </div>
       `);
-
+  
       const marker = new mapboxgl.Marker(el)
         .setLngLat(motoboy.location)
         .setPopup(popup)
         .addTo(targetMap);
-
+  
       motoboyMarkers.current.push({
         id: motoboy.id,
         marker,
@@ -96,7 +99,6 @@ export default function useMapMarkers(
 
   const addOrderMarkers = (targetMap: mapboxgl.Map) => {
     orders.forEach(order => {
-      debugger;
       const coords = order.coordinates;
       const el = document.createElement('div');
       el.style.width = '40px';

@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import MapComponent from "@/components/ui/motoboy-map";
 import { Coordinates } from "@/components/ui/types";
-import { orders, motoboys } from "@/mocks/mockData";
-
+import { orders } from "@/mocks/mockData"; // manter orders se ainda for mock
+import { useFetchMotoboys } from "@/lib/hooks/useFetchMotoboy";
 // Definição do tipo de status do motoboy
 type MotoboyStatus = "online" | "offline";
 
@@ -49,6 +49,13 @@ export default function Home() {
   //   location: [-48.2772, -18.9146] as Coordinates,
   //   deliveries: []
   // }));
+
+  const fetchedMotoboys = useFetchMotoboys();
+
+const motoboys = fetchedMotoboys.map((m) => ({
+  ...m,
+  location: [m.longitude, m.latitude] as Coordinates,
+}));
 
   // Estados separados para cada card
   const [periodoTotal, setPeriodoTotal] = useState<"dia" | "semana" | "mes">("dia");
@@ -156,7 +163,7 @@ export default function Home() {
       )}
       <MapComponent
         pizzeriaLocation={pizzeriaLocation}
-        motoboys={motoboys}
+        //motoboys={motoboys}
         orders={orders}
         isChatOpen={isChatOpen}
       />

@@ -56,10 +56,10 @@ export interface MotoboyComPedidosDTO {
   id: number;
   nome: string;
   avatar?: string;
-  phone?: string;
-  vehicle?: string;
-  status: MotoboyStatus;
-  location: Coordinates;
+  status: "online" | "offline";
+  location: Coordinates; // ✅ agora já vem pronto da API
+  latitude: number;
+  longitude: number;
   pedidos: Delivery[];
 }
 
