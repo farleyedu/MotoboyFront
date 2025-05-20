@@ -49,13 +49,14 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
 
 
 
-  const mapCenter: Coordinates =
-    orders.length > 0
-      ? [
-        orders.reduce((acc, order) => acc + order.coordinates[0], 0) / orders.length,
-        orders.reduce((acc, order) => acc + order.coordinates[1], 0) / orders.length,
-      ]
-      : [-48.2772, -18.9146];
+  const validOrders = orders.filter(
+    o => Array.isArray(o.coordinates) && o.coordinates.length === 2
+  );
+  
+  const mapCenter: Coordinates = [-48.2768, -18.9186]; // Centro aproximado de Uberlândia
+  const mapZoom = 10; // Mostra a cidade inteira
+
+
 
   const handleMapLoaded = (map: mapboxgl.Map) => {
     orders.forEach((order) => {

@@ -68,27 +68,28 @@ export interface MotoboyComPedidosDTO {
  */
 export interface Order {
   id: number;
-  address?: string;
+  nomeCliente: string,
+  idIfood: string,
+  telefoneCliente: string,
+  dataPedido: string,
+  enderecoEntrega?: string;
   items: string | string[];
   value?: string;
   region?: string;
-  status?: OrderStatus;
+  statusPedido?: OrderStatus;
   assigned_driver?: number;
     coordinates: Coordinates;
     horarioPedido?: string;
   previsaoEntrega?: string;
   horarioSaida?: string | undefined;
   horarioEntrega?: string | undefined;
-  motoboy?: {
+  motoboyResponsalvel?: {
     name: string;
     avatar: string;
     status: 'online' | 'offline';
   };
 }
 
-/**
- * Referência a um marcador no mapa
- */
 export interface MarkerRef {
   id: number;
   marker: mapboxgl.Marker;

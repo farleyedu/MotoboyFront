@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Coordinates, Motoboy, Order, MarkerRef, MotoboyComPedidosDTO } from '../../components/ui/types';
+import { StatusPedido } from '@/enum/statusPedidoEnum';
 
 export default function useMapMarkers(
   map: mapboxgl.Map | null,
@@ -98,33 +99,35 @@ export default function useMapMarkers(
   };
 
   const addOrderMarkers = (targetMap: mapboxgl.Map) => {
+    console.log('Enum StatusPedido:', StatusPedido);
+  
     orders.forEach(order => {
       const coords = order.coordinates;
       const el = document.createElement('div');
       el.style.width = '40px';
       el.style.height = '40px';
       el.style.cursor = 'pointer';
+      el.tabIndex = -1;
+      el.style.outline = 'none';
   
       const img = document.createElement('img');
       img.style.width = '100%';
       img.style.height = '100%';
       img.style.objectFit = 'contain';
       img.style.pointerEvents = 'none';
+      img.style.outline = 'none';
+      img.tabIndex = -1;
   
-      // 🔽 Aqui o switch por status
-      switch (order.status) {
-        case 'pendente':
-          img.src = '/assets/img/pinPNG.png';
-          break;
-        case 'em_rota':
-          img.src = '/assets/img/pin-em-rota.png';
-          break;
-        case 'concluido':
-          img.src = '/assets/img/pin-concluido.png';
-          break;
-        default:
-          img.src = '/assets/img/pin-default.png';
-      }
+      const statusToImageMap: Record<StatusPedido, string> = {
+        [StatusPedido.Pendente]: '/assets/img/pinPNG.png',
+        [StatusPedido.EmRota]: '/assets/img/pin-em-rota.png',
+        [StatusPedido.Concluido]: '/assets/img/pin-concluido.png'
+      };
+  
+      const statusNumber = Number(order.statusPedido);
+      const imgPath = statusToImageMap[statusNumber as StatusPedido] ?? '/assets/img/pin-default.png';
+  
+      img.src = imgPath;
   
       el.appendChild(img);
   

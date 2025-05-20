@@ -7,6 +7,10 @@ import MapComponent from "@/components/ui/motoboy-map";
 import { Coordinates } from "@/components/ui/types";
 import { orders } from "@/mocks/mockData"; // manter orders se ainda for mock
 import { useFetchMotoboys } from "@/lib/hooks/useFetchMotoboy";
+import { useFetchPedidos } from '@/lib/hooks/useFetchPedidos';
+import { StatusPedido } from "@/enum/statusPedidoEnum";
+
+
 // Definição do tipo de status do motoboy
 type MotoboyStatus = "online" | "offline";
 
@@ -26,7 +30,7 @@ interface Order {
   items: string;
   value: string;
   region: string;
-  status: string;
+  StatusPedido: StatusPedido;
   coordinates: Coordinates;
   horarioPedido: string;
   previsaoEntrega: string;
@@ -36,26 +40,9 @@ interface Order {
 }
 
 export default function Home() {
-  const pizzeriaLocation: [number, number] = [-48.2772, -18.9146];
+  const pizzeriaLocation: [number, number] = [-48.25639646191665, -18.91608521811941]; 
+  const fetchedOrders = useFetchPedidos();
 
-  // Continuar com definição dos motoboys
-  // const motoboys = Array.from({ length: 10 }, (_, i) => ({
-  //   id: i + 1,
-  //   name: `Motoboy ${String.fromCharCode(65 + i)}`,
-  //   avatar: `/img/motoMark.png`,
-  //   phone: `12345678${i}`,
-  //   vehicle: 'Moto',
-  //   status: (i % 2 === 0 ? 'online' : 'offline') as MotoboyStatus,
-  //   location: [-48.2772, -18.9146] as Coordinates,
-  //   deliveries: []
-  // }));
-
-  const fetchedMotoboys = useFetchMotoboys();
-
-const motoboys = fetchedMotoboys.map((m) => ({
-  ...m,
-  location: [m.longitude, m.latitude] as Coordinates,
-}));
 
   // Estados separados para cada card
   const [periodoTotal, setPeriodoTotal] = useState<"dia" | "semana" | "mes">("dia");
@@ -63,7 +50,7 @@ const motoboys = fetchedMotoboys.map((m) => ({
   const [periodoConcluido, setPeriodoConcluido] = useState<"dia" | "semana" | "mes">("dia");
   const [isChatOpen, setIsChatOpen] = useState(true);
 
-  const opcoes: Array<"dia" | "semana" | "mes"> = ["dia", "semana", "mes"]; 
+  const opcoes: Array<"dia" | "semana" | "mes"> = ["dia", "semana", "mes"];
 
   const [pedidosRecentes, setPedidosRecentes] = useState([
     { id: 101, cliente: "João Pereira", status: "Entregue", total: "R$45,00", motoboy: null },
@@ -72,7 +59,7 @@ const motoboys = fetchedMotoboys.map((m) => ({
   ]);
 
   const [pedidoSelecionado, setPedidoSelecionado] = useState<number | null>(null);
-  const [inviteId, setInviteId] = useState(""); 
+  const [inviteId, setInviteId] = useState("");
 
   const sendInvite = async () => {
     if (!inviteId) {
@@ -89,7 +76,7 @@ const motoboys = fetchedMotoboys.map((m) => ({
 
       if (response.ok) {
         alert(`Convite enviado para o motoboy ID: ${inviteId}`);
-        setInviteId(""); 
+        setInviteId("");
       } else {
         alert("Erro ao enviar convite. Verifique o ID.");
       }
@@ -161,12 +148,15 @@ const motoboys = fetchedMotoboys.map((m) => ({
           Abrir Chat
         </button>
       )}
-      <MapComponent
-        pizzeriaLocation={pizzeriaLocation}
-        //motoboys={motoboys}
-        orders={orders}
-        isChatOpen={isChatOpen}
-      />
+      {
+        orders.length > 0 && (
+          <MapComponent
+            pizzeriaLocation={pizzeriaLocation}
+            orders={fetchedOrders}
+            isChatOpen={isChatOpen}
+          />
+      )
+      }
     </main>
   );
 }

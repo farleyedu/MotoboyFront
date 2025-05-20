@@ -11,6 +11,7 @@ import SelectOrdersMode from './SelectOrdersMode';
 import useMapInitialization from '../../lib/hooks/useMapInitialization';
 import useMapMarkers from '../../lib/hooks/useMapMarkers';
 import { useFetchMotoboys } from '../../lib/hooks/useFetchMotoboy';
+import { StatusPedido } from '../../enum/statusPedidoEnum';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN || '';
 
@@ -34,6 +35,9 @@ const MapComponent: React.FC<{
   orders: Order[];
   isChatOpen: boolean;
 }> = ({ pizzeriaLocation, orders, isChatOpen }) => {
+console.log("valor de orders passado pelo page: ", orders)
+const isLoading = !orders || orders.length === 0;
+if (isLoading) return null;
 
   const fetchedMotoboys = useFetchMotoboys();
   const motoboys: MotoboyComPedidosDTO[] = fetchedMotoboys.map((m) => ({
@@ -141,6 +145,7 @@ const MapComponent: React.FC<{
     }
   }, [mapRef.current, motoboys]);
 
+  console.log("order passando pra dentro do seletor", orders);
 
   return (
     <div className={styles.mapComponentContainer} ref={mapContainerRef}>
@@ -186,7 +191,7 @@ const MapComponent: React.FC<{
         {isSelectingRoute && (
           <div className={styles.selectOrdersOverlay}>
             <SelectOrdersMode
-              orders={orders.filter(order => order.status === 'pendente')}
+              orders={orders.filter(order => Number(order.statusPedido) === StatusPedido.Pendente)}
               motoboys={motoboys}
               onConfirm={() => setIsSelectingRoute(false)}
               onCancel={handleCancelSelectOrdersMode}
