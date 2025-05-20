@@ -31,7 +31,7 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ order, onClose }) => {
     <div ref={popupRef} className={styles.container}>
       {/* Cabeçalho */}
       <div className={styles.header}>Pedido #{order.id}</div>
-      <div className={styles.address}>📍 {order.address ?? 'Endereço não informado'}</div>
+      <div className={styles.address}>📍 {order.enderecoEntrega ?? 'Endereço não informado'}</div>
 
       {/* Itens */}
       <ul className={styles.itemsList}>
@@ -71,17 +71,17 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ order, onClose }) => {
       {/* Motoboy */}
       <div className={styles.motoboySection}>
         <div className={styles.motoboyLabel}>Motoboy</div>
-        {order.motoboy ? (
+        {order.motoboyResponsalvel ? (
           <div className={styles.motoboyInfo}>
-            {order.motoboy.avatar ? (
-              <img src={order.motoboy.avatar} alt="Avatar" className={styles.motoboyAvatar} />
+            {order.motoboyResponsalvel.avatar ? (
+              <img src={order.motoboyResponsalvel.avatar} alt="Avatar" className={styles.motoboyAvatar} />
             ) : (
-              <div className={styles.motoboyAvatar}>{order.motoboy.name.charAt(0)}</div>
+              <div className={styles.motoboyAvatar}>{order.motoboyResponsalvel.name.charAt(0)}</div>
             )}
             <div>
-              <div>{order.motoboy.name}</div>
-              <div className={order.motoboy.status === 'online' ? styles.statusOnline : styles.statusOffline}>
-                {order.motoboy.status === 'online' ? '🟢 Online' : '🔴 Offline'}
+              <div>{order.motoboyResponsalvel.name}</div>
+              <div className={order.motoboyResponsalvel.status === 'online' ? styles.statusOnline : styles.statusOffline}>
+                {order.motoboyResponsalvel.status === 'online' ? '🟢 Online' : '🔴 Offline'}
               </div>
             </div>
           </div>
