@@ -9,7 +9,7 @@ const contacts = [
   {
     id: 1,
     name: "João Motoboy",
-    avatar: "/avatars/joao.jpg",
+    avatar: `/assets/img/perfil-motoboy.jpg`,
     lastMessage: "Cheguei no local!",
     isGroup: false,
     messages: [
@@ -20,7 +20,7 @@ const contacts = [
   {
     id: 2,
     name: "Equipe Noturna",
-    avatar: "/avatars/group-night.png",
+    avatar: `/assets/img/perfil-motoboy.jpg`,
     lastMessage: "Pedido 102 entregue.",
     isGroup: true,
     messages: [
@@ -31,7 +31,7 @@ const contacts = [
   {
     id: 3,
     name: "Maria Entregas",
-    avatar: "/avatars/maria.jpg",
+    avatar: `/assets/img/perfil-motoboy.jpg`,
     lastMessage: "Sai agora da pizzaria!",
     isGroup: false,
     messages: [

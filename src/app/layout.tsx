@@ -1,6 +1,5 @@
-// app/layout.tsx
-
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -26,12 +25,23 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="flex h-screen">
-          <Navbar />
-          <main className={`flex-1 overflow-y-auto p-6 bg-gray-100 transition-all duration-300 min-h-[calc(100vh-64px)] ${isChatOpen ? "pr-30" : "pr-0"}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen w-screen overflow-hidden`}>
+        <div className="flex h-full w-full">
+          {/* Navbar com posição relativa e largura fixa */}
+          <div className="w-64 h-full flex-shrink-0 relative z-10">
+            <Navbar />
+          </div>
+
+          {/* Conteúdo principal */}
+          <main
+            className={`flex-1 h-full overflow-y-auto bg-gray-100 transition-all duration-300 px-6 ${
+              isChatOpen ? "pr-[15rem]" : "pr-0"
+            }`}
+          >
             {children}
           </main>
+
+          {/* Sidebar de Chat */}
           <ChatSidebar isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
         </div>
       </body>

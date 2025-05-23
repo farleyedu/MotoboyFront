@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { fetchOrders, fetchMotoboys } from '../../service/dataService';
 
 export default function MotoboyList() {
   const [motoboys, setMotoboys] = useState<Motoboy[]>([]);
@@ -16,6 +17,7 @@ export default function MotoboyList() {
     1: "Em entrega",
     2: "Indisponível",
   };
+  
 
   // Função para buscar os motoboys da API
   useEffect(() => {
@@ -41,6 +43,7 @@ export default function MotoboyList() {
 
     fetchMotoboys();
   }, []);
+  
 
   // Função para buscar os pedidos da API
   useEffect(() => {
@@ -66,6 +69,19 @@ export default function MotoboyList() {
     };
 
     fetchPedidos();
+  }, []);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const [ordersData, motoboysData] = await Promise.all([
+        fetchOrders(),
+        fetchMotoboys(),
+      ]);
+      setPedidos(ordersData);
+      setMotoboys(motoboysData);
+    };
+  
+    loadData();
   }, []);
 
   return (

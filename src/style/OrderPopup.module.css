@@ -1,0 +1,181 @@
+/* style/OrderPopup.module.css */
+
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  max-width: 340px;
+  background: linear-gradient(to bottom right, #ffffff, #f7f7f7);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  z-index: 2000;
+  overflow-y: auto;
+  padding: 20px;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  animation: slideIn 0.4s ease-out forwards;
+  pointer-events: auto;
+
+}
+
+@keyframes slideIn {
+  0% { transform: translateX(-100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.header {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 4px;
+}
+
+.header span {
+  color: #007bff;
+}
+
+.address {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  margin-top: 20px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #444;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
+}
+
+.itemsList {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 6px;
+  padding: 4px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.itemPrice {
+  font-weight: bold;
+  color: #28a745;
+}
+
+.totalPrice {
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #28a745;
+  text-align: right;
+}
+
+.totalPrice span {
+  font-size: 18px;
+  color: #2ecc71;
+}
+
+.divider {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 20px 0;
+}
+
+.timingsSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.timeBlock {
+  background: #f1f3f4;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.timeBlock strong {
+  margin-top: 4px;
+  color: #000;
+}
+
+.motoboySection {
+  margin-top: 24px;
+}
+
+.motoboyLabel {
+  font-weight: bold;
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.motoboyInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.motoboyAvatar {
+  width: 40px;
+  height: 40px;
+  background: #ccc;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  object-fit: cover;
+}
+
+.motoboyName {
+  font-weight: bold;
+  color: #333;
+}
+
+.statusOnline {
+  font-size: 12px;
+  color: #28a745;
+  margin-top: 2px;
+}
+
+.statusOffline {
+  font-size: 12px;
+  color: #dc3545;
+  margin-top: 2px;
+}
+
+.noMotoboy {
+  font-size: 14px;
+  color: #888;
+  padding: 8px;
+  background: #f8f8f8;
+  border-radius: 6px;
+  text-align: center;
+}
+.MapComponent-module__vUhZtG__orderPopup {
+  background: transparent !important;
+  pointer-events: none;
+}

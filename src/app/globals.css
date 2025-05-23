@@ -123,3 +123,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer base {
+  html, body {
+    @apply h-full;
+  }
+}
+.mapboxgl-popup {
+  max-width: 240px !important;
+  background: #fff !important; /* Adiciona um fundo branco */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; /* Adiciona sombra */
+  border-radius: 8px !important; /* Bordas arredondadas */
+  padding: 12px !important; /* Adiciona espaçamento interno */
+  z-index: 9999 !important;
+  pointer-events: auto !important; /* Permite interação */
+}
+
+.mapboxgl-popup-content {
+  display: block !important;
+}
+
+.mapboxgl-popup-tip {
+  display: none !important;
+}  
+

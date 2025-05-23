@@ -4,28 +4,66 @@
   background: transparent;
 }
 
-/* Lista horizontal */
+.motoboyListWrapper {
+  position: relative;
+  width: 100%;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: center;
+}
+
 .motoboyList {
   display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-end;
   overflow-x: auto;
-  gap: 12px;
-  padding-bottom: 10px;
-  scrollbar-width: none;
+  scroll-behavior: smooth;
+  padding: 4px 0;
+  max-width: 90vw;
 }
 
 .motoboyList::-webkit-scrollbar {
   display: none;
 }
 
-/* Card base */
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  z-index: 2;
+}
+
+.navButtonLeft {
+  left: 0;
+}
+
+.navButtonRight {
+  right: 0;
+}
+
+.navButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+/* Cards e Hover seguem normais */
 .card {
   background-color: #fff;
   border: 1px solid #e1e5eb;
   border-radius: 10px;
   min-width: 130px;
   max-width: 140px;
-  height: 54px; /* reduzido */
-  padding: 6px; /* reduzido */
+  height: 54px;
+  padding: 6px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -33,6 +71,7 @@
   flex-shrink: 0;
   transition: all 0.25s ease-in-out;
   overflow: hidden;
+  align-self: flex-start;
 }
 
 .card:hover {
@@ -55,14 +94,14 @@
 }
 
 .avatar {
-  width: 32px; /* reduzido */
-  height: 32px; /* reduzido */
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .titleBlock h4 {
-  font-size: 12px; /* reduzido */
+  font-size: 12px;
   margin: 0;
   color: #2c3e50;
 }
