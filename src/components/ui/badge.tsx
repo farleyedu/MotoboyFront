@@ -1,9 +1,11 @@
 import { cn } from "../../../lib/util";
 import * as React from "react";
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
 
-export function Badge({ className, ...props }: BadgeProps) {
+export function Badge({ className, children, ...props }: BadgeProps) {
   return (
     <div
       className={cn(
@@ -11,6 +13,8 @@ export function Badge({ className, ...props }: BadgeProps) {
         className
       )}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
 }

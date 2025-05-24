@@ -51,7 +51,7 @@ if (isLoading) return null;
   const [activeMotoboyId, setActiveMotoboyId] = useState<number | null>(null);
   const [showDetailsPanel, setShowDetailsPanel] = useState(false);
   const [showExpandedMap, setShowExpandedMap] = useState(false);
-  const [selectedMotoboy, setSelectedMotoboy] = useState<Motoboy | null>(null);
+  const [selectedMotoboy, setSelectedMotoboy] = useState<MotoboyComPedidosDTO | null>(null);
   const [isSelectingRoute, setIsSelectingRoute] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [mapInstance, setMapInstance] = useState<mapboxgl.Map | null>(null);

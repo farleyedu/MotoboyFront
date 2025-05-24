@@ -1,8 +1,9 @@
 'use client';
 
 import React, { FC } from 'react';
+import Image from 'next/image';
 import styles from '../../style/DeliveryDetailsPanel.module.css';
-import { Motoboy, Order, DeliveryDetailsPanelProps } from './types';
+import { DeliveryDetailsPanelProps } from './types';
 
 const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({ 
   motoboy, 
@@ -12,9 +13,8 @@ const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({
 }) => {
   if (!motoboy) return null;
 
-  // Separar entregas em andamento e próximas
-  const currentDeliveries = motoboy.deliveries.filter(d => d.status === 'em_rota');
-  const nextDeliveries = motoboy.deliveries.filter(d => d.status === 'proxima');
+  const currentDeliveries = motoboy.pedidos.filter(d => d.status === 'em_rota');
+  const nextDeliveries = motoboy.pedidos.filter(d => d.status === 'proxima');
 
   return (
     <div className={styles.deliveryDetailsPanel}>
@@ -30,9 +30,11 @@ const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({
       </div>
 
       <div className={styles.motoboyProfile}>
-        <img 
+        <Image 
           src={motoboy.avatar || 'https://via.placeholder.com/80'} 
           alt={`Foto de ${motoboy.nome}`} 
+          width={80}
+          height={80}
           className={styles.motoboyAvatarLarge}
         />
         <div className={styles.profileInfo}>
@@ -46,7 +48,7 @@ const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({
       </div>
       
       <div className={styles.currentDeliveries}>
-        <h4>Entregas em Andamento ({motoboy.deliveries.length})</h4>
+        <h4>Entregas em Andamento ({motoboy.pedidos.length})</h4>
         
         {currentDeliveries.map(delivery => (
           <div key={delivery.id} className={`${styles.deliveryItem} ${styles.current}`}>
@@ -97,7 +99,7 @@ const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({
           </div>
         ))}
         
-        {motoboy.deliveries.length === 0 && (
+        {motoboy.pedidos.length === 0 && (
           <p className={styles.noDeliveries}>Nenhuma entrega em andamento</p>
         )}
       </div>
@@ -112,7 +114,7 @@ const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({
                   <h5>Pedido #{order.id}</h5>
                   <p>
                     <i className="fas fa-map-marker-alt"></i> 
-                    {order.address || `Região: ${order.region || 'Não especificada'}`}
+                    {order.enderecoEntrega || `Região: ${order.region || 'Não especificada'}`}
                   </p>
                   <p>
                     <i className="fas fa-pizza-slice"></i> 

@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp, Bell, Pause, Eye, Trash2, PlusCircle, History, Info, DollarSign } from "lucide-react";
 
 // Tipos
 

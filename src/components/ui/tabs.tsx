@@ -12,8 +12,8 @@ export const Tabs: React.FC<{ defaultValue: string; className?: string; children
     <div className={`tabs ${className}`}>
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
-          ? React.cloneElement(child as React.ReactElement<any>, { activeTab, setActiveTab })
-          : child
+        ? React.cloneElement(child as React.ReactElement<{ activeTab?: string; setActiveTab?: (value: string) => void }>, { activeTab, setActiveTab })
+        : child
       )}
     </div>
   );
