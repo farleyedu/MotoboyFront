@@ -15,26 +15,27 @@ export default function useMapInitialization(
 
   useEffect(() => {
     if (!shouldInitialize || !containerRef.current || mapRef.current) return;
-
+  
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
       center,
       zoom: 12.5,
     });
-
+  
     mapRef.current = map;
+  
     if (onMapReady) onMapReady(map);
-
+  
     map.on('load', () => {
       if (onLoad) onLoad(map);
     });
-
+  
     return () => {
       map.remove();
       mapRef.current = null;
     };
-  }, [shouldInitialize, containerRef]);
+  }, [shouldInitialize, containerRef, center, onLoad, onMapReady]);
 
   return mapRef;
 }
