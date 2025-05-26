@@ -30,27 +30,28 @@ const MapComponent: React.FC<{
 
   const [activeMotoboyId, setActiveMotoboyId] = useState<number | null>(null);
   const [isSelectingRoute, setIsSelectingRoute] = useState(false);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const [, setShowExpandedMap] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [mapInstance, setMapInstance] = useState<mapboxgl.Map | null>(null);
 
-  const mainMapMarkers = useMapMarkers(
-    mapInstanceRef.current,
-    motoboys,
-    orders,
-    styles,
-    activeMotoboyId,
-    false,
-    setSelectedOrder,
-    pizzeriaLocation
-  );
+  const mainMapMarkers = useRef(
+    useMapMarkers(
+      mapInstanceRef.current,
+      motoboys,
+      orders,
+      styles,
+      activeMotoboyId,
+      false,
+      setSelectedOrder,
+      pizzeriaLocation
+    )
+  ).current;
 
   const handleMapLoaded = useCallback((map: mapboxgl.Map) => {
-    if (mainMapMarkers) {
-      mainMapMarkers.addOrderMarkers(map);
-      mainMapMarkers.addBaseMarker(map);
-    }
-  }, [mainMapMarkers]);
+    mainMapMarkers?.addOrderMarkers(map);
+    mainMapMarkers?.addBaseMarker(map);
+  }, []);
 
   const mapRef = useMapInitialization(mapContainerRef, pizzeriaLocation, true, handleMapLoaded);
 
@@ -103,7 +104,7 @@ const [, setShowExpandedMap] = useState(false);
       <div className={styles.map}>
         {!isSelectingRoute && (
           <>
-            <button className={styles.expandButtonFloating} onClick={() => setShowExpandedMap(true)}>
+            <button className={styles.expandButtonFloating} onClick={() => {}}>
               <i className="fas fa-expand" />
             </button>
 
