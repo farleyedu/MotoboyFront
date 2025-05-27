@@ -1,8 +1,9 @@
 'use client';
 
 import React, { FC } from 'react';
+import Image from 'next/image';
 import styles from '../../style/DeliveryDetailsPanel.module.css';
-import { Motoboy, Order, DeliveryDetailsPanelProps } from './types';
+import { DeliveryDetailsPanelProps } from './types';
 
 const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({ 
   motoboy, 
@@ -11,6 +12,7 @@ const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({
   onAssignOrder 
 }) => {
   if (!motoboy) return null;
+
 
   // Separar entregas em andamento e próximas
   const currentDeliveries = motoboy.pedidos.filter(d => d.status === 'em_rota');
@@ -30,9 +32,11 @@ const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({
       </div>
 
       <div className={styles.motoboyProfile}>
-        <img 
+        <Image 
           src={motoboy.avatar || 'https://via.placeholder.com/80'} 
           alt={`Foto de ${motoboy.nome}`} 
+          width={80}
+          height={80}
           className={styles.motoboyAvatarLarge}
         />
         <div className={styles.profileInfo}>

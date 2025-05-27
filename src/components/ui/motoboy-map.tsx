@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from '../../style/MapComponent.module.css';
 import MotoboyList from './MotoboyList';
-import DeliveryDetailsPanel from './DeliveryDetailsPanel';
-import ExpandedMapModal from '../modal/ExpandedMapModal';
-import { Coordinates, Delivery, Motoboy, MotoboyComPedidosDTO, Order } from './types';
+import { Coordinates, MotoboyComPedidosDTO, Order } from './types';
 import OrderPopup from '../../components/ui/OrderPopUp';
 import SelectOrdersMode from './SelectOrdersMode';
 import useMapInitialization from '../../lib/hooks/useMapInitialization';
@@ -15,30 +13,12 @@ import { StatusPedido } from '../../enum/statusPedidoEnum';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN || '';
 
-function useMapResize(containerRef: React.RefObject<HTMLDivElement | null>, mapRef: React.MutableRefObject<mapboxgl.Map | null>) {
-  useEffect(() => {
-    if (!containerRef.current || !mapRef.current) return;
-
-    const resizeMap = () => {
-      mapRef.current?.resize();
-    };
-
-    const resizeObserver = new ResizeObserver(() => resizeMap());
-    resizeObserver.observe(containerRef.current);
-
-    return () => resizeObserver.disconnect();
-  }, [containerRef, mapRef]);
-}
-
 const MapComponent: React.FC<{
   pizzeriaLocation: Coordinates;
   orders: Order[];
   isChatOpen: boolean;
 }> = ({ pizzeriaLocation, orders, isChatOpen }) => {
-console.log("valor de orders passado pelo page: ", orders)
-const isLoading = !orders || orders.length === 0;
-if (isLoading) return null;
-
+  const isLoading = !orders || orders.length === 0;
   const fetchedMotoboys = useFetchMotoboys();
   const motoboys: MotoboyComPedidosDTO[] = fetchedMotoboys.map((m) => ({
     ...m,
@@ -49,64 +29,42 @@ if (isLoading) return null;
   const mapInstanceRef = useRef<mapboxgl.Map | null>(null);
 
   const [activeMotoboyId, setActiveMotoboyId] = useState<number | null>(null);
-  const [showDetailsPanel, setShowDetailsPanel] = useState(false);
-  const [showExpandedMap, setShowExpandedMap] = useState(false);
-  const [selectedMotoboy, setSelectedMotoboy] = useState<Motoboy | null>(null);
   const [isSelectingRoute, setIsSelectingRoute] = useState(false);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [, setShowExpandedMap] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [mapInstance, setMapInstance] = useState<mapboxgl.Map | null>(null);
 
-  useMapResize(mapContainerRef, mapInstanceRef);
+  const mainMapMarkers = useRef(
+    useMapMarkers(
+      mapInstanceRef.current,
+      motoboys,
+      orders,
+      styles,
+      activeMotoboyId,
+      false,
+      setSelectedOrder,
+      pizzeriaLocation
+    )
+  ).current;
 
-  const expandedMapContainer = useRef<HTMLDivElement | null>(null);
+  const handleMapLoaded = useCallback((map: mapboxgl.Map) => {
+    mainMapMarkers?.addOrderMarkers(map);
+    mainMapMarkers?.addBaseMarker(map);
+  }, []);
 
-  const expandedMapRef = useMapInitialization(
-    expandedMapContainer,
-    pizzeriaLocation,
-    showExpandedMap,
-    (map) => {
-      if (!expandedMapMarkers) return;
-      const { addBaseMarker, addMotoboyMarkers, addOrderMarkers } = expandedMapMarkers;
-      addBaseMarker(map);
-      addMotoboyMarkers(map);
-      addOrderMarkers(map);
-    }
-  );
+  const mapRef = useMapInitialization(mapContainerRef, pizzeriaLocation, true, handleMapLoaded);
 
-  const expandedMapMarkers = useMapMarkers(
-    expandedMapRef.current,
-    motoboys,
-    orders,
-    styles,
-    activeMotoboyId,
-    true,
-    setSelectedOrder,
-    pizzeriaLocation
-  );
-
-  const mainMapMarkers = useMapMarkers(
-    mapInstanceRef.current,
-    motoboys,
-    orders,
-    styles,
-    activeMotoboyId,
-    false,
-    setSelectedOrder,
-    pizzeriaLocation
-  );
-
-  const locateMotoboy = (motoboyId: number, isExpanded = false) => {
+  const locateMotoboy = (motoboyId: number) => {
     const motoboy = motoboys.find(m => m.id === motoboyId);
     if (!motoboy) return;
-    (isExpanded ? expandedMapMarkers?.flyTo?.(motoboy.location) : mainMapMarkers?.flyTo?.(motoboy.location));
+    mainMapMarkers?.flyTo?.(motoboy.location);
   };
 
   const showMotoboyDetails = (motoboyId: number) => {
     const motoboy = motoboys.find(m => m.id === motoboyId);
     if (!motoboy || !mapInstanceRef.current) return;
     setActiveMotoboyId(motoboyId);
-    setSelectedMotoboy(motoboy);
-    setShowDetailsPanel(true);
     mainMapMarkers?.flyTo?.(motoboy.location, 14);
   };
 
@@ -118,41 +76,35 @@ if (isLoading) return null;
     setIsSelectingRoute(false);
   };
 
-  const handleMapLoaded = (map: mapboxgl.Map) => {
-    mainMapMarkers.addOrderMarkers(map);
-    mainMapMarkers.addBaseMarker(map);
-  };
-
-  const mapRef = useMapInitialization(mapContainerRef, pizzeriaLocation, true, handleMapLoaded);
-
   useEffect(() => {
+    if (isLoading) return;
     if (mapRef && mapRef.current) {
       setMapInstance(mapRef.current);
     }
-  }, [mapRef]);
+  }, [mapRef, isLoading]);
 
   useEffect(() => {
-    if (mapInstance) {
+    if (!isLoading && mapInstance) {
       setTimeout(() => {
         mapInstance.resize();
       }, 350);
     }
-  }, [isChatOpen, isSelectingRoute]);
+  }, [isChatOpen, isSelectingRoute, mapInstance, isLoading]);
 
   useEffect(() => {
-    if (mapRef.current) {
+    if (!isLoading && mapRef.current) {
       mainMapMarkers.addMotoboyMarkers(mapRef.current);
     }
-  }, [mapRef.current, motoboys]);
+  }, [motoboys, mainMapMarkers, mapRef, isLoading]);
 
-  console.log("order passando pra dentro do seletor", orders);
+  if (isLoading) return null;
 
   return (
     <div className={styles.mapComponentContainer} ref={mapContainerRef}>
       <div className={styles.map}>
         {!isSelectingRoute && (
           <>
-            <button className={styles.expandButtonFloating} onClick={() => setShowExpandedMap(true)}>
+            <button className={styles.expandButtonFloating} onClick={() => {}}>
               <i className="fas fa-expand" />
             </button>
 

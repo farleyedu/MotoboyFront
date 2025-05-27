@@ -1,4 +1,3 @@
-import React, { RefObject } from 'react';
 import styles from '../../style/ExpandedMapModal.module.css'; // ou o caminho correto do seu CSS
 import { Motoboy } from '../ui/types';
 
@@ -12,10 +11,10 @@ interface ExpandedMapModalProps {
 
 const ExpandedMapModal: React.FC<ExpandedMapModalProps> = ({
   mapContainerRef,
-  motoboys,
+  //motoboys,
   onClose,
-  onLocateMotoboy,
-  onShowDetails,
+  //onLocateMotoboy,
+  //onShowDetails,
 }) => {
   return (
     <div className={styles.expandedMapModal}>

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Motoboy, Delivery, MotoboyComPedidosDTO } from './types';
+import { Delivery, MotoboyComPedidosDTO } from './types';
 import styles from '../../style/MotoboyCard.module.css';
+import Image from 'next/image'; // no topo do arquivo
 
 interface Props {
     motoboy: MotoboyComPedidosDTO;
@@ -14,12 +15,12 @@ const MotoboyCard: React.FC<Props> = ({
     motoboy,
     onLocateMotoboy = () => { },
     onShowDetails = () => { },
-    onHoverPedido = () => { },
+    //onHoverPedido = () => { },
     isActive = false,
 }) => {
-    const imageUrl = motoboy.avatar?.startsWith('http')
-        ? motoboy.avatar
-        : 'assets/img/perfil-motoboy.jpg';
+    // const imageUrl = motoboy.avatar?.startsWith('http')
+    //     ? motoboy.avatar
+    //     : 'assets/img/perfil-motoboy.jpg';
 
     const retirados = (motoboy.pedidos ?? []).filter((d) => d.status === 'em_rota');
     const concluidas = (motoboy.pedidos ?? []).filter((d) => d.status === 'concluida');
@@ -30,18 +31,12 @@ const MotoboyCard: React.FC<Props> = ({
             <div className={styles.cardHeader}>
                 <div className={styles.left}>
                     <div className={styles.avatarWrapper}>
-                        <img
-                            src={imageUrl}
+                        <Image
+                            src={motoboy.avatar || 'https://via.placeholder.com/150'}
                             alt={motoboy.nome}
-                            className={styles.avatar}
-                            width={36}
-                            height={36}
-                            onError={(e) => {
-                                const target = e.currentTarget as HTMLImageElement;
-                                if (!target.src.includes('assets/img/perfil-motoboy.jpg')) {
-                                    target.src = 'assets/img/perfil-motoboy.jpg';
-                                }
-                            }}
+                            width={48}
+                            height={48}
+                            className="w-12 h-12 rounded-full object-cover border-2 border-gray-100"
                         />
                     </div>
                     <div className={styles.titleBlock}>

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Motoboy, Delivery, MotoboyComPedidosDTO } from './types';
+import {Delivery, MotoboyComPedidosDTO } from './types';
 import MotoboyCard from './motoboyCard';
 import styles from '../../style/MotoboyList.module.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';

@@ -1,25 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { Order, Motoboy, Coordinates } from '../ui/types';
-import useMapInitialization from '../../lib/hooks/useMapInitialization';
+import { Order,  Coordinates, MotoboyComPedidosDTO } from '../ui/types';
 import styles from '../../style/SelectOrdersMode.module.css'; // Importando o CSS Module
 
 interface SelectOrdersModeProps {
   orders: Order[];
-  motoboys: Motoboy[];
-  onConfirm: (selectedOrders: Order[], selectedMotoboy: Motoboy) => void;
+  motoboys: MotoboyComPedidosDTO[];
+  onConfirm: (selectedOrders: Order[], selectedMotoboy: MotoboyComPedidosDTO) => void;
   onCancel: () => void;
   isChatOpen: boolean;
 }
 
-const MapOnly = ({ mapContainer }: { mapContainer: React.RefObject<HTMLDivElement | null> }) => {
-  return <div ref={mapContainer} className={styles.mapContainer} />;
-};
+// const MapOnly = ({ mapContainer }: { mapContainer: React.RefObject<HTMLDivElement | null> }) => {
+//   return <div ref={mapContainer} className={styles.mapContainer} />;
+// };
 
 export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel, isChatOpen }: SelectOrdersModeProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [selectedOrders, setSelectedOrders] = useState<Order[]>([]);
-  const [selectedMotoboy, setSelectedMotoboy] = useState<Motoboy | null>(null);
+  const [selectedMotoboy, setSelectedMotoboy] = useState<MotoboyComPedidosDTO | null>(null);
   const markersRef = useRef<Record<number, mapboxgl.Marker>>({});
   const [showMotoboyWarning, setShowMotoboyWarning] = useState(false);
 
@@ -49,12 +48,12 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
 
 
 
-  const validOrders = orders.filter(
-    o => Array.isArray(o.coordinates) && o.coordinates.length === 2
-  );
+  // const validOrders = orders.filter(
+  //   o => Array.isArray(o.coordinates) && o.coordinates.length === 2
+  // );
   
   const mapCenter: Coordinates = [-48.2768, -18.9186]; // Centro aproximado de Uberlândia
-  const mapZoom = 10; // Mostra a cidade inteira
+  //const mapZoom = 10; // Mostra a cidade inteira
 
 
 
@@ -68,7 +67,24 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
     });
   };
 
-  const mapRef = useMapInitialization(mapContainer, mapCenter, true, handleMapLoaded);
+ //const mapRef = useMapInitialization(mapContainer, mapCenter, true, handleMapLoaded);
+ useEffect(() => {
+  if (!mapContainer.current) return;
+
+  const map = new mapboxgl.Map({
+    container: mapContainer.current,
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: mapCenter,
+    zoom: 10,
+  });
+
+  map.on('load', () => {
+    handleMapLoaded(map);
+  });
+
+  return () => map.remove();
+}, []);
+
 
   const createMarkerElement = (order: Order) => {
     const el = document.createElement('div');

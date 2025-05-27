@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { UserPlus2, X } from "lucide-react";
 
 const pedidosMock = [
   {

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface AvatarProps {
@@ -8,18 +9,22 @@ interface AvatarProps {
   className?: string;
 }
 
-const sizeClasses = {
-  sm: "w-8 h-8",
-  md: "w-12 h-12",
-  lg: "w-16 h-16",
+const sizeMap = {
+  sm: 32,
+  md: 48,
+  lg: 64,
 };
 
 export const Avatar: React.FC<AvatarProps> = ({ src, alt, size = "md", className }) => {
+  const dimension = sizeMap[size];
+
   return (
-    <img
+    <Image
       src={src}
       alt={alt}
-      className={cn("rounded-full object-cover", sizeClasses[size], className)}
+      width={dimension}
+      height={dimension}
+      className={cn("rounded-full object-cover", className)}
     />
   );
 };

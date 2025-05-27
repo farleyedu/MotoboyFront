@@ -1,6 +1,9 @@
 // components/ui/OrderPopup.tsx
 
+'use client';
+
 import React, { useRef, useEffect } from 'react';
+import Image from 'next/image';
 import styles from '../../style/OrderPopup.module.css';
 import { Order } from './types';
 
@@ -35,10 +38,11 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ order, onClose }) => {
 
       {/* Itens */}
       <ul className={styles.itemsList}>
-
         <div className={styles.sectionTitle}>Itens</div>
         {itemsArray.map((item, index) => (
-          <li key={index} className={styles.item}>- {item} <span className={styles.itemPrice}>R$ {order.value}</span></li>
+          <li key={index} className={styles.item}>
+            - {item} <span className={styles.itemPrice}>R$ {order.value}</span>
+          </li>
         ))}
       </ul>
 
@@ -74,19 +78,35 @@ const OrderPopup: React.FC<OrderPopupProps> = ({ order, onClose }) => {
         {order.motoboyResponsalvel ? (
           <div className={styles.motoboyInfo}>
             {order.motoboyResponsalvel.avatar ? (
-              <img src={order.motoboyResponsalvel.avatar} alt="Avatar" className={styles.motoboyAvatar} />
+              <Image
+                src={order.motoboyResponsalvel.avatar}
+                alt="Avatar"
+                width={40}
+                height={40}
+                className={styles.motoboyAvatar}
+              />
             ) : (
-              <div className={styles.motoboyAvatar}>{order.motoboyResponsalvel.name.charAt(0)}</div>
+              <div className={styles.motoboyAvatar}>
+                {order.motoboyResponsalvel.name.charAt(0)}
+              </div>
             )}
             <div>
               <div>{order.motoboyResponsalvel.name}</div>
-              <div className={order.motoboyResponsalvel.status === 'online' ? styles.statusOnline : styles.statusOffline}>
-                {order.motoboyResponsalvel.status === 'online' ? '🟢 Online' : '🔴 Offline'}
+              <div
+                className={
+                  order.motoboyResponsalvel.status === 'online'
+                    ? styles.statusOnline
+                    : styles.statusOffline
+                }
+              >
+                {order.motoboyResponsalvel.status === 'online'
+                  ? '🟢 Online'
+                  : '🔴 Offline'}
               </div>
             </div>
           </div>
         ) : (
-          <div className={styles.noMotoboy}>Nenhum motoboy atribuido</div>
+          <div className={styles.noMotoboy}>Nenhum motoboy atribuído</div>
         )}
       </div>
     </div>

@@ -25,7 +25,8 @@ export default function InviteMotoboy() {
       } else {
         setMessage("Erro ao enviar convite. Verifique o ID.");
       }
-    } catch (error) {
+    } catch (e) {
+      console.error("Erro na conexão com o servidor:", e); // Registra o erro no console
       setMessage("Erro na conexão com o servidor.");
     }
   };

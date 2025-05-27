@@ -50,6 +50,8 @@ export interface Motoboy {
   vehicle?: string;
   status: MotoboyStatus;
   location: Coordinates;
+  pedidos: Delivery[];
+  statusPedido: OrderStatus;
 }
 
 export interface MotoboyComPedidosDTO {
@@ -72,18 +74,21 @@ export interface Order {
   idIfood: string,
   telefoneCliente: string,
   dataPedido: string,
+  latitude: string,
+  longitude: string,
   enderecoEntrega?: string;
   items: string | string[];
   value?: string;
   region?: string;
   statusPedido?: OrderStatus;
   assigned_driver?: number;
-    coordinates: Coordinates;
-    horarioPedido?: string;
+  coordinates: Coordinates;
+  horarioPedido?: string;
   previsaoEntrega?: string;
   horarioSaida?: string | undefined;
   horarioEntrega?: string | undefined;
   motoboyResponsalvel?: {
+    id: number;
     name: string;
     avatar: string;
     status: 'online' | 'offline';
