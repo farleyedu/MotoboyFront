@@ -13,6 +13,8 @@ const DeliveryDetailsPanel: FC<DeliveryDetailsPanelProps> = ({
 }) => {
   if (!motoboy) return null;
 
+
+  // Separar entregas em andamento e próximas
   const currentDeliveries = motoboy.pedidos.filter(d => d.status === 'em_rota');
   const nextDeliveries = motoboy.pedidos.filter(d => d.status === 'proxima');
 
