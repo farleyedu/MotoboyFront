@@ -1,35 +1,35 @@
 // // src/mocks/mockData.ts
 
- import { Order } from '../components/ui/types';
+ //import { Order } from '../components/ui/types';
 
 
-const orders: Order[] = [
-  {
-    id: 1,
-    nomeCliente: 'Ana Costa',
-    idIfood: '2524',
-    telefoneCliente: '34 99148-0112',
-    dataPedido: '19/05/2025',
-    statusPedido: 'em_rota',
-    latitude: '-48.26169504593216',
-    longitude: '-48.26169504593216',
-    enderecoEntrega: 'Av. João Naves de Ávila, 2121 - Santa Mônica, Uberlândia - MG',
-    items: 'Pizza Calabresa',
-    value: 'R$50.00',
-    region: 'Santa Mônica',
+//const orders: Order[] = [
+  //{
+ //   id: 1,
+//    nomeCliente: 'Ana Costa',
+ //   idIfood: '2524',
+//    telefoneCliente: '34 99148-0112',
+ //   dataPedido: '19/05/2025',
+ //   statusPedido: 'em_rota',
+//    latitude: '-48.26169504593216',
+//    longitude: '-48.26169504593216',
+//    enderecoEntrega: 'Av. João Naves de Ávila, 2121 - Santa Mônica, Uberlândia - MG',
+//    items: 'Pizza Calabresa',
+//    value: 'R$50.00',
+//    region: 'Santa Mônica',
     //status: 'em_rota',
-    coordinates: [-48.26169504593216, -18.919965923272528],
-    horarioPedido: '18:00',
-    previsaoEntrega: '18:40',
-    horarioSaida: '18:15',
-    horarioEntrega: '',
-    motoboyResponsalvel: {
-      id: 1,
-      name: 'João Motoboy',
-      avatar: '',
-      status: 'online'
-    }
-  }
+//    coordinates: [-48.26169504593216, -18.919965923272528],
+//    horarioPedido: '18:00',
+ //   previsaoEntrega: '18:40',
+//    horarioSaida: '18:15',
+ //  horarioEntrega: '',
+//    motoboyResponsalvel: {
+//      id: 1,
+//      name: 'João Motoboy',
+//      avatar: '',
+//      status: 'online'
+//    }
+//  }
   // },
   // {
   //   id: 2,
@@ -492,6 +492,6 @@ const orders: Order[] = [
   // }
   
 
-]
+//]
 
-export { orders };
+//export { orders };
