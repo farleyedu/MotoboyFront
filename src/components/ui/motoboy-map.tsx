@@ -7,12 +7,12 @@ import { Coordinates, MotoboyComPedidosDTO, Order } from './types';
 import OrderPopup from '../../components/ui/OrderPopUp';
 import SelectOrdersMode from './SelectOrdersMode';
 import useMapInitialization from '../../lib/hooks/useMapInitialization';
-import useMapMarkers from '../../lib/hooks/useMapMarkers';
 import { useFetchMotoboys } from '../../lib/hooks/useFetchMotoboy';
 import { StatusPedido } from '../../enum/statusPedidoEnum';
+import createMapMarkers from '../../lib/hooks/useMapMarkers';
 
-//mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN || '';
 mapboxgl.accessToken = "pk.eyJ1IjoiZmFybGV5ZWR1IiwiYSI6ImNtOWJ1ZzJhMDBra28ybG9leHZ5MWtvemIifQ.15QMU1QLHSLkCO7zPlUeYg";
+
 const MapComponent: React.FC<{
   pizzeriaLocation: Coordinates;
   orders: Order[];
@@ -27,49 +27,71 @@ const MapComponent: React.FC<{
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<mapboxgl.Map | null>(null);
+  const mainMapMarkersRef = useRef<any>(null);
 
   const [activeMotoboyId, setActiveMotoboyId] = useState<number | null>(null);
   const [isSelectingRoute, setIsSelectingRoute] = useState(false);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const [, setShowExpandedMap] = useState(false);
+  const [, setShowExpandedMap] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [mapInstance, setMapInstance] = useState<mapboxgl.Map | null>(null);
 
-  const mainMapMarkers = useRef(
-    useMapMarkers(
-      mapInstanceRef.current,
-      motoboys,
-      orders,
-      styles,
-      activeMotoboyId,
-      false,
-      setSelectedOrder,
-      pizzeriaLocation
-    )
-  ).current;
+  console.log("[MapComponent] Orders recebidos:", orders);
+  console.log("[MapComponent] Motoboys:", motoboys);
 
   const handleMapLoaded = useCallback((map: mapboxgl.Map) => {
-    mainMapMarkers?.addOrderMarkers(map);
-    mainMapMarkers?.addBaseMarker(map);
-  }, []);
+    const checkReady = () => {
+      if (map.isStyleLoaded()) {
+        console.log("[MapComponent] Estilo do mapa OK ✅. Criando e adicionando marcadores...");
+  
+        const markers = createMapMarkers(
+          map,
+          motoboys,
+          orders,
+          styles,
+          activeMotoboyId,
+          false,
+          setSelectedOrder,
+          pizzeriaLocation
+        );
+  
+        mainMapMarkersRef.current = markers;
+        markers.addBaseMarker(map);
+        markers.addOrderMarkers(map);
+        markers.addMotoboyMarkers(map);
+      } else {
+        console.log("[MapComponent] Estilo ainda não pronto, tentando novamente em 200ms...");
+        setTimeout(checkReady, 200);
+      }
+    };
+  
+    checkReady();
+  }, []); // <-- IMPORTANTE: não coloque dependências
+  
+  
 
   const mapRef = useMapInitialization(mapContainerRef, pizzeriaLocation, true, handleMapLoaded);
+
+  useEffect(() => {
+    if (!isLoading && mainMapMarkersRef.current) {
+      mainMapMarkersRef.current.updateMarkerPositions(motoboys);
+    }
+  }, [motoboys]);
 
   const locateMotoboy = (motoboyId: number) => {
     const motoboy = motoboys.find(m => m.id === motoboyId);
     if (!motoboy) return;
-    mainMapMarkers?.flyTo?.(motoboy.location);
+    mainMapMarkersRef.current?.flyTo?.(motoboy.location);
   };
 
   const showMotoboyDetails = (motoboyId: number) => {
     const motoboy = motoboys.find(m => m.id === motoboyId);
     if (!motoboy || !mapInstanceRef.current) return;
     setActiveMotoboyId(motoboyId);
-    mainMapMarkers?.flyTo?.(motoboy.location, 14);
+    mainMapMarkersRef.current?.flyTo?.(motoboy.location, 14);
   };
 
   const drawRouteUntil = (orderId: number) => {
-    mainMapMarkers?.drawRouteUntil?.(orderId);
+    mainMapMarkersRef.current?.drawRouteUntil?.(orderId);
   };
 
   const handleCancelSelectOrdersMode = () => {
@@ -90,12 +112,6 @@ const [, setShowExpandedMap] = useState(false);
       }, 350);
     }
   }, [isChatOpen, isSelectingRoute, mapInstance, isLoading]);
-
-  useEffect(() => {
-    if (!isLoading && mapRef.current) {
-      mainMapMarkers.addMotoboyMarkers(mapRef.current);
-    }
-  }, [motoboys, mainMapMarkers, mapRef, isLoading]);
 
   if (isLoading) return null;
 
