@@ -11,8 +11,8 @@ import useMapMarkers from '../../lib/hooks/useMapMarkers';
 import { useFetchMotoboys } from '../../lib/hooks/useFetchMotoboy';
 import { StatusPedido } from '../../enum/statusPedidoEnum';
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN || '';
-
+//mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_GL_ACCESS_TOKEN || '';
+mapboxgl.accessToken = "pk.eyJ1IjoiZmFybGV5ZWR1IiwiYSI6ImNtOWJ1ZzJhMDBra28ybG9leHZ5MWtvemIifQ.15QMU1QLHSLkCO7zPlUeYg";
 const MapComponent: React.FC<{
   pizzeriaLocation: Coordinates;
   orders: Order[];
