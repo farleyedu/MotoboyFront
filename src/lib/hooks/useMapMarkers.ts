@@ -1,10 +1,10 @@
 import mapboxgl from 'mapbox-gl';
-import { Coordinates, Motoboy, Order, MarkerRef, MotoboyComPedidosDTO } from '../../components/ui/types';
+import { Coordinates, Motoboy, Order, MarkerRef } from '../../components/ui/types';
 import { StatusPedido } from '@/enum/statusPedidoEnum';
 
 export default function createMapMarkers(
   map: mapboxgl.Map | null,
-  motoboys: MotoboyComPedidosDTO[],
+  motoboys: Motoboy[],
   orders: Order[],
   styles: Record<string, string>,
   activeMotoboyId: number | null,

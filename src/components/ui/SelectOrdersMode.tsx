@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { Order,  Coordinates, MotoboyComPedidosDTO } from '../ui/types';
+import { Order,  Coordinates, Motoboy } from '../ui/types';
 import styles from '../../style/SelectOrdersMode.module.css'; // Importando o CSS Module
 
 interface SelectOrdersModeProps {
   orders: Order[];
-  motoboys: MotoboyComPedidosDTO[];
-  onConfirm: (selectedOrders: Order[], selectedMotoboy: MotoboyComPedidosDTO) => void;
+  motoboys: Motoboy[];
+  onConfirm: (selectedOrders: Order[], selectedMotoboy: Motoboy) => void;
   onCancel: () => void;
   isChatOpen: boolean;
 }
@@ -18,7 +18,7 @@ interface SelectOrdersModeProps {
 export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel, isChatOpen }: SelectOrdersModeProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [selectedOrders, setSelectedOrders] = useState<Order[]>([]);
-  const [selectedMotoboy, setSelectedMotoboy] = useState<MotoboyComPedidosDTO | null>(null);
+  const [selectedMotoboy, setSelectedMotoboy] = useState<Motoboy | null>(null);
   const markersRef = useRef<Record<number, mapboxgl.Marker>>({});
   const [showMotoboyWarning, setShowMotoboyWarning] = useState(false);
 
@@ -68,6 +68,7 @@ export default function SelectOrdersMode({ orders, motoboys, onConfirm, onCancel
   };
 
  //const mapRef = useMapInitialization(mapContainer, mapCenter, true, handleMapLoaded);
+ 
  useEffect(() => {
   if (!mapContainer.current) return;
 

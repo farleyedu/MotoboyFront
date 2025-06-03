@@ -1,9 +1,9 @@
 // src/lib/hooks/useFetchMotoboys.ts
 import { useEffect, useState } from 'react';
-import { MotoboyComPedidosDTO } from '../../components/ui/types';
+import { Motoboy } from '../../components/ui/types';
 
-export function useFetchMotoboys(): MotoboyComPedidosDTO[] {
-    const [motoboys, setMotoboys] = useState<MotoboyComPedidosDTO[]>([]);
+export function useFetchMotoboys(): Motoboy[] {
+    const [motoboys, setMotoboys] = useState<Motoboy[]>([]);
   
     useEffect(() => {
       fetch('https://localhost:7137/api/Motoboy/com-pedidos')

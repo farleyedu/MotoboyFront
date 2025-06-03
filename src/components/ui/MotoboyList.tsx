@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
-import {Delivery, MotoboyComPedidosDTO } from './types';
+import {Delivery, Motoboy } from './types';
 import MotoboyCard from './motoboyCard';
 import styles from '../../style/MotoboyList.module.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MotoboyListProps {
-  motoboys: MotoboyComPedidosDTO[];
+  motoboys: Motoboy[];
   activeMotoboy: number | null;
   onLocateMotoboy: (id: number) => void;
   onShowDetails: (id: number) => void;

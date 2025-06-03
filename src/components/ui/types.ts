@@ -52,6 +52,8 @@ export interface Motoboy {
   location: Coordinates;
   pedidos: Delivery[];
   statusPedido: OrderStatus;
+  latitude: number;
+  longitude: number;
 }
 
 export interface MotoboyComPedidosDTO {

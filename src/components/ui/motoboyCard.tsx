@@ -1,10 +1,10 @@
 import React from 'react';
-import { Delivery, MotoboyComPedidosDTO } from './types';
+import { Delivery, Motoboy } from './types';
 import styles from '../../style/MotoboyCard.module.css';
 import Image from 'next/image'; // no topo do arquivo
 
 interface Props {
-    motoboy: MotoboyComPedidosDTO;
+    motoboy: Motoboy;
     onLocateMotoboy?: (id: number) => void;
     onShowDetails?: (id: number) => void;
     onHoverPedido?: (pedido: Delivery, index: number, all: Delivery[]) => void;

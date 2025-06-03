@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from '../../style/MapComponent.module.css';
 import MotoboyList from './MotoboyList';
-import { Coordinates, MotoboyComPedidosDTO, Order } from './types';
+import { Coordinates, Motoboy, Order } from './types';
 import OrderPopup from '../../components/ui/OrderPopUp';
 import SelectOrdersMode from './SelectOrdersMode';
 import useMapInitialization from '../../lib/hooks/useMapInitialization';
@@ -20,29 +20,34 @@ const MapComponent: React.FC<{
 }> = ({ pizzeriaLocation, orders, isChatOpen }) => {
   const isLoading = !orders || orders.length === 0;
   const fetchedMotoboys = useFetchMotoboys();
-  const motoboys: MotoboyComPedidosDTO[] = fetchedMotoboys.map((m) => ({
+  const motoboys: Motoboy[] = fetchedMotoboys.map((m) => ({
     ...m,
     location: [m.longitude, m.latitude] as Coordinates
   }));
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<mapboxgl.Map | null>(null);
-  const mainMapMarkersRef = useRef<any>(null);
+
+  type MarkerHandler = {
+    addBaseMarker: (map: mapboxgl.Map) => void;
+    addOrderMarkers: (map: mapboxgl.Map) => void;
+    addMotoboyMarkers: (map: mapboxgl.Map) => void;
+    updateMarkerPositions: (motoboys: Motoboy[]) => void;
+    drawRouteUntil: (orderId: number) => void;
+    flyTo: (location: Coordinates, zoom?: number) => void;
+    clearAllMarkers: () => void;
+  };
+
+  const mainMapMarkersRef = useRef<MarkerHandler | null>(null);
 
   const [activeMotoboyId, setActiveMotoboyId] = useState<number | null>(null);
   const [isSelectingRoute, setIsSelectingRoute] = useState(false);
-  const [, setShowExpandedMap] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [mapInstance, setMapInstance] = useState<mapboxgl.Map | null>(null);
 
-  console.log("[MapComponent] Orders recebidos:", orders);
-  console.log("[MapComponent] Motoboys:", motoboys);
-
-  const handleMapLoaded = useCallback((map: mapboxgl.Map) => {
+  const handleMapLoaded = (map: mapboxgl.Map) => {
     const checkReady = () => {
       if (map.isStyleLoaded()) {
-        console.log("[MapComponent] Estilo do mapa OK ✅. Criando e adicionando marcadores...");
-  
         const markers = createMapMarkers(
           map,
           motoboys,
@@ -53,23 +58,26 @@ const MapComponent: React.FC<{
           setSelectedOrder,
           pizzeriaLocation
         );
-  
+
         mainMapMarkersRef.current = markers;
         markers.addBaseMarker(map);
         markers.addOrderMarkers(map);
         markers.addMotoboyMarkers(map);
       } else {
-        console.log("[MapComponent] Estilo ainda não pronto, tentando novamente em 200ms...");
         setTimeout(checkReady, 200);
       }
     };
-  
+
     checkReady();
-  }, []); // <-- IMPORTANTE: não coloque dependências
-  
-  
+  };
 
   const mapRef = useMapInitialization(mapContainerRef, pizzeriaLocation, true, handleMapLoaded);
+
+  useEffect(() => {
+    if (!isLoading && mapRef.current) {
+      setMapInstance(mapRef.current);
+    }
+  }, [mapRef, isLoading]);
 
   useEffect(() => {
     if (!isLoading && mainMapMarkersRef.current) {
@@ -97,13 +105,6 @@ const MapComponent: React.FC<{
   const handleCancelSelectOrdersMode = () => {
     setIsSelectingRoute(false);
   };
-
-  useEffect(() => {
-    if (isLoading) return;
-    if (mapRef && mapRef.current) {
-      setMapInstance(mapRef.current);
-    }
-  }, [mapRef, isLoading]);
 
   useEffect(() => {
     if (!isLoading && mapInstance) {
