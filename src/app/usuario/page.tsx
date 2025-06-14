@@ -15,7 +15,7 @@ export default function MotoboyList() {
   useEffect(() => {
     const fetchMotoboys = async () => {
       try {
-        const response = await fetch("https://localhost:7137/api/Motoboy", {
+        const response = await fetch("https://zippy-api.onrender.com/api/Motoboy", {
           method: "GET",
           headers: {
             Accept: "text/plain",
@@ -39,7 +39,7 @@ export default function MotoboyList() {
   useEffect(() => {
     const fetchPedidos = async () => {
       try {
-        const response = await fetch("https://localhost:7137/api/Pedido", {
+        const response = await fetch("https://zippy-api.onrender.com/api/Pedido", {
           method: "GET",
           headers: {
             Accept: "text/plain",

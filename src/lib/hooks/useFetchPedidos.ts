@@ -6,7 +6,7 @@ export function useFetchPedidos(): Order[] {
   const [pedidos, setPedidos] = useState<Order[]>([]);
 
   useEffect(() => {
-    fetch('https://localhost:7137/api/Pedido/pedidosMaps') // ajusta se necessário
+    fetch('https://zippy-api.onrender.com/api/Pedido/pedidosMaps') // ajusta se necessário
       .then((res) => res.json())
       .then((data) => {
         const converted = data.map((p: Order) => ({ // Defina o tipo correto aqui

@@ -6,7 +6,7 @@ export function useFetchMotoboys(): Motoboy[] {
     const [motoboys, setMotoboys] = useState<Motoboy[]>([]);
   
     useEffect(() => {
-      fetch('https://localhost:7137/api/Motoboy/com-pedidos')
+      fetch('https://zippy-api.onrender.com/api/Motoboy/com-pedidos')
         .then((res) => res.json())
         .then((data) => {
           setMotoboys(data); // 👈 agora sem map nem transformação

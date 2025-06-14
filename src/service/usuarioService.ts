@@ -5,7 +5,7 @@ export interface Usuario {
   senha: string;
 }
 
-const API_URL = "https://localhost:7137/api/Usuario";
+const API_URL = "https://zippy-api.onrender.com/api/Usuario";
 
 const UsuarioService = {
   async getUsuarios(): Promise<Usuario[]> {
