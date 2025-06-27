@@ -1,7 +1,7 @@
 import React from 'react';
 import { Delivery, Motoboy } from './types';
 import styles from '../../style/MotoboyCard.module.css';
-import Image from 'next/image'; // no topo do arquivo
+import Image from 'next/image';
 
 interface Props {
     motoboy: Motoboy;
@@ -13,18 +13,17 @@ interface Props {
 
 const MotoboyCard: React.FC<Props> = ({
     motoboy,
-    onLocateMotoboy = () => { },
-    onShowDetails = () => { },
-    //onHoverPedido = () => { },
+    onLocateMotoboy = () => {},
+    onShowDetails = () => {},
     isActive = false,
 }) => {
-    // const imageUrl = motoboy.avatar?.startsWith('http')
-    //     ? motoboy.avatar
-    //     : 'assets/img/perfil-motoboy.jpg';
-
     const retirados = (motoboy.pedidos ?? []).filter((d) => d.status === 'em_rota');
     const concluidas = (motoboy.pedidos ?? []).filter((d) => d.status === 'concluida');
     const proxima = (motoboy.pedidos ?? []).find((d) => d.status === 'proxima');
+
+    const avatarSrc = motoboy.avatar?.startsWith('http')
+        ? motoboy.avatar
+        : '/assets/img/perfil-motoboy.jpg';
 
     return (
         <div className={`${styles.card} ${isActive ? styles.active : ''}`}>
@@ -32,7 +31,7 @@ const MotoboyCard: React.FC<Props> = ({
                 <div className={styles.left}>
                     <div className={styles.avatarWrapper}>
                         <Image
-                            src={motoboy.avatar || 'https://via.placeholder.com/150'}
+                            src={avatarSrc}
                             alt={motoboy.nome}
                             width={48}
                             height={48}
